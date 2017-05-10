@@ -22,6 +22,7 @@ find_package(Qt5 COMPONENTS Widgets Sql QuickWidgets)
 set(SOURCES
     main.cpp
     mainwindow.cpp
+    models/eventtreemodel.cpp
 )
 
 set(UIFORMS
@@ -33,4 +34,5 @@ add_executable(${PROJECT_NAME}
     ${UIFORMS}
 )
 
+target_include_directories(${PROJECT_NAME} PUBLIC models)
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Sql Qt5::QuickWidgets)

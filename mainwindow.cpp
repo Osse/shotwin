@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "eventtreemodel.h"
 #include "git_version.h"
 
 #include <QFileDialog>
@@ -44,6 +45,8 @@ void MainWindow::openDataBaseConnection(const QString& dbName)
 
 void MainWindow::initModelsAndViews()
 {
+    auto eventTreeModel = new EventTreeModel(this);
+    ui->eventTree->setModel(eventTreeModel);
 }
 
 void MainWindow::aboutShotwin()
