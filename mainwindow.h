@@ -17,6 +17,9 @@ public:
     ~MainWindow();
 
 private:
+    void openDatabase();
+    void openDataBaseConnection(const QString& dbName);
+    void initModelsAndViews();
     void aboutShotwin();
     void aboutQt();
 

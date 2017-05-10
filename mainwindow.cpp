@@ -3,12 +3,16 @@
 
 #include "git_version.h"
 
+#include <QFileDialog>
 #include <QMessageBox>
+#include <QSqlDatabase>
+#include <QStandardPaths>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
+    connect(ui->actionOpen_database, &QAction::triggered, this, &MainWindow::openDatabase);
     connect(ui->actionQuit, &QAction::triggered, qApp, &QApplication::quit);
     connect(ui->actionAbout_Shotwin, &QAction::triggered, this, &MainWindow::aboutShotwin);
     connect(ui->actionAbout_Qt, &QAction::triggered, this, &MainWindow::aboutQt);
@@ -17,6 +21,29 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::openDatabase()
+{
+    auto home = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
+    auto dbName = QFileDialog::getOpenFileName(this, "Choose Shotwell database", home);
+
+    if (!dbName.isEmpty())
+        openDataBaseConnection(dbName);
+}
+
+void MainWindow::openDataBaseConnection(const QString& dbName)
+{
+    auto db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(dbName);
+    if (db.open())
+        initModelsAndViews();
+    else
+        QMessageBox::warning(this, tr("Failed to open database"), tr("Failed to open database."));
+}
+
+void MainWindow::initModelsAndViews()
+{
 }
 
 void MainWindow::aboutShotwin()
