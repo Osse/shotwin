@@ -22,7 +22,13 @@ find_package(Qt5 COMPONENTS Widgets Sql QuickWidgets)
 set(SOURCES
     main.cpp
     mainwindow.cpp
+    models/eventitem.cpp
+    models/eventtreeitem.cpp
     models/eventtreemodel.cpp
+    models/monthitem.cpp
+    models/photoitem.cpp
+    models/rootitem.cpp
+    models/yearitem.cpp
 )
 
 set(UIFORMS

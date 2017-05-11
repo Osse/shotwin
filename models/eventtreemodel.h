@@ -4,6 +4,8 @@
 #include <QAbstractItemModel>
 #include <QModelIndex>
 
+class EventTreeItem;
+
 class EventTreeModel : public QAbstractItemModel
 {
 public:
@@ -14,6 +16,15 @@ public:
     virtual int rowCount(const QModelIndex& parent) const;
     virtual int columnCount(const QModelIndex& parent) const;
     virtual QVariant data(const QModelIndex& index, int role) const;
+    virtual QVariant headerData(int section, Qt::Orientation, int role = Qt::DisplayRole) const;
+
+    void init();
+
+private:
+    EventTreeItem* getItem(const QModelIndex& index) const;
+
+private:
+    EventTreeItem* rootItem;
 };
 
 #endif  // EVENTTREEMODEL_H

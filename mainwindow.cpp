@@ -47,6 +47,7 @@ void MainWindow::initModelsAndViews()
 {
     auto eventTreeModel = new EventTreeModel(this);
     ui->eventTree->setModel(eventTreeModel);
+    ui->eventTree->expandAll();
 }
 
 void MainWindow::aboutShotwin()
