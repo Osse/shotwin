@@ -13,6 +13,8 @@ public:
 
     QString displayString() override;
 
+    friend bool operator<(const EventItem& lhs, const EventItem& rhs);
+
 private:
     QString createEventName();
 

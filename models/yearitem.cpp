@@ -12,3 +12,8 @@ QString YearItem::displayString()
 {
     return QString::number(year);
 }
+
+bool operator<(const YearItem& lhs, const YearItem& rhs)
+{
+    return lhs.year < rhs.year;
+}

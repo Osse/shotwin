@@ -11,6 +11,8 @@ public:
 
     QString displayString() override;
 
+    friend bool operator<(const YearItem& lhs, const YearItem& rhs);
+
 private:
     int year;
 };

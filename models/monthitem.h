@@ -11,6 +11,8 @@ public:
 
     QString displayString() override;
 
+    friend bool operator<(const MonthItem& lhs, const MonthItem& rhs);
+
 private:
     int month;
 };

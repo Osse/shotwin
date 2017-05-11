@@ -15,6 +15,8 @@ public:
     QString displayString() override;
     QDateTime getExposureTime() const;
 
+    friend bool operator<(const PhotoItem& lhs, const PhotoItem& rhs);
+
 private:
     int photoId;
     QDateTime exposureTime;

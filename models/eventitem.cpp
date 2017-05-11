@@ -25,3 +25,8 @@ QString EventItem::createEventName()
     auto firstPhoto = static_cast<PhotoItem*>(children.front());
     return firstPhoto->getExposureTime().date().toString();
 }
+
+bool operator<(const EventItem& lhs, const EventItem& rhs)
+{
+    return lhs.startTime < rhs.startTime;
+}

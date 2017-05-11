@@ -20,3 +20,8 @@ QDateTime PhotoItem::getExposureTime() const
 {
     return exposureTime;
 }
+
+bool operator<(const PhotoItem& lhs, const PhotoItem& rhs)
+{
+    return lhs.exposureTime < rhs.exposureTime;
+}
