@@ -10,6 +10,8 @@
 #include <QSqlDatabase>
 #include <QStandardPaths>
 #include <QQmlContext>
+#include <QShortcut>
+#include <QQmlEngine>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -19,6 +21,15 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionQuit, &QAction::triggered, qApp, &QApplication::quit);
     connect(ui->actionAbout_Shotwin, &QAction::triggered, this, &MainWindow::aboutShotwin);
     connect(ui->actionAbout_Qt, &QAction::triggered, this, &MainWindow::aboutQt);
+
+    auto reloadQml = new QShortcut(Qt::Key_F5, this);
+    connect(reloadQml, &QShortcut::activated, [this]() {
+        auto pv = ui->photoView;
+        auto tmp = pv->source();
+        pv->setSource(QUrl());
+        pv->engine()->clearComponentCache();
+        pv->setSource(tmp);
+    });
 }
 
 MainWindow::~MainWindow()
@@ -53,7 +64,7 @@ void MainWindow::initModelsAndViews()
 
     auto photoListModel = new PhotoListModel(this);
     connect(ui->eventTree, &QTreeView::clicked, photoListModel, &PhotoListModel::setEventFromIndex);
-    ui->photoView->setSource(QUrl("qrc:/PhotoView.qml"));
+    ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/PhotoView.qml"));
     ui->photoView->rootContext()->setContextProperty("photoListModel", photoListModel);
 }
 

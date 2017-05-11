@@ -47,5 +47,6 @@ add_executable(${PROJECT_NAME}
     ${RESOURCES}
 )
 
+add_definitions("-DCMAKE_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\"")
 target_include_directories(${PROJECT_NAME} PUBLIC models)
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Sql Qt5::QuickWidgets)
