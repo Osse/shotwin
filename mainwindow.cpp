@@ -3,11 +3,13 @@
 
 #include "eventtreemodel.h"
 #include "git_version.h"
+#include "photolistmodel.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSqlDatabase>
 #include <QStandardPaths>
+#include <QQmlContext>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -48,6 +50,11 @@ void MainWindow::initModelsAndViews()
     auto eventTreeModel = new EventTreeModel(this);
     ui->eventTree->setModel(eventTreeModel);
     ui->eventTree->expandAll();
+
+    auto photoListModel = new PhotoListModel(this);
+    connect(ui->eventTree, &QTreeView::clicked, photoListModel, &PhotoListModel::setEventFromIndex);
+    ui->photoView->setSource(QUrl("qrc:/PhotoView.qml"));
+    ui->photoView->rootContext()->setContextProperty("photoListModel", photoListModel);
 }
 
 void MainWindow::aboutShotwin()

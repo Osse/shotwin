@@ -14,6 +14,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc and uic automatically when needed.
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -27,6 +28,7 @@ set(SOURCES
     models/eventtreemodel.cpp
     models/monthitem.cpp
     models/photoitem.cpp
+    models/photolistmodel.cpp
     models/rootitem.cpp
     models/yearitem.cpp
 )
@@ -35,9 +37,14 @@ set(UIFORMS
     mainwindow.ui
 )
 
+set(RESOURCES
+    resources.qrc
+)
+
 add_executable(${PROJECT_NAME}
     ${SOURCES}
     ${UIFORMS}
+    ${RESOURCES}
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC models)
