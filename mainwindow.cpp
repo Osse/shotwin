@@ -31,6 +31,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
         pv->engine()->clearComponentCache();
         pv->setSource(tmp);
     });
+
+    ui->splitter->setSizes({33000, 67000});
+    ui->mainToolBar->hide();
 }
 
 MainWindow::~MainWindow()
