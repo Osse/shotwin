@@ -4,6 +4,7 @@
 #include "eventtreemodel.h"
 #include "git_version.h"
 #include "photolistmodel.h"
+#include "thumbnailprovider.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -66,6 +67,7 @@ void MainWindow::initModelsAndViews()
     connect(ui->eventTree, &QTreeView::clicked, photoListModel, &PhotoListModel::setEventFromIndex);
     ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/PhotoView.qml"));
     ui->photoView->rootContext()->setContextProperty("photoListModel", photoListModel);
+    ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());
 }
 
 void MainWindow::aboutShotwin()

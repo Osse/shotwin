@@ -31,6 +31,7 @@ set(SOURCES
     models/photolistmodel.cpp
     models/rootitem.cpp
     models/yearitem.cpp
+    thumbnailprovider.cpp
 )
 
 set(UIFORMS
