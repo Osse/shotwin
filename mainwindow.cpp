@@ -34,6 +34,10 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->splitter->setSizes({33000, 67000});
     ui->mainToolBar->hide();
+
+    auto argv = QApplication::arguments();
+    if (argv.length() > 1)
+        openDataBaseConnection(argv[1]);
 }
 
 MainWindow::~MainWindow()
