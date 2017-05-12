@@ -35,23 +35,18 @@ Rectangle {
                 width: parent.GridView.view.idealCellWidth - 20
                 height: parent.height - 20
 
-                color: "lightsteelblue"
+                color: "transparent"
                 border.color: "white"
                 border.width: 1
-                radius: 5
                 Image {
-                    height: parent.height
-                    width: parent.width
+                    id: img
+                    fillMode: Image.PreserveAspectFit
+                    width: parent.width - 2*parent.border.width
+                    height: parent.height - 2*parent.border.width
+                    sourceSize.width: width
+                    sourceSize.height: height
                     anchors.centerIn: parent
-                    source: "image://thumbnails/kek"
-                }
-
-                Text {
-                    width: parent.width
-                    text: display
-                    anchors.centerIn: parent
-                    wrapMode: Text.Wrap
-                    horizontalAlignment: Text.AlignHCenter
+                    source: "image://thumbnails/" + display
                 }
             }
         }
