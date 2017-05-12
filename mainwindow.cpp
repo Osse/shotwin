@@ -72,8 +72,8 @@ void MainWindow::initModelsAndViews()
 
     auto photoListModel = new PhotoListModel(this);
     connect(ui->eventTree, &QTreeView::clicked, photoListModel, &PhotoListModel::setEventFromIndex);
-    ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/PhotoView.qml"));
     ui->photoView->rootContext()->setContextProperty("photoListModel", photoListModel);
+    ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/PhotoView.qml"));
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());
 }
 
