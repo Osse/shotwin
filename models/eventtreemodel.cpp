@@ -13,7 +13,7 @@
 
 const QString eventTreeQuery(
     "select * from (select p.id as photoid, p.exposure_time as exposure_time, p.filename as "
-    "filename, e.id as event_id, e.name as event_name from PhotoTable as p "
+    "filename, e.id as event_id, e.name as event_name, e.primary_source_id  as primary_source_id from PhotoTable as p "
     "left outer join EventTable as e on p.event_id = e.id) where event_id is not null order by "
     "event_id asc, exposure_time asc");
 
@@ -112,6 +112,7 @@ void EventTreeModel::init()
         QString fileName = query.value("filename").toString();
         int eventId = query.value("event_id").toInt();
         QString eventName = query.value("event_name").toString();
+        QString primarySourceId = query.value("primary_source_id").toString();
 
         auto date = exposureTime.date();
 
@@ -131,7 +132,7 @@ void EventTreeModel::init()
         }
 
         if (!events.contains(eventId)) {
-            auto newEvent = new EventItem(months[{year, month}], eventId, eventName, exposureTime);
+            auto newEvent = new EventItem(months[{year, month}], eventId, eventName, exposureTime, primarySourceId);
             events[eventId] = newEvent;
             months[{year, month}]->appendChild(newEvent);
         }

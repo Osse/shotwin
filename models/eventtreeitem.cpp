@@ -20,6 +20,11 @@ QString EventTreeItem::displayString()
     return QString();
 }
 
+QString EventTreeItem::getThumbnailId()
+{
+    return QString();
+}
+
 void EventTreeItem::appendChild(EventTreeItem* child)
 {
     children.push_back(child);

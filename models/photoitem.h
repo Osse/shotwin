@@ -13,6 +13,7 @@ public:
     virtual ~PhotoItem();
 
     QString displayString() override;
+    QString getThumbnailId() override;
     QDateTime getExposureTime() const;
 
     friend bool operator<(const PhotoItem& lhs, const PhotoItem& rhs);

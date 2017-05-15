@@ -16,6 +16,11 @@ QString PhotoItem::displayString()
     return fileName;
 }
 
+QString PhotoItem::getThumbnailId()
+{
+    return QString("thumb%1").arg(photoId, 16, 16, QChar('0'));
+}
+
 QDateTime PhotoItem::getExposureTime() const
 {
     return exposureTime;

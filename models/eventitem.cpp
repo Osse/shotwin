@@ -3,8 +3,16 @@
 #include "eventtreeitem.h"
 #include "photoitem.h"
 
-EventItem::EventItem(EventTreeItem* parent, int eventId, const QString& eventName, const QDateTime& startTime)
-    : EventTreeItem(parent), eventId(eventId), startTime(startTime), eventName(eventName)
+EventItem::EventItem(EventTreeItem* parent,
+                     int eventId,
+                     const QString& eventName,
+                     const QDateTime& startTime,
+                     const QString& primarySourceId)
+    : EventTreeItem(parent),
+      eventId(eventId),
+      startTime(startTime),
+      eventName(eventName),
+      primarySourceId(primarySourceId)
 {
 }
 
@@ -18,6 +26,11 @@ QString EventItem::displayString()
         return eventName;
     else
         return createEventName();
+}
+
+QString EventItem::getThumbnailId()
+{
+    return primarySourceId;
 }
 
 QString EventItem::createEventName()

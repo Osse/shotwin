@@ -13,6 +13,7 @@ public:
 
     int childCount();
     virtual QString displayString();
+    virtual QString getThumbnailId();
 
     void sortChildren();
     void appendChild(EventTreeItem* child);

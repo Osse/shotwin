@@ -8,10 +8,15 @@
 class EventItem : public EventTreeItem
 {
 public:
-    EventItem(EventTreeItem* parent, int eventId, const QString& eventName, const QDateTime& startTime);
+    EventItem(EventTreeItem* parent,
+              int eventId,
+              const QString& eventName,
+              const QDateTime& startTime,
+              const QString& primarySourceId);
     ~EventItem();
 
     QString displayString() override;
+    QString getThumbnailId() override;
 
     friend bool operator<(const EventItem& lhs, const EventItem& rhs);
 
@@ -21,6 +26,7 @@ private:
 private:
     int eventId;
     QString eventName;
+    QString primarySourceId;
 };
 
 #endif  // EVENTITEM_H
