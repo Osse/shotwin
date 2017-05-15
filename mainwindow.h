@@ -22,6 +22,7 @@ private:
     void initModelsAndViews();
     void aboutShotwin();
     void aboutQt();
+    void showSettings();
 
 private:
     Ui::MainWindow* ui;

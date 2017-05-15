@@ -32,11 +32,13 @@ set(SOURCES
     models/photoitem.cpp
     models/rootitem.cpp
     models/yearitem.cpp
+    settingsdialog.cpp
     thumbnailprovider.cpp
 )
 
 set(UIFORMS
     mainwindow.ui
+    settingsdialog.ui
 )
 
 set(RESOURCES

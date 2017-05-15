@@ -5,6 +5,7 @@
 #include "git_version.h"
 #include "hidephotosproxymodel.h"
 #include "photoeventlistproxymodel.h"
+#include "settingsdialog.h"
 #include "thumbnailprovider.h"
 
 #include <QFileDialog>
@@ -23,6 +24,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionQuit, &QAction::triggered, qApp, &QApplication::quit);
     connect(ui->actionAbout_Shotwin, &QAction::triggered, this, &MainWindow::aboutShotwin);
     connect(ui->actionAbout_Qt, &QAction::triggered, this, &MainWindow::aboutQt);
+    connect(ui->actionSettings, &QAction::triggered, this, &MainWindow::showSettings);
 
     auto reloadQml = new QShortcut(Qt::Key_F5, this);
     connect(reloadQml, &QShortcut::activated, [this]() {
@@ -93,4 +95,10 @@ void MainWindow::aboutShotwin()
 void MainWindow::aboutQt()
 {
     QMessageBox::aboutQt(this);
+}
+
+void MainWindow::showSettings()
+{
+    SettingsDialog sd(this);
+    sd.exec();
 }
