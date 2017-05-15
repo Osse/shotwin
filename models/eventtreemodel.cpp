@@ -70,10 +70,6 @@ int EventTreeModel::rowCount(const QModelIndex& parent) const
     else
         parentItem = getItem(parent);
 
-    auto eventItem = dynamic_cast<EventItem*>(parentItem);
-    if (eventItem)
-        return 0;
-
     return parentItem->childCount();
 }
 

@@ -3,6 +3,7 @@
 
 #include "eventtreemodel.h"
 #include "git_version.h"
+#include "hidephotosproxymodel.h"
 #include "photolistmodel.h"
 #include "thumbnailprovider.h"
 
@@ -67,7 +68,9 @@ void MainWindow::openDataBaseConnection(const QString& dbName)
 void MainWindow::initModelsAndViews()
 {
     auto eventTreeModel = new EventTreeModel(this);
-    ui->eventTree->setModel(eventTreeModel);
+    auto proxy = new HidePhotosProxyModel(this);
+    proxy->setSourceModel(eventTreeModel);
+    ui->eventTree->setModel(proxy);
     ui->eventTree->expandAll();
 
     auto photoListModel = new PhotoListModel(this);
