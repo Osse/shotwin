@@ -10,6 +10,7 @@ public:
     ~MonthItem();
 
     QString displayString() override;
+    QPixmap getIcon() override;
 
     friend bool operator<(const MonthItem& lhs, const MonthItem& rhs);
 

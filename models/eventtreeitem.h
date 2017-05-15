@@ -1,6 +1,7 @@
 #ifndef EVENTTREEITEM_H
 #define EVENTTREEITEM_H
 
+#include <QPixmap>
 #include <QString>
 
 #include <vector>
@@ -14,6 +15,7 @@ public:
     int childCount();
     virtual QString displayString();
     virtual QString getThumbnailId();
+    virtual QPixmap getIcon() = 0;
 
     void sortChildren();
     void appendChild(EventTreeItem* child);

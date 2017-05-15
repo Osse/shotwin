@@ -76,11 +76,15 @@ int EventTreeModel::rowCount(const QModelIndex& parent) const
 
 QVariant EventTreeModel::data(const QModelIndex& index, int role) const
 {
-    if (!index.isValid() || role != Qt::DisplayRole)
+    if (!index.isValid() || (role != Qt::DisplayRole && role != Qt::DecorationRole))
         return QVariant();
 
     auto item = static_cast<EventTreeItem*>(index.internalPointer());
-    return item->displayString();
+
+    if (role == Qt::DisplayRole)
+        return item->displayString();
+    else if (role == Qt::DecorationRole)
+        return item->getIcon();
 }
 
 QVariant EventTreeModel::headerData(int section, Qt::Orientation orientation, int role) const

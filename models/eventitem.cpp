@@ -3,6 +3,9 @@
 #include "eventtreeitem.h"
 #include "photoitem.h"
 
+#include <QApplication>
+#include <QStyle>
+
 EventItem::EventItem(EventTreeItem* parent,
                      int eventId,
                      const QString& eventName,
@@ -31,6 +34,12 @@ QString EventItem::displayString()
 QString EventItem::getThumbnailId()
 {
     return primarySourceId;
+}
+
+QPixmap EventItem::getIcon()
+{
+    auto style = QApplication::style();
+    return style->standardPixmap(QStyle::SP_FileIcon);
 }
 
 QString EventItem::createEventName()

@@ -17,6 +17,7 @@ public:
 
     QString displayString() override;
     QString getThumbnailId() override;
+    QPixmap getIcon() override;
 
     friend bool operator<(const EventItem& lhs, const EventItem& rhs);
 

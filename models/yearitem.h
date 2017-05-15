@@ -10,6 +10,7 @@ public:
     ~YearItem();
 
     QString displayString() override;
+    QPixmap getIcon() override;
 
     friend bool operator<(const YearItem& lhs, const YearItem& rhs);
 
