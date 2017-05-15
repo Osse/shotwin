@@ -4,7 +4,7 @@
 #include "eventtreemodel.h"
 #include "git_version.h"
 #include "hidephotosproxymodel.h"
-#include "photolistmodel.h"
+#include "photoeventlistproxymodel.h"
 #include "thumbnailprovider.h"
 
 #include <QFileDialog>
@@ -73,9 +73,13 @@ void MainWindow::initModelsAndViews()
     ui->eventTree->setModel(proxy);
     ui->eventTree->expandAll();
 
-    auto photoListModel = new PhotoListModel(this);
-    connect(ui->eventTree, &QTreeView::clicked, photoListModel, &PhotoListModel::setEventFromIndex);
-    ui->photoView->rootContext()->setContextProperty("photoListModel", photoListModel);
+    auto photoEventListProxyModel = new PhotoEventListProxyModel(this);
+    photoEventListProxyModel->setSourceModel(eventTreeModel);
+    connect(ui->eventTree,
+            &QTreeView::clicked,
+            photoEventListProxyModel,
+            &PhotoEventListProxyModel::setTopLevelItemFromIndex);
+    ui->photoView->rootContext()->setContextProperty("photoListModel", photoEventListProxyModel);
     ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/PhotoView.qml"));
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());
 }

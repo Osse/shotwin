@@ -7,6 +7,7 @@
 #include "yearitem.h"
 
 #include <QDateTime>
+#include <QDebug>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
