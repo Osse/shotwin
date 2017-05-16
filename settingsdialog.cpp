@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QPushButton>
 #include <QSettings>
+#include <QStandardPaths>
 
 SettingsDialog::SettingsDialog(QWidget* parent) : QDialog(parent), ui(new Ui::SettingsDialog)
 {
@@ -16,8 +17,7 @@ SettingsDialog::SettingsDialog(QWidget* parent) : QDialog(parent), ui(new Ui::Se
 
     QSettings settings;
 
-    QString cachePath = settings.contains("cachepath") ? settings.value("cachepath").toString() : "";
-    ui->leCachePath->setText(cachePath);
+    ui->leCachePath->setText(settings.value("cachepath", QString()).toString());
 
     int shade = settings.value("shade", 128).toInt();
     ui->sliderBgColor->setValue(shade);
@@ -31,8 +31,10 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::chooseCachePath()
 {
-    auto newPath = QFileDialog::getExistingDirectory(this, "Cache path");
-    ui->leCachePath->setText(newPath);
+    auto currentPath = ui->leCachePath->text();
+    auto newPath = QFileDialog::getExistingDirectory(this, tr("Path to existing cache"), currentPath);
+    if (!newPath.isEmpty())
+        ui->leCachePath->setText(newPath);
 }
 
 void SettingsDialog::store()

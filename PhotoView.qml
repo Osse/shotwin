@@ -29,25 +29,31 @@ Rectangle {
             // The delegate size is equal to the cell size
             height: GridView.view.cellHeight
             width: GridView.view.cellWidth
-            Rectangle {
+            Item {
                 // The visible part is not. The height is as mentioned above,
                 // But the width is here set to the ideal width.
                 anchors.centerIn: parent
                 width: parent.GridView.view.idealCellWidth - 20
                 height: parent.height - 20
 
-                color: "transparent"
-                border.color: "white"
-                border.width: 1
                 Image {
                     id: img
                     fillMode: Image.PreserveAspectFit
-                    width: parent.width - 2*parent.border.width
-                    height: parent.height - 2*parent.border.width
+                    width: parent.width - 2
+                    height: parent.height - 2
                     sourceSize.width: width
                     sourceSize.height: height
                     anchors.centerIn: parent
-                    source: "image://thumbnails/" + display
+                    source: "image://thumbnails/" + thumbnail
+
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: parent.paintedWidth + 2
+                        height: parent.paintedHeight + 2
+                        border.width: 1
+                        border.color: "white"
+                        color: "transparent"
+                    }
                 }
             }
         }

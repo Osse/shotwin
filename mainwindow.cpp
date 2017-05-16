@@ -103,6 +103,10 @@ void MainWindow::showSettings()
 {
     SettingsDialog sd(this);
 
+    connect(&sd, &SettingsDialog::settingsChanged, [this]() {
+        static_cast<ThumbnailProvider*>(ui->photoView->engine()->imageProvider("thumbnails"))
+            ->setThumbnailDirPath(QSettings().value("cachepath").toString());
+    });
     connect(&sd, &SettingsDialog::bgColorChanged, [this](int value) {
         ui->photoView->rootContext()->setContextProperty("shade", value);
     });
