@@ -18,11 +18,12 @@ public:
 
 signals:
     void settingsChanged();
-    void bgColorChanged();
+    void bgColorChanged(int value);
 
 private:
     void chooseCachePath();
     void store();
+    void revert();
 
 private:
     Ui::SettingsDialog* ui;

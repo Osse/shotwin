@@ -11,6 +11,7 @@ SettingsDialog::SettingsDialog(QWidget* parent) : QDialog(parent), ui(new Ui::Se
     ui->setupUi(this);
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &SettingsDialog::store);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &SettingsDialog::revert);
     connect(ui->pbBrowseForCache, &QPushButton::clicked, this, &SettingsDialog::chooseCachePath);
 
     QSettings settings;
@@ -18,7 +19,7 @@ SettingsDialog::SettingsDialog(QWidget* parent) : QDialog(parent), ui(new Ui::Se
     QString cachePath = settings.contains("cachepath") ? settings.value("cachepath").toString() : "";
     ui->leCachePath->setText(cachePath);
 
-    int shade = settings.contains("shade") ? settings.value("shade").toInt() : 128;
+    int shade = settings.value("shade", 128).toInt();
     ui->sliderBgColor->setValue(shade);
     connect(ui->sliderBgColor, &QSlider::valueChanged, this, &SettingsDialog::bgColorChanged);
 }
@@ -40,4 +41,9 @@ void SettingsDialog::store()
     settings.setValue("shade", ui->sliderBgColor->value());
     settings.setValue("cachepath", ui->leCachePath->text());
     emit settingsChanged();
+}
+
+void SettingsDialog::revert()
+{
+    emit bgColorChanged(QSettings().value("shade").toInt());
 }

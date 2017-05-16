@@ -10,11 +10,12 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QQmlContext>
+#include <QQmlEngine>
+#include <QSettings>
+#include <QShortcut>
 #include <QSqlDatabase>
 #include <QStandardPaths>
-#include <QQmlContext>
-#include <QShortcut>
-#include <QQmlEngine>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -82,6 +83,7 @@ void MainWindow::initModelsAndViews()
             photoEventListProxyModel,
             &PhotoEventListProxyModel::setTopLevelItemFromIndex);
     ui->photoView->rootContext()->setContextProperty("photoListModel", photoEventListProxyModel);
+    ui->photoView->rootContext()->setContextProperty("shade", QSettings().value("shade", 128).toInt());
     ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/PhotoView.qml"));
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());
 }
@@ -100,5 +102,10 @@ void MainWindow::aboutQt()
 void MainWindow::showSettings()
 {
     SettingsDialog sd(this);
+
+    connect(&sd, &SettingsDialog::bgColorChanged, [this](int value) {
+        ui->photoView->rootContext()->setContextProperty("shade", value);
+    });
+
     sd.exec();
 }

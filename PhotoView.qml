@@ -2,7 +2,8 @@ import QtQuick 2.7
 
 Rectangle {
     id: container
-    color: "grey"
+    property real shadef: shade/256.0
+    color: Qt.rgba(shadef, shadef, shadef, 1)
 
     GridView {
         id: photoView
