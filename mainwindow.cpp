@@ -42,6 +42,11 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     auto argv = QApplication::arguments();
     if (argv.length() > 1)
         openDataBaseConnection(argv[1]);
+    else {
+        QSettings settings;
+        if (settings.contains("databasepath"))
+            openDataBaseConnection(settings.value("databasepath").toString());
+    }
 }
 
 MainWindow::~MainWindow()
@@ -62,8 +67,10 @@ void MainWindow::openDataBaseConnection(const QString& dbName)
 {
     auto db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(dbName);
-    if (db.open())
+    if (db.open()) {
+        QSettings().setValue("databasepath", dbName);
         initModelsAndViews();
+    }
     else
         QMessageBox::warning(this, tr("Failed to open database"), tr("Failed to open database."));
 }
