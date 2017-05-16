@@ -37,7 +37,7 @@ QPixmap EventItem::getIcon()
 QDateTime EventItem::getStartTime() const
 {
     if (children.size()) {
-        auto photo = static_cast<PhotoItem*>(children.front());
+        auto photo = std::dynamic_pointer_cast<PhotoItem>(children.front());
         return photo->getExposureTime();
     }
 
@@ -47,7 +47,7 @@ QDateTime EventItem::getStartTime() const
 QDateTime EventItem::getEndTime() const
 {
     if (children.size()) {
-        auto photo = static_cast<PhotoItem*>(children.back());
+        auto photo = std::dynamic_pointer_cast<PhotoItem>(children.back());
         return photo->getExposureTime();
     }
 

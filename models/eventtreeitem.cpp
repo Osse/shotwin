@@ -38,14 +38,14 @@ int EventTreeItem::sortData()
 
 void EventTreeItem::appendChild(EventTreeItem* child)
 {
-    children.push_back(child);
+    children.push_back(std::shared_ptr<EventTreeItem>(child));
 }
 
 EventTreeItem* EventTreeItem::getChild(int row)
 {
     if (row < 0 || row > children.size())
         return nullptr;
-    return children.at(row);
+    return children.at(row).get();
 }
 
 EventTreeItem* EventTreeItem::getParent() const
@@ -55,7 +55,8 @@ EventTreeItem* EventTreeItem::getParent() const
 
 int EventTreeItem::getRow(EventTreeItem* child)
 {
-    auto childIt = std::find(children.begin(), children.end(), child);
+    auto childIt = std::find_if(children.begin(), children.end(), [child](auto c) { return c.get() == child; });
+
     if (childIt != children.end())
         return childIt - children.begin();
     else

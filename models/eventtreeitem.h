@@ -4,6 +4,7 @@
 #include <QPixmap>
 #include <QString>
 
+#include <memory>
 #include <vector>
 
 class EventTreeItem
@@ -27,7 +28,7 @@ public:
 
 protected:
     EventTreeItem* parent;
-    std::vector<EventTreeItem*> children;
+    std::vector<std::shared_ptr<EventTreeItem>> children;
 };
 
 #endif  // EVENTTREEITEM_H
