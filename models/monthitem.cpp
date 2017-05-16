@@ -1,5 +1,7 @@
 #include "monthitem.h"
 
+#include "eventitem.h"
+
 #include <QApplication>
 #include <QDate>
 #include <QStyle>
@@ -21,6 +23,11 @@ QPixmap MonthItem::getIcon()
 {
     auto style = QApplication::style();
     return style->standardPixmap(QStyle::SP_DirClosedIcon);
+}
+
+int MonthItem::sortData()
+{
+    return -month;
 }
 
 bool operator<(const MonthItem& lhs, const MonthItem& rhs)

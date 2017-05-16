@@ -6,16 +6,8 @@
 #include <QApplication>
 #include <QStyle>
 
-EventItem::EventItem(EventTreeItem* parent,
-                     int eventId,
-                     const QString& eventName,
-                     const QDateTime& startTime,
-                     const QString& primarySourceId)
-    : EventTreeItem(parent),
-      eventId(eventId),
-      startTime(startTime),
-      eventName(eventName),
-      primarySourceId(primarySourceId)
+EventItem::EventItem(EventTreeItem* parent, int eventId, const QString& eventName, const QString& primarySourceId)
+    : EventTreeItem(parent), eventId(eventId), eventName(eventName), primarySourceId(primarySourceId)
 {
 }
 
@@ -42,13 +34,37 @@ QPixmap EventItem::getIcon()
     return style->standardPixmap(QStyle::SP_FileIcon);
 }
 
+QDateTime EventItem::getStartTime() const
+{
+    if (children.size()) {
+        auto photo = static_cast<PhotoItem*>(children.front());
+        return photo->getExposureTime();
+    }
+
+    return QDateTime();
+}
+
+QDateTime EventItem::getEndTime() const
+{
+    if (children.size()) {
+        auto photo = static_cast<PhotoItem*>(children.back());
+        return photo->getExposureTime();
+    }
+
+    return QDateTime();
+}
+
 QString EventItem::createEventName()
 {
-    auto firstPhoto = static_cast<PhotoItem*>(children.front());
-    return firstPhoto->getExposureTime().date().toString();
+    return getStartTime().date().toString();
 }
 
 bool operator<(const EventItem& lhs, const EventItem& rhs)
 {
-    return lhs.startTime < rhs.startTime;
+    return lhs.getStartTime() < rhs.getStartTime();
+}
+
+int EventItem::sortData()
+{
+    return -getStartTime().toSecsSinceEpoch();
 }

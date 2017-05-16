@@ -11,6 +11,7 @@ public:
 
     QString displayString() override;
     QPixmap getIcon() override;
+    int sortData() override;
 
     friend bool operator<(const YearItem& lhs, const YearItem& rhs);
 

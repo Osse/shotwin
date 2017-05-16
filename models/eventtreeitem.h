@@ -18,6 +18,7 @@ public:
     virtual QPixmap getIcon() = 0;
 
     void sortChildren();
+    virtual int sortData();
     void appendChild(EventTreeItem* child);
     EventTreeItem* getChild(int row);
     int getRow(EventTreeItem* child);

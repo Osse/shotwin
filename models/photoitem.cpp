@@ -26,6 +26,11 @@ QPixmap PhotoItem::getIcon()
     return QPixmap();
 }
 
+int PhotoItem::sortData()
+{
+    return exposureTime.toSecsSinceEpoch();
+}
+
 QDateTime PhotoItem::getExposureTime() const
 {
     return exposureTime;

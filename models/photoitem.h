@@ -15,6 +15,8 @@ public:
     QString displayString() override;
     QString getThumbnailId() override;
     QPixmap getIcon() override;
+    int sortData() override;
+
     QDateTime getExposureTime() const;
 
     friend bool operator<(const PhotoItem& lhs, const PhotoItem& rhs);

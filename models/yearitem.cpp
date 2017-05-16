@@ -1,5 +1,7 @@
 #include "yearitem.h"
 
+#include "monthitem.h"
+
 #include <QApplication>
 #include <QStyle>
 
@@ -20,6 +22,11 @@ QPixmap YearItem::getIcon()
 {
     auto style = QApplication::style();
     return style->standardPixmap(QStyle::SP_DirClosedIcon);
+}
+
+int YearItem::sortData()
+{
+    return -year;
 }
 
 bool operator<(const YearItem& lhs, const YearItem& rhs)

@@ -1,5 +1,7 @@
 #include "rootitem.h"
 
+#include "yearitem.h"
+
 RootItem::RootItem() : EventTreeItem(nullptr)
 {
 }

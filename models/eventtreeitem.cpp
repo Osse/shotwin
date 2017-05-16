@@ -25,6 +25,17 @@ QString EventTreeItem::getThumbnailId()
     return QString();
 }
 
+void EventTreeItem::sortChildren()
+{
+    std::for_each(children.begin(), children.end(), [](auto c) { c->sortChildren(); });
+    std::sort(children.begin(), children.end(), [](auto lhs, auto rhs) { return lhs->sortData() < rhs->sortData(); });
+}
+
+int EventTreeItem::sortData()
+{
+    return 0;
+}
+
 void EventTreeItem::appendChild(EventTreeItem* child)
 {
     children.push_back(child);
