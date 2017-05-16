@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import QtQuick.Controls 1.4
 
 Rectangle {
     id: container
@@ -7,16 +8,20 @@ Rectangle {
 
     GridView {
         id: photoView
+        clip: true
+        anchors.top: container.top
+        anchors.left: container.left
+        anchors.bottom: slider.top
+        anchors.right: container.right
 
-        anchors.fill: parent
         anchors.leftMargin: 20
         anchors.rightMargin: 20
         anchors.topMargin: 20
 
         // The standard size. height is always equal to this, but
         // the size changes to make stuff centered
-        property int idealCellHeight: 200
-        property int idealCellWidth: 200
+        property int idealCellHeight: slider.value
+        property int idealCellWidth: slider.value
 
         // The actual cell height is always as desired, but the cell width
         // is calculated from the current width of the view and how many cells fit
@@ -57,5 +62,14 @@ Rectangle {
                 }
             }
         }
+    }
+
+    Slider {
+        id: slider
+        value: 200
+        minimumValue: 50
+        maximumValue: 300
+        anchors.bottom: container.bottom
+        anchors.right: container.right
     }
 }
