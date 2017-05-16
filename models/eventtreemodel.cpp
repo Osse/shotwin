@@ -8,6 +8,7 @@
 
 #include <QDateTime>
 #include <QDebug>
+#include <QFont>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
@@ -89,10 +90,19 @@ QVariant EventTreeModel::data(const QModelIndex& index, int role) const
 
 QVariant EventTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (section != 0 || orientation != Qt::Horizontal || role != Qt::DisplayRole)
+    if (section != 0 || orientation != Qt::Horizontal)
         return QVariant();
 
-    return QVariant("Events");
+    if (role == Qt::DisplayRole)
+        return QVariant("Events");
+
+    if (role == Qt::FontRole) {
+        auto font = QAbstractItemModel::headerData(section, orientation, Qt::FontRole).value<QFont>();
+        font.setBold(true);
+        return font;
+    }
+
+    return QVariant();
 }
 
 void EventTreeModel::init()
