@@ -25,7 +25,7 @@
         <enum>QFrame::NoFrame</enum>
        </property>
       </widget>
-      <widget class="QQuickWidget" name="photoView">
+      <widget class="WorkaroundQuickWidget" name="photoView">
        <property name="resizeMode">
         <enum>QQuickWidget::SizeRootObjectToView</enum>
        </property>
@@ -119,6 +119,11 @@
    <class>QQuickWidget</class>
    <extends>QWidget</extends>
    <header>QtQuickWidgets/QQuickWidget</header>
+  </customwidget>
+  <customwidget>
+   <class>WorkaroundQuickWidget</class>
+   <extends>QQuickWidget</extends>
+   <header>workaroundquickwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
