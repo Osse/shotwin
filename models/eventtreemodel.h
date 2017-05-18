@@ -22,7 +22,7 @@ public:
 
 private:
     void sort();
-    enum UserRoles { ThumnailRole = Qt::UserRole + 1 };
+    enum UserRoles { ThumnailRole = Qt::UserRole + 1, FilenameRole };
     EventTreeItem* getItem(const QModelIndex& index) const;
 
 private:

@@ -14,6 +14,7 @@ public:
 
     QString displayString() override;
     QString getThumbnailId() override;
+    QString getFilename() override;
     QPixmap getIcon() override;
     int sortData() override;
 

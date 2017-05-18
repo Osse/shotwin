@@ -21,6 +21,11 @@ QString PhotoItem::getThumbnailId()
     return QString("thumb%1").arg(photoId, 16, 16, QChar('0'));
 }
 
+QString PhotoItem::getFilename()
+{
+    return fileName;
+}
+
 QPixmap PhotoItem::getIcon()
 {
     return QPixmap();
