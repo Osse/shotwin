@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>321</width>
-    <height>98</height>
+    <height>325</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Shotwin settings</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="1" colspan="2">
+   <item row="7" column="1" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -23,16 +23,6 @@
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="pbBrowseForCache">
-     <property name="text">
-      <string>Browse</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="leCachePath"/>
    </item>
    <item row="2" column="1" colspan="2">
     <widget class="QSlider" name="sliderBgColor">
@@ -57,12 +47,42 @@
      </property>
     </widget>
    </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="pbBrowseForCache">
+     <property name="text">
+      <string>Browse</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Path mappings:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="leCachePath"/>
+   </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Thumbnail cache:</string>
      </property>
     </widget>
+   </item>
+   <item row="4" column="1" colspan="2">
+    <widget class="QDialogButtonBox" name="bbMapping">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::NoButton</set>
+     </property>
+     <property name="centerButtons">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="3">
+    <widget class="QPlainTextEdit" name="tePathMappings"/>
    </item>
   </layout>
  </widget>

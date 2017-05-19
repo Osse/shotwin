@@ -3,6 +3,7 @@
 
 #include <QDialogButtonBox>
 #include <QFileDialog>
+#include <QPlainTextEdit>
 #include <QPushButton>
 #include <QSettings>
 #include <QStandardPaths>
@@ -22,6 +23,15 @@ SettingsDialog::SettingsDialog(QWidget* parent) : QDialog(parent), ui(new Ui::Se
     int shade = settings.value("shade", 128).toInt();
     ui->sliderBgColor->setValue(shade);
     connect(ui->sliderBgColor, &QSlider::valueChanged, this, &SettingsDialog::bgColorChanged);
+
+    auto map = settings.value("map").toMap();
+
+    QString str;
+    for (auto it = map.begin(); it != map.end(); ++it) {
+        str += it.key() + ";" + it.value().toString() + "\n";
+    }
+
+    ui->tePathMappings->setPlainText(str);
 }
 
 SettingsDialog::~SettingsDialog()
@@ -39,9 +49,17 @@ void SettingsDialog::chooseCachePath()
 
 void SettingsDialog::store()
 {
+    QMap<QString, QVariant> map;
+    for (const auto& line : ui->tePathMappings->toPlainText().split("\n", QString::SkipEmptyParts)) {
+        auto parts = line.split(";");
+        map[parts[0]] = parts[1];
+    }
+
     QSettings settings;
     settings.setValue("shade", ui->sliderBgColor->value());
     settings.setValue("cachepath", ui->leCachePath->text());
+    settings.setValue("map", map);
+
     emit settingsChanged();
 }
 
