@@ -5,6 +5,7 @@
 #include "git_version.h"
 #include "hidephotosproxymodel.h"
 #include "photoeventlistproxymodel.h"
+#include "pictureprovider.h"
 #include "settingsdialog.h"
 #include "thumbnailprovider.h"
 
@@ -93,6 +94,7 @@ void MainWindow::initModelsAndViews()
     ui->photoView->rootContext()->setContextProperty("shade", QSettings().value("shade", 128).toInt());
     ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/PhotoView.qml"));
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());
+    ui->photoView->engine()->addImageProvider("pictures", new PictureProvider());
 }
 
 void MainWindow::aboutShotwin()

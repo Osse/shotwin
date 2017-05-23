@@ -32,6 +32,7 @@ set(SOURCES
     models/photoitem.cpp
     models/rootitem.cpp
     models/yearitem.cpp
+    pictureprovider.cpp
     settingsdialog.cpp
     thumbnailprovider.cpp
 )
