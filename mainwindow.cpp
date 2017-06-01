@@ -2,9 +2,10 @@
 #include "ui_mainwindow.h"
 
 #include "eventtreemodel.h"
+#include "filterflattenproxymodel.h"
 #include "git_version.h"
 #include "hidephotosproxymodel.h"
-#include "photoeventlistproxymodel.h"
+#include "photoitem.h"
 #include "pictureprovider.h"
 #include "settingsdialog.h"
 #include "thumbnailprovider.h"
@@ -84,13 +85,10 @@ void MainWindow::initModelsAndViews()
     ui->eventTree->setModel(proxy);
     ui->eventTree->expandAll();
 
-    auto photoEventListProxyModel = new PhotoEventListProxyModel(this);
-    photoEventListProxyModel->setSourceModel(eventTreeModel);
-    connect(ui->eventTree,
-            &QTreeView::clicked,
-            photoEventListProxyModel,
-            &PhotoEventListProxyModel::setTopLevelItemFromIndex);
-    ui->photoView->rootContext()->setContextProperty("photoListModel", photoEventListProxyModel);
+    auto photoListModel = new FilterFlattenProxyModel<PhotoItem>(this);
+    photoListModel->setSourceModel(eventTreeModel);
+    connect(ui->eventTree, &QTreeView::clicked, photoListModel, &FilterFlattenProxyModel<PhotoItem>::setTopLevelIndex);
+    ui->photoView->rootContext()->setContextProperty("photoListModel", photoListModel);
     ui->photoView->rootContext()->setContextProperty("shade", QSettings().value("shade", 128).toInt());
     ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/PhotoView.qml"));
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());

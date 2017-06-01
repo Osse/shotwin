@@ -28,7 +28,6 @@ set(SOURCES
     models/eventtreemodel.cpp
     models/hidephotosproxymodel.cpp
     models/monthitem.cpp
-    models/photoeventlistproxymodel.cpp
     models/photoitem.cpp
     models/rootitem.cpp
     models/yearitem.cpp
