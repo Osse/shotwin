@@ -1,6 +1,7 @@
 #include "mainwindow.h"
-#include <QApplication>
+#include "shotwin.h"
 
+#include <QApplication>
 #include <QSettings>
 
 int main(int argc, char* argv[])
@@ -12,7 +13,9 @@ int main(int argc, char* argv[])
     QCoreApplication::setApplicationName("Shotwin");
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
-    MainWindow w;
+    Shotwin s;
+
+    MainWindow w(&s);
     w.show();
 
     return a.exec();
