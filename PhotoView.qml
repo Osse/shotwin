@@ -1,18 +1,15 @@
 import QtQuick 2.7
 import QtQuick.Controls 1.4
 
-Rectangle {
-    id: container
-    property real shadef: shade/256.0
-    color: Qt.rgba(shadef, shadef, shadef, 1)
-
+Item {
+    anchors.fill: parent
     GridView {
         id: photoView
         clip: true
-        anchors.top: container.top
-        anchors.left: container.left
+        anchors.top: parent.top
+        anchors.left: parent.left
         anchors.bottom: slider.top
-        anchors.right: container.right
+        anchors.right: parent.right
 
         anchors.leftMargin: 20
         anchors.rightMargin: 20
@@ -69,7 +66,7 @@ Rectangle {
         value: 200
         minimumValue: 50
         maximumValue: 300
-        anchors.bottom: container.bottom
-        anchors.right: container.right
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
     }
 }
