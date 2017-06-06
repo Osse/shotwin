@@ -33,6 +33,7 @@ set(SOURCES
     models/yearitem.cpp
     pictureprovider.cpp
     settingsdialog.cpp
+    shotwin.cpp
     thumbnailprovider.cpp
 )
 

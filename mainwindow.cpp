@@ -1,13 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "eventtreemodel.h"
-#include "filterflattenproxymodel.h"
 #include "git_version.h"
-#include "hidephotosproxymodel.h"
-#include "photoitem.h"
 #include "pictureprovider.h"
 #include "settingsdialog.h"
+#include "shotwin.h"
 #include "thumbnailprovider.h"
 
 #include <QFileDialog>
@@ -19,7 +16,8 @@
 #include <QSqlDatabase>
 #include <QStandardPaths>
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(Shotwin* shotwin, QWidget* parent)
+    : shotwin(shotwin), QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -79,18 +77,15 @@ void MainWindow::openDataBaseConnection(const QString& dbName)
 
 void MainWindow::initModelsAndViews()
 {
-    auto eventTreeModel = new EventTreeModel(this);
-    auto proxy = new HidePhotosProxyModel(this);
-    proxy->setSourceModel(eventTreeModel);
-    ui->eventTree->setModel(proxy);
-    ui->eventTree->expandAll();
+    shotwin->initModels();
 
-    auto photoListModel = new FilterFlattenProxyModel<PhotoItem>(this);
-    photoListModel->setSourceModel(eventTreeModel);
-    connect(ui->eventTree, &QTreeView::clicked, photoListModel, &FilterFlattenProxyModel<PhotoItem>::setTopLevelIndex);
-    ui->photoView->rootContext()->setContextProperty("photoListModel", photoListModel);
+    ui->eventTree->setModel(shotwin->getEventTree());
+    ui->eventTree->expandAll();
+    connect(ui->eventTree, &QTreeView::clicked, shotwin, &Shotwin::selectEvent);
+
+    ui->photoView->rootContext()->setContextProperty("photoListModel", shotwin->getPhotoList());
     ui->photoView->rootContext()->setContextProperty("shade", QSettings().value("shade", 128).toInt());
-    ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/PhotoView.qml"));
+    ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/Main.qml"));
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());
     ui->photoView->engine()->addImageProvider("pictures", new PictureProvider());
 }
