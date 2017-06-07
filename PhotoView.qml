@@ -43,15 +43,18 @@ Item {
                     fillMode: Image.PreserveAspectFit
                     width: parent.width - 2
                     height: parent.height - 2
+
+                    // This makes the image provider get a proper requestedSize
                     sourceSize.width: width
                     sourceSize.height: height
+
                     anchors.centerIn: parent
                     source: "image://thumbnails/" + thumbnail
 
                     Rectangle {
                         anchors.centerIn: parent
-                        width: parent.paintedWidth + 2
-                        height: parent.paintedHeight + 2
+                        width: Math.floor(parent.paintedWidth) + 2.0
+                        height: Math.floor(parent.paintedHeight) + 2.0
                         border.width: 1
                         border.color: "white"
                         color: "transparent"
