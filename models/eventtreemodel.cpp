@@ -77,8 +77,7 @@ int EventTreeModel::rowCount(const QModelIndex& parent) const
 
 QVariant EventTreeModel::data(const QModelIndex& index, int role) const
 {
-    if (!index.isValid() ||
-        (role != Qt::DisplayRole && role != Qt::DecorationRole && role != ThumnailRole && role != FilenameRole))
+    if (!index.isValid())
         return QVariant();
 
     auto item = static_cast<EventTreeItem*>(index.internalPointer());
@@ -91,6 +90,8 @@ QVariant EventTreeModel::data(const QModelIndex& index, int role) const
         return item->getThumbnailId();
     else if (role == FilenameRole)
         return item->getFilename();
+    else
+        return QVariant();
 }
 
 QVariant EventTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
