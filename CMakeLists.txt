@@ -46,10 +46,16 @@ set(RESOURCES
     resources.qrc
 )
 
+set(QMLFILES
+    Main.qml
+    PhotoView.qml
+)
+
 add_executable(${PROJECT_NAME}
     ${SOURCES}
     ${UIFORMS}
     ${RESOURCES}
+    ${QMLFILES}
 )
 
 add_definitions("-DCMAKE_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\"")
