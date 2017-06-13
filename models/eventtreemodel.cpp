@@ -90,6 +90,10 @@ QVariant EventTreeModel::data(const QModelIndex& index, int role) const
         return item->getThumbnailId();
     else if (role == FilenameRole)
         return item->getFilename();
+    else if (role == TimespanRole)
+        return item->getEventTimeSpan();
+    else if (role == ChildrenCountRole)
+        return item->childCount();
     else
         return QVariant();
 }
@@ -116,6 +120,8 @@ QHash<int, QByteArray> EventTreeModel::roleNames() const
     auto roleNames = QAbstractItemModel::roleNames();
     roleNames[ThumnailRole] = "thumbnail";
     roleNames[FilenameRole] = "filename";
+    roleNames[TimespanRole] = "timespan";
+    roleNames[ChildrenCountRole] = "childrencount";
     return roleNames;
 }
 

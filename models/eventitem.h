@@ -13,6 +13,7 @@ public:
 
     QString displayString() override;
     QString getThumbnailId() override;
+    QString getEventTimeSpan() override;
     QPixmap getIcon() override;
     QDateTime getStartTime() const;
     QDateTime getEndTime() const;

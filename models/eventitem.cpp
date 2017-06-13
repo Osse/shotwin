@@ -28,6 +28,40 @@ QString EventItem::getThumbnailId()
     return primarySourceId;
 }
 
+QString EventItem::getEventTimeSpan()
+{
+    auto start = getStartTime().date();
+    auto end = getEndTime().date();
+
+    QString startFormat;
+    QString endFormat;
+    QString span{"%1 - %2"};
+    bool twoDates = true;
+
+    if (start.year() != end.year()) {
+        startFormat = "MMM dd, yyyy";
+        endFormat = startFormat;
+    }
+    else if (start.month() != end.month()) {
+        startFormat = "MMM dd";
+        endFormat = startFormat;
+    }
+    else if (start.day() != end.day()) {
+        startFormat = "MMM dd";
+        endFormat = "dd";
+    }
+    else {
+        startFormat = "MMM dd";
+        span = "%1";
+        twoDates = false;
+    }
+
+    if (twoDates)
+        return QString(span).arg(getStartTime().date().toString(startFormat), getEndTime().date().toString(endFormat));
+    else
+        return QString(span).arg(getStartTime().date().toString(startFormat));
+}
+
 QPixmap EventItem::getIcon()
 {
     auto style = QApplication::style();

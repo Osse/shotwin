@@ -12,5 +12,16 @@ Rectangle {
         anchors.fill: parent
 
         PhotoView {}
+        EventView {}
+    }
+
+    Connections {
+        target: shotwin
+        onPhotoListRequested: stack.currentIndex = 0
+    }
+
+    Connections {
+        target: shotwin
+        onEventListRequested: stack.currentIndex = 1
     }
 }

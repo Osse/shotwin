@@ -16,6 +16,7 @@ public:
     int childCount();
     virtual QString displayString();
     virtual QString getThumbnailId();
+    virtual QString getEventTimeSpan();
     virtual QString getFilename();
     virtual QPixmap getIcon() = 0;
 

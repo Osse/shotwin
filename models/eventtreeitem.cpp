@@ -30,6 +30,11 @@ QString EventTreeItem::getFilename()
     return QString();
 }
 
+QString EventTreeItem::getEventTimeSpan()
+{
+    return QString();
+}
+
 void EventTreeItem::sortChildren()
 {
     std::for_each(children.begin(), children.end(), [](auto c) { c->sortChildren(); });

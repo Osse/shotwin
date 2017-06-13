@@ -34,6 +34,7 @@ MainWindow::MainWindow(Shotwin* shotwin, QWidget* parent)
         pv->setSource(QUrl());
         pv->engine()->clearComponentCache();
         pv->setSource(tmp);
+        ui->photoView->rootContext()->setContextProperty("stackIndex", 1);
     });
 
     ui->splitter->setSizes({33000, 67000});
@@ -83,8 +84,13 @@ void MainWindow::initModelsAndViews()
     ui->eventTree->expandAll();
     connect(ui->eventTree, &QTreeView::clicked, shotwin, &Shotwin::handleTreeClicked);
 
-    ui->photoView->rootContext()->setContextProperty("photoListModel", shotwin->getPhotoList());
-    ui->photoView->rootContext()->setContextProperty("shade", QSettings().value("shade", 128).toInt());
+    auto rootContext = ui->photoView->rootContext();
+    qmlRegisterType<Shotwin>("shotwin", 1, 0, "shotwin");
+    rootContext->setContextProperty("shotwin", shotwin);
+
+    rootContext->setContextProperty("photoListModel", shotwin->getPhotoList());
+    rootContext->setContextProperty("eventListModel", shotwin->getEventList());
+    rootContext->setContextProperty("shade", QSettings().value("shade", 128).toInt());
     ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/Main.qml"));
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());
     ui->photoView->engine()->addImageProvider("pictures", new PictureProvider());
