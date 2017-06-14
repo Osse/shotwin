@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
+        <file>BorderedImage.qml</file>
+        <file>CenteredGridView.qml</file>
         <file>Main.qml</file>
         <file>PhotoView.qml</file>
     </qresource>
