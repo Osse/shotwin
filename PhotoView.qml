@@ -3,7 +3,7 @@ import QtQuick.Controls 1.4
 
 Item {
     anchors.fill: parent
-    GridView {
+    CenteredGridView {
         id: photoView
         clip: true
         anchors.top: parent.top
@@ -15,15 +15,8 @@ Item {
         anchors.rightMargin: 20
         anchors.topMargin: 20
 
-        // The standard size. height is always equal to this, but
-        // the size changes to make stuff centered
-        property int idealCellHeight: slider.value
-        property int idealCellWidth: slider.value
-
-        // The actual cell height is always as desired, but the cell width
-        // is calculated from the current width of the view and how many cells fit
-        cellHeight: idealCellHeight
-        cellWidth: width / Math.floor(width / idealCellWidth)
+        idealCellHeight: slider.value
+        idealCellWidth: slider.value
 
         model: photoListModel
 
@@ -38,7 +31,7 @@ Item {
                 width: parent.GridView.view.idealCellWidth - 20
                 height: parent.height - 20
 
-                Image {
+                BorderedImage {
                     id: img
                     fillMode: Image.PreserveAspectFit
                     width: parent.width - 2
@@ -51,14 +44,8 @@ Item {
                     anchors.centerIn: parent
                     source: "image://thumbnails/" + thumbnail
 
-                    Rectangle {
-                        anchors.centerIn: parent
-                        width: Math.floor(parent.paintedWidth) + 2.0
-                        height: Math.floor(parent.paintedHeight) + 2.0
-                        border.width: 1
-                        border.color: "white"
-                        color: "transparent"
-                    }
+                    borderWidth: 1
+                    borderColor: "white"
                 }
             }
         }
