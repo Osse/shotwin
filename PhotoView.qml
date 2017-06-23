@@ -34,8 +34,8 @@ Item {
                 BorderedImage {
                     id: img
                     fillMode: Image.PreserveAspectFit
-                    width: parent.width - 2
-                    height: parent.height - 2
+                    width: parent.width
+                    height: parent.height
 
                     // This makes the image provider get a proper requestedSize
                     sourceSize.width: width
@@ -47,6 +47,13 @@ Item {
                     borderWidth: 1
                     borderColor: "white"
                 }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+
+                onContainsMouseChanged: img.hovered = containsMouse
             }
         }
     }
