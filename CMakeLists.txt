@@ -49,6 +49,7 @@ set(RESOURCES
 set(QMLFILES
     BorderedImage.qml
     CenteredGridView.qml
+    FullScreenView.qml
     EventView.qml
     Main.qml
     PhotoView.qml
