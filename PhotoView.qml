@@ -18,7 +18,16 @@ Item {
         idealCellHeight: slider.value
         idealCellWidth: slider.value
 
+        focus: visible
+
         model: photoListModel
+
+        Binding {
+            target: photoView
+            property: "currentIndex"
+            value: stack.viewIndex
+        }
+        onCurrentIndexChanged: stack.viewIndex = currentIndex
 
         delegate: Item {
             // The delegate size is equal to the cell size
@@ -54,8 +63,23 @@ Item {
                 hoverEnabled: true
 
                 onContainsMouseChanged: img.hovered = containsMouse
+
+                onClicked: photoView.currentIndex = index
+
+                onDoubleClicked: stack.currentIndex = 2
+            }
+
+            Keys.onReturnPressed: stack.currentIndex = 2
+        }
+        highlight: Item {
+            Rectangle {
+                anchors.centerIn: parent
+                width: photoView.idealCellWidth
+                height: photoView.idealCellHeight
+                color: Qt.lighter(container.color)
             }
         }
+        highlightFollowsCurrentItem: true
     }
 
     Slider {

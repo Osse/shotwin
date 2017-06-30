@@ -6,13 +6,21 @@ Rectangle {
     property real shadef: shade/256.0
     color: Qt.rgba(shadef, shadef, shadef, 1)
 
-    StackLayout {
-        id: stack
-        currentIndex: 0
+    FocusScope {
         anchors.fill: parent
+        focus: true
 
-        PhotoView {}
-        EventView {}
+        StackLayout {
+            id: stack
+            property int viewIndex: -1
+
+            currentIndex: 0
+            anchors.fill: parent
+
+            PhotoView {}
+            EventView {}
+            FullScreenView {}
+        }
     }
 
     Connections {
