@@ -49,3 +49,13 @@ void Shotwin::handleTreeClicked(const QModelIndex& index)
     else
         emit eventListRequested();
 }
+
+void Shotwin::handleEventViewClicked(int index)
+{
+    auto clickedEvent = eventListModel->index(index, 0, QModelIndex());
+    if (clickedEvent.isValid()) {
+        photoListModel->setTopLevelIndex(clickedEvent);
+        auto treeClickedEvent = proxyModel->mapFromSource(eventListModel->mapToSource(clickedEvent));
+        emit eventSelected(treeClickedEvent);
+    }
+}

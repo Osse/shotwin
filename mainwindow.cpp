@@ -83,6 +83,7 @@ void MainWindow::initModelsAndViews()
     ui->eventTree->setModel(shotwin->getEventTree());
     ui->eventTree->expandAll();
     connect(ui->eventTree, &QTreeView::clicked, shotwin, &Shotwin::handleTreeClicked);
+    connect(shotwin, &Shotwin::eventSelected, ui->eventTree, &QTreeView::setCurrentIndex);
 
     auto rootContext = ui->photoView->rootContext();
     qmlRegisterType<Shotwin>("shotwin", 1, 0, "shotwin");
@@ -94,6 +95,10 @@ void MainWindow::initModelsAndViews()
     ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/Main.qml"));
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());
     ui->photoView->engine()->addImageProvider("pictures", new PictureProvider());
+
+    QObject* eventView = ui->photoView->rootObject()->findChild<QObject*>("eventView");
+    if (eventView)
+        connect(eventView, SIGNAL(eventClicked(int)), shotwin, SLOT(handleEventViewClicked(int)));
 }
 
 void MainWindow::aboutShotwin()
