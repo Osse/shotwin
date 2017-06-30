@@ -24,9 +24,11 @@ public:
 signals:
     void eventListRequested();
     void photoListRequested();
+    void eventSelected(const QModelIndex& index);
 
 public slots:
     void selectEvent(const QModelIndex& index);
+    void openEvent(int index);
 
 private:
     EventTreeModel* eventTreeModel = nullptr;

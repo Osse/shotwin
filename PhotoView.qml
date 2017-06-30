@@ -22,6 +22,11 @@ Item {
 
         model: photoListModel
 
+        Connections {
+            target: photoListModel
+            onModelReset: photoView.currentIndex = -1
+        }
+
         Binding {
             target: photoView
             property: "currentIndex"

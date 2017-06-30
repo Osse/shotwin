@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.1
 
 CenteredGridView {
     id: eventView
+    objectName: 'eventView'
     clip: true
     anchors.fill: parent
 
@@ -16,6 +17,10 @@ CenteredGridView {
     idealCellWidth: 300
 
     model: eventListModel
+
+    focus: visible
+
+    signal eventDoubleClicked(int index)
 
     delegate: Item {
         // The delegate size is equal to the cell size
@@ -69,6 +74,32 @@ CenteredGridView {
                 }
             }
 
+            function goToEventPhotos() {
+                eventView.eventDoubleClicked(index)
+                stack.currentIndex = 0
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+
+                onContainsMouseChanged: img.hovered = containsMouse
+
+                onClicked: eventView.currentIndex = index
+
+                onDoubleClicked: parent.goToEventPhotos()
+            }
+            Keys.onEnterPressed: goToEventPhotos()
         }
     }
+
+    highlight: Item {
+        Rectangle {
+            anchors.centerIn: parent
+            width: eventView.idealCellWidth
+            height: eventView.idealCellHeight
+            color: Qt.lighter(container.color)
+        }
+    }
+    highlightFollowsCurrentItem: true
 }
