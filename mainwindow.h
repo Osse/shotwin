@@ -8,7 +8,7 @@ namespace Ui
 class MainWindow;
 }
 
-class Shotwin;
+#include "shotwin.h"
 
 class MainWindow : public QMainWindow
 {

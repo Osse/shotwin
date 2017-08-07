@@ -5,6 +5,7 @@ Item {
     anchors.fill: parent
     CenteredGridView {
         id: photoView
+        objectName: "photoView"
         clip: true
         anchors.top: parent.top
         anchors.left: parent.left
@@ -22,6 +23,8 @@ Item {
 
         model: photoListModel
 
+        signal photoSelected(int index);
+
         Connections {
             target: photoListModel
             onModelReset: photoView.currentIndex = -1
@@ -32,7 +35,10 @@ Item {
             property: "currentIndex"
             value: stack.viewIndex
         }
-        onCurrentIndexChanged: stack.viewIndex = currentIndex
+        onCurrentIndexChanged: {
+            stack.viewIndex = currentIndex
+            photoSelected(currentIndex)
+        }
 
         delegate: Item {
             // The delegate size is equal to the cell size

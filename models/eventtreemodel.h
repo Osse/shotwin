@@ -27,6 +27,7 @@ private:
 
 private:
     EventTreeItem* rootItem;
+    QString mappedFile(const QString& file);
 };
 
 #endif  // EVENTTREEMODEL_H

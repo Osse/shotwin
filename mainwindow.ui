@@ -14,16 +14,25 @@
    <string>Shotwin</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QTreeView" name="eventTree">
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
+      <widget class="QWidget" name="">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QTreeView" name="eventTree">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="InfoBox" name="infoBox" native="true"/>
+        </item>
+       </layout>
       </widget>
       <widget class="WorkaroundQuickWidget" name="photoView">
        <property name="resizeMode">
@@ -124,6 +133,12 @@
    <class>WorkaroundQuickWidget</class>
    <extends>QQuickWidget</extends>
    <header>workaroundquickwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>InfoBox</class>
+   <extends>QWidget</extends>
+   <header>infobox.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
