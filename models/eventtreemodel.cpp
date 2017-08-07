@@ -9,6 +9,7 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QFont>
+#include <QSettings>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
@@ -125,6 +126,19 @@ QHash<int, QByteArray> EventTreeModel::roleNames() const
     return roleNames;
 }
 
+QString EventTreeModel::mappedFile(const QString& file)
+{
+    static auto map = QSettings().value("map").toMap();
+    QString fileName(file);
+    for (auto it = map.begin(); it != map.end(); ++it) {
+        if (fileName.startsWith(it.key())) {
+            fileName.replace(it.key(), it.value().toString());
+            return fileName;
+        }
+    }
+    return QString();
+}
+
 void EventTreeModel::init()
 {
     auto db = QSqlDatabase::database();
@@ -171,7 +185,8 @@ void EventTreeModel::init()
             months[{year, month}]->appendChild(newEvent);
         }
 
-        auto photo = new PhotoItem(events[eventId], photoId, exposureTime, fileName);
+        auto photo = new PhotoItem(events[eventId], photoId, exposureTime, fileName, mappedFile(fileName));
+
         events[eventId]->appendChild(photo);
     }
 

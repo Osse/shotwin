@@ -2,8 +2,20 @@
 
 #include "eventtreeitem.h"
 
-PhotoItem::PhotoItem(EventTreeItem* parent, int photoId, const QDateTime& exposureTime, const QString& fileName)
-    : EventTreeItem(parent), photoId(photoId), exposureTime(exposureTime), fileName(fileName)
+#include <exiv2/jpgimage.hpp>
+
+#include <QDebug>
+
+PhotoItem::PhotoItem(EventTreeItem* parent,
+                     int photoId,
+                     const QDateTime& exposureTime,
+                     const QString& fileName,
+                     const QString& mappedFileName)
+    : EventTreeItem(parent),
+      photoId(photoId),
+      exposureTime(exposureTime),
+      fileName(fileName),
+      mappedFileName(mappedFileName)
 {
 }
 
@@ -44,4 +56,41 @@ QDateTime PhotoItem::getExposureTime() const
 bool operator<(const PhotoItem& lhs, const PhotoItem& rhs)
 {
     return lhs.exposureTime < rhs.exposureTime;
+}
+
+void PhotoItem::populateFromExif()
+{
+    if (populatedDone)
+        return;
+
+    Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(mappedFileName.toStdString());
+    image->readMetadata();
+    auto& exifData = image->exifData();
+
+    if (exifData.empty()) {
+        populatedDone = true;
+        return;
+    }
+
+    size.rwidth() = exifData["Exif.Photo.PixelXDimension"].value().toLong();
+    size.rheight() = exifData["Exif.Photo.PixelYDimension"].value().toLong();
+
+    auto speed = exifData["Exif.Photo.ExposureTime"].toRational();
+    auto fNumber = exifData["Exif.Photo.FNumber"].toRational();
+    auto iso = exifData["Exif.Photo.ISOSpeedRatings"].toLong();
+
+    exposureString =
+        exposureString.arg(speed.first).arg(speed.second).arg(1.0 * fNumber.first / fNumber.second).arg(iso);
+
+    populatedDone = true;
+}
+
+QString PhotoItem::getExposureString() const
+{
+    return exposureString;
+}
+
+QSize PhotoItem::getSize() const
+{
+    return size;
 }
