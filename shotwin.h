@@ -2,6 +2,7 @@
 #define SHOTWIN_H
 
 #include "filterflattenproxymodel.h"
+#include "infobox.h"
 
 #include <QObject>
 
@@ -25,10 +26,14 @@ signals:
     void eventListRequested();
     void photoListRequested();
     void eventSelected(const QModelIndex& index);
+    void kek(const PhotoInfo& info);
+    void kek2(const EventInfo& info);
 
 public slots:
     void handleTreeClicked(const QModelIndex& index);
+    void handleEventSelected(int index);
     void handleEventViewClicked(int index);
+    void handlePhotoViewClicked(int index);
 
 private:
     EventTreeModel* eventTreeModel = nullptr;

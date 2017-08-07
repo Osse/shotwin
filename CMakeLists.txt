@@ -19,8 +19,10 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 14)
 
 find_package(Qt5 COMPONENTS Widgets Sql QuickWidgets)
+find_package(Exiv2 REQUIRED)
 
 set(SOURCES
+    infobox.cpp
     main.cpp
     mainwindow.cpp
     models/eventitem.cpp
@@ -38,6 +40,7 @@ set(SOURCES
 )
 
 set(UIFORMS
+    infobox.ui
     mainwindow.ui
     settingsdialog.ui
 )
@@ -64,4 +67,4 @@ add_executable(${PROJECT_NAME}
 
 add_definitions("-DCMAKE_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\"")
 target_include_directories(${PROJECT_NAME} PUBLIC models)
-target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Sql Qt5::QuickWidgets)
+target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Sql Qt5::QuickWidgets Exiv2::exiv2)

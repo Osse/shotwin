@@ -50,6 +50,21 @@ void Shotwin::handleTreeClicked(const QModelIndex& index)
         emit eventListRequested();
 }
 
+void Shotwin::handleEventSelected(int index)
+{
+    auto clickedEvent = eventListModel->index(index, 0, QModelIndex());
+    if (clickedEvent.isValid()) {
+        auto eventItem = static_cast<EventItem*>(clickedEvent.internalPointer());
+        EventInfo info;
+        info.title = eventItem->displayString();
+        info.from = eventItem->getStartTime();
+        info.to = eventItem->getEndTime();
+        info.items = eventItem->childCount();
+
+        emit kek2(info);
+    }
+}
+
 void Shotwin::handleEventViewClicked(int index)
 {
     auto clickedEvent = eventListModel->index(index, 0, QModelIndex());
@@ -57,5 +72,20 @@ void Shotwin::handleEventViewClicked(int index)
         photoListModel->setTopLevelIndex(clickedEvent);
         auto treeClickedEvent = proxyModel->mapFromSource(eventListModel->mapToSource(clickedEvent));
         emit eventSelected(treeClickedEvent);
+    }
+}
+
+void Shotwin::handlePhotoViewClicked(int index)
+{
+    auto clickedPhoto = photoListModel->index(index, 0, QModelIndex());
+    if (clickedPhoto.isValid()) {
+        auto photoItem = static_cast<PhotoItem*>(clickedPhoto.internalPointer());
+        photoItem->populateFromExif();
+        PhotoInfo info;
+        info.exposureTime = photoItem->getExposureTime();
+        info.exposureString = photoItem->getExposureString();
+        info.size = photoItem->getSize();
+        info.title = photoItem->getFilename().split("/").last();
+        emit kek(info);
     }
 }

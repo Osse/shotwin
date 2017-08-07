@@ -84,6 +84,8 @@ void MainWindow::initModelsAndViews()
     ui->eventTree->expandAll();
     connect(ui->eventTree, &QTreeView::clicked, shotwin, &Shotwin::handleTreeClicked);
     connect(shotwin, &Shotwin::eventSelected, ui->eventTree, &QTreeView::setCurrentIndex);
+    connect(shotwin, &Shotwin::kek, ui->infoBox, &InfoBox::showPhotoInfo);
+    connect(shotwin, &Shotwin::kek2, ui->infoBox, &InfoBox::showEventInfo);
 
     auto rootContext = ui->photoView->rootContext();
     qmlRegisterType<Shotwin>("shotwin", 1, 0, "shotwin");
@@ -97,8 +99,14 @@ void MainWindow::initModelsAndViews()
     ui->photoView->engine()->addImageProvider("pictures", new PictureProvider());
 
     QObject* eventView = ui->photoView->rootObject()->findChild<QObject*>("eventView");
-    if (eventView)
+    if (eventView) {
         connect(eventView, SIGNAL(eventClicked(int)), shotwin, SLOT(handleEventViewClicked(int)));
+        connect(eventView, SIGNAL(eventSelected(int)), shotwin, SLOT(handleEventSelected(int)));
+    }
+
+    QObject* photoView2 = ui->photoView->rootObject()->findChild<QObject*>("photoView");
+    if (photoView2)
+        connect(photoView2, SIGNAL(photoSelected(int)), shotwin, SLOT(handlePhotoViewClicked(int)));
 }
 
 void MainWindow::aboutShotwin()

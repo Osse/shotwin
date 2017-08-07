@@ -21,6 +21,9 @@ CenteredGridView {
     focus: visible
 
     signal eventClicked(int index)
+    signal eventSelected(int index)
+
+    onCurrentIndexChanged: eventSelected(currentIndex)
 
     delegate: Item {
         // The delegate size is equal to the cell size
