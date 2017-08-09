@@ -78,3 +78,10 @@ find_package_handle_standard_args(Exiv2  REQUIRED_VARS  EXIV2_LIBRARY EXIV2_INCL
 
 mark_as_advanced(EXIV2_INCLUDE_DIR EXIV2_LIBRARY)
 
+if(EXIV2_FOUND AND NOT TARGET Exiv2::exiv2)
+  add_library(Exiv2::exiv2 UNKNOWN IMPORTED)
+  set_target_properties(Exiv2::exiv2 PROPERTIES
+      IMPORTED_LOCATION "${EXIV2_LIBRARY}"
+      INTERFACE_INCLUDE_DIRECTORIES "${EXIV2_INCLUDE_DIR}"
+  )
+endif()
