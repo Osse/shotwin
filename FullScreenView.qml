@@ -47,5 +47,10 @@ GridView {
         Keys.onLeftPressed: GridView.view.moveCurrentIndexLeft()
         Keys.onRightPressed: GridView.view.moveCurrentIndexRight()
         Keys.onDownPressed: GridView.view.moveCurrentIndexRight()
+
+        MouseArea {
+            anchors.fill: parent
+            onDoubleClicked: stack.currentIndex = 0
+        }
     }
 }
