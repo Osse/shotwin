@@ -14,9 +14,15 @@
 #include <QSqlQuery>
 
 const QString eventTreeQuery(
-    "select * from (select p.id as photoid, p.exposure_time as exposure_time, p.filename as "
-    "filename, e.id as event_id, e.name as event_name, e.primary_source_id  as primary_source_id from PhotoTable as p "
-    "left outer join EventTable as e on p.event_id = e.id) where event_id is not null order by "
+    "select * from (select pv.photoid, pv.event_id, pv.exposure_time, pv.filename, e.id as event_id, e.name as "
+    "event_name, e.primary_source_id  as primary_source_id from ( "
+    "select p.id as photoid, p.event_id as event_id, p.exposure_time as exposure_time, p.filename as filename from "
+    "PhotoTable as p "
+    "union all "
+    "select v.id as photoid, v.event_id as event_id, v.exposure_time as exposure_time, v.filename as filename from "
+    "VideoTable as v "
+    ") pv "
+    "left outer join EventTable as e on pv.event_id = e.id) where event_id is not null order by "
     "event_id asc, exposure_time asc");
 
 EventTreeModel::EventTreeModel(QObject* parent) : QAbstractItemModel(parent)

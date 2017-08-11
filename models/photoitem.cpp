@@ -64,8 +64,25 @@ void PhotoItem::populateFromExif()
         return;
 
     Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(mappedFileName.toStdString());
+
+    if (!image->good())
+        return;
+
     image->readMetadata();
     auto& exifData = image->exifData();
+
+    QString mime = QString::fromStdString(image->mimeType());
+
+    if (mime.startsWith("video")) {
+        auto& xmpData = image->xmpData();
+
+        for (auto it = xmpData.begin(); it != xmpData.end(); ++it) {
+            qDebug() << QString::fromStdString(it->key());
+        }
+    }
+
+    if (exifData.empty())
+        return;
 
     size.rwidth() = exifData["Exif.Photo.PixelXDimension"].value().toLong();
     size.rheight() = exifData["Exif.Photo.PixelYDimension"].value().toLong();
