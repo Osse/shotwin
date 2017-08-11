@@ -33,6 +33,7 @@ set(SOURCES
     models/monthitem.cpp
     models/photoitem.cpp
     models/rootitem.cpp
+    models/tagitem.cpp
     models/yearitem.cpp
     pictureprovider.cpp
     settingsdialog.cpp

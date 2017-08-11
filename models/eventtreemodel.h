@@ -20,6 +20,8 @@ public:
     void init();
 
 private:
+    void initEvents();
+    void initTags();
     void sort();
     enum UserRoles { ThumnailRole = Qt::UserRole + 1, FilenameRole, TimespanRole, ChildrenCountRole };
     EventTreeItem* getItem(const QModelIndex& index) const;

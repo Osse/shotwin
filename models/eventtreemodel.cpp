@@ -5,6 +5,7 @@
 #include "monthitem.h"
 #include "photoitem.h"
 #include "rootitem.h"
+#include "tagitem.h"
 #include "yearitem.h"
 
 #include <QDateTime>
@@ -19,6 +20,8 @@ const QString eventTreeQuery(
     "filename, e.id as event_id, e.name as event_name, e.primary_source_id  as primary_source_id from PhotoTable as p "
     "left outer join EventTable as e on p.event_id = e.id) where event_id is not null order by "
     "event_id asc, exposure_time asc");
+
+const QString tagsQuery("select * from TagTable");
 
 EventTreeModel::EventTreeModel(QObject* parent) : QAbstractItemModel(parent)
 {
@@ -130,14 +133,20 @@ QString EventTreeModel::mappedFile(const QString& file)
 
 void EventTreeModel::init()
 {
+    rootItem = new RootItem;
+
+    initEvents();
+    initTags();
+}
+
+void EventTreeModel::initEvents()
+{
     auto db = QSqlDatabase::database();
 
     QSqlQuery query(eventTreeQuery, db);
 
     if (!query.exec())
         return;
-
-    rootItem = new RootItem;
 
     auto eventHeader = new HeaderItem(rootItem, "Events");
     rootItem->appendChild(eventHeader);
@@ -180,6 +189,28 @@ void EventTreeModel::init()
         auto photo = new PhotoItem(events[eventId], photoId, exposureTime, fileName, mappedFile(fileName));
 
         events[eventId]->appendChild(photo);
+    }
+
+    sort();
+}
+
+void EventTreeModel::initTags()
+{
+    auto db = QSqlDatabase::database();
+
+    QSqlQuery query(tagsQuery, db);
+
+    if (!query.exec())
+        return;
+
+    auto tagsHeader = new HeaderItem(rootItem, "Tags");
+    rootItem->appendChild(tagsHeader);
+
+    while (query.next()) {
+        QString tagName = query.value("name").toString();
+        QString photoList = query.value("photo_id_list").toString();
+        auto tagItem = new TagItem(tagsHeader, tagName, photoList);
+        tagsHeader->appendChild(tagItem);
     }
 
     sort();
