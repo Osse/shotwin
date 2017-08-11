@@ -82,6 +82,7 @@ void MainWindow::initModelsAndViews()
 
     ui->eventTree->setModel(shotwin->getEventTree());
     ui->eventTree->expandAll();
+    ui->eventTree->header()->hide();
     connect(ui->eventTree, &QTreeView::clicked, shotwin, &Shotwin::handleTreeClicked);
     connect(shotwin, &Shotwin::eventSelected, ui->eventTree, &QTreeView::setCurrentIndex);
     connect(shotwin, &Shotwin::kek, ui->infoBox, &InfoBox::showPhotoInfo);

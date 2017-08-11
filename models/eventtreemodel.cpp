@@ -1,6 +1,7 @@
 #include "eventtreemodel.h"
 
 #include "eventitem.h"
+#include "headeritem.h"
 #include "monthitem.h"
 #include "photoitem.h"
 #include "rootitem.h"
@@ -95,25 +96,13 @@ QVariant EventTreeModel::data(const QModelIndex& index, int role) const
         return item->getEventTimeSpan();
     else if (role == ChildrenCountRole)
         return item->childCount();
+    else if (role == Qt::FontRole && dynamic_cast<HeaderItem*>(item)) {
+        QFont bold;
+        bold.setBold(true);
+        return bold;
+    }
     else
         return QVariant();
-}
-
-QVariant EventTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    if (section != 0 || orientation != Qt::Horizontal)
-        return QVariant();
-
-    if (role == Qt::DisplayRole)
-        return QVariant("Events");
-
-    if (role == Qt::FontRole) {
-        auto font = QAbstractItemModel::headerData(section, orientation, Qt::FontRole).value<QFont>();
-        font.setBold(true);
-        return font;
-    }
-
-    return QVariant();
 }
 
 QHash<int, QByteArray> EventTreeModel::roleNames() const
@@ -150,6 +139,9 @@ void EventTreeModel::init()
 
     rootItem = new RootItem;
 
+    auto eventHeader = new HeaderItem(rootItem, "Events");
+    rootItem->appendChild(eventHeader);
+
     QMap<int, YearItem*> years;
     QMap<QPair<int, int>, MonthItem*> months;
     QMap<int, EventItem*> events;
@@ -168,9 +160,9 @@ void EventTreeModel::init()
         int month = date.month();
 
         if (!years.contains(year)) {
-            auto newYear = new YearItem(rootItem, year);
+            auto newYear = new YearItem(eventHeader, year);
             years[year] = newYear;
-            rootItem->appendChild(newYear);
+            eventHeader->appendChild(newYear);
         }
 
         if (!months.contains({year, month})) {

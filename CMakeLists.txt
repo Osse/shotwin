@@ -28,6 +28,7 @@ set(SOURCES
     models/eventitem.cpp
     models/eventtreeitem.cpp
     models/eventtreemodel.cpp
+    models/headeritem.cpp
     models/hidephotosproxymodel.cpp
     models/monthitem.cpp
     models/photoitem.cpp
