@@ -12,6 +12,7 @@ class PhotoItem : public EventTreeItem
 public:
     PhotoItem(EventTreeItem* parent,
               int photoid,
+              int eventId,
               const QDateTime& exposureTime,
               const QString& fileName,
               const QString& mappedFileName);
@@ -27,6 +28,7 @@ public:
     QDateTime getMappedFileName() const;
     QString getExposureString() const;
     QSize getSize() const;
+    int getEventId() const;
 
     void populateFromExif();
 
@@ -34,6 +36,7 @@ public:
 
 private:
     int photoId;
+    int eventId;
     QDateTime exposureTime;
     QString fileName;
     QString mappedFileName;

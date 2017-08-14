@@ -18,6 +18,7 @@ public:
     QDateTime getStartTime() const;
     QDateTime getEndTime() const;
     int sortData() const override;
+    int getEventId() const;
 
     friend bool operator<(const EventItem& lhs, const EventItem& rhs);
 
