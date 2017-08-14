@@ -9,6 +9,8 @@
 class QAbstractItemModel;
 class EventTreeModel;
 class HidePhotosProxyModel;
+class PhotoModel;
+class EventFilteredPhotoModel;
 
 class Shotwin : public QObject
 {
@@ -21,6 +23,7 @@ public:
     QAbstractItemModel* getEventTree();
     QAbstractItemModel* getEventList();
     QAbstractItemModel* getPhotoList();
+    QAbstractItemModel* getPhotoModel();
 
 signals:
     void eventListRequested();
@@ -38,6 +41,10 @@ public slots:
 private:
     EventTreeModel* eventTreeModel = nullptr;
     HidePhotosProxyModel* proxyModel = nullptr;
+
+    PhotoModel* photoModel = nullptr;
+
+    EventFilteredPhotoModel* photoModel4 = nullptr;
 
     FilterFlattenProxyModel<PhotoItem>* photoListModel = nullptr;
     FilterFlattenProxyModel<EventItem>* eventListModel = nullptr;

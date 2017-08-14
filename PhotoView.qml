@@ -21,12 +21,12 @@ Item {
 
         focus: visible
 
-        model: photoListModel
+        model: photoListModel2
 
         signal photoSelected(int index);
 
         Connections {
-            target: photoListModel
+            target: photoListModel2
             onModelReset: photoView.currentIndex = -1
         }
 

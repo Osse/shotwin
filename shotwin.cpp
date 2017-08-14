@@ -1,9 +1,11 @@
 #include "shotwin.h"
 
+#include "eventfilteredphotomodel.h"
 #include "eventitem.h"
 #include "eventtreemodel.h"
 #include "hidephotosproxymodel.h"
 #include "photoitem.h"
+#include "photomodel.h"
 
 Shotwin::Shotwin(QObject* parent) : QObject(parent)
 {
@@ -20,6 +22,10 @@ void Shotwin::initModels()
 
     eventListModel = new FilterFlattenProxyModel<EventItem>(this);
     eventListModel->setSourceModel(eventTreeModel);
+
+    photoModel = new PhotoModel(this);
+    photoModel4 = new EventFilteredPhotoModel(this);
+    photoModel4->setSourceModel(photoModel);
 }
 
 QAbstractItemModel* Shotwin::getEventTree()
@@ -44,8 +50,11 @@ void Shotwin::handleTreeClicked(const QModelIndex& index)
 
     auto item = static_cast<EventTreeItem*>(index.internalPointer());
 
-    if (dynamic_cast<EventItem*>(item))
+    auto eventItem = dynamic_cast<EventItem*>(item);
+    if (eventItem) {
+        photoModel4->setEventId(eventItem->getEventId());
         emit photoListRequested();
+    }
     else
         emit eventListRequested();
 }
@@ -88,4 +97,9 @@ void Shotwin::handlePhotoViewClicked(int index)
         info.title = photoItem->getFilename().split("/").last();
         emit kek(info);
     }
+}
+
+QAbstractItemModel* Shotwin::getPhotoModel()
+{
+    return photoModel4;
 }
