@@ -13,18 +13,18 @@ YearItem::~YearItem()
 {
 }
 
-QString YearItem::displayString()
+QString YearItem::displayString() const
 {
     return QString::number(year);
 }
 
-QPixmap YearItem::getIcon()
+QPixmap YearItem::getIcon() const
 {
     auto style = QApplication::style();
     return style->standardPixmap(QStyle::SP_DirClosedIcon);
 }
 
-int YearItem::sortData()
+int YearItem::sortData() const
 {
     return -year;
 }

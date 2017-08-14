@@ -14,18 +14,18 @@ MonthItem::~MonthItem()
 {
 }
 
-QString MonthItem::displayString()
+QString MonthItem::displayString() const
 {
     return QDate::longMonthName(month);
 }
 
-QPixmap MonthItem::getIcon()
+QPixmap MonthItem::getIcon() const
 {
     auto style = QApplication::style();
     return style->standardPixmap(QStyle::SP_DirClosedIcon);
 }
 
-int MonthItem::sortData()
+int MonthItem::sortData() const
 {
     return -month;
 }

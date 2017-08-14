@@ -9,10 +9,10 @@ public:
     MonthItem(EventTreeItem* parent, int month);
     ~MonthItem();
 
-    QString displayString() override;
-    QPixmap getIcon() override;
+    QString displayString() const override;
+    QPixmap getIcon() const override;
 
-    int sortData() override;
+    int sortData() const override;
 
     friend bool operator<(const MonthItem& lhs, const MonthItem& rhs);
 
