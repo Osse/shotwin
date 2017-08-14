@@ -24,7 +24,7 @@ Item {
 
         Connections {
             target: photoListModel
-            onModelReset: photoView.currentIndex = -1
+            onFilterChanged: photoView.currentIndex = -1
         }
 
         Binding {

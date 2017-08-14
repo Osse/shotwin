@@ -93,6 +93,11 @@ QString EventItem::createEventName() const
     return getStartTime().date().toString();
 }
 
+int EventItem::getEventId() const
+{
+    return eventId;
+}
+
 bool operator<(const EventItem& lhs, const EventItem& rhs)
 {
     return lhs.getStartTime() < rhs.getStartTime();
