@@ -1,8 +1,15 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(Shotwin)
-
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+include(HunterGate)
+
+HunterGate(
+    URL "https://github.com/ruslo/hunter/archive/v0.19.68.tar.gz"
+    SHA1 "ad0d042d8ec56a3c6a4bda1e657f1f65b494ab12"
+)
+
+project(Shotwin)
 
 include(GetGitRevisionDescription)
 git_describe(GIT_VERSION --always --dirty)
@@ -20,6 +27,8 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(Qt5 COMPONENTS Widgets Sql QuickWidgets)
 find_package(Exiv2 REQUIRED)
+
+add_subdirectory(test)
 
 set(SOURCES
     infobox.cpp
