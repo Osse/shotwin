@@ -1,9 +1,11 @@
 #include "shotwin.h"
 
 #include "eventitem.h"
+#include "eventortagfilteredphotomodel.h"
 #include "eventtreemodel.h"
 #include "hidephotosproxymodel.h"
 #include "photoitem.h"
+#include "photomodel.h"
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -21,8 +23,9 @@ bool Shotwin::initModels()
     proxyModel = new HidePhotosProxyModel(this);
     proxyModel->setSourceModel(eventTreeModel);
 
-    photoListModel = new FilterFlattenProxyModel<PhotoItem>(this);
-    photoListModel->setSourceModel(eventTreeModel);
+    photoModel = new PhotoModel(this);
+    photoListModel = new EventOrTagFilteredPhotoModel(this);
+    photoListModel->setSourceModel(photoModel);
 
     eventListModel = new FilterFlattenProxyModel<EventItem>(this);
     eventListModel->setSourceModel(eventTreeModel);
@@ -47,13 +50,15 @@ QAbstractItemModel* Shotwin::getPhotoList()
 
 void Shotwin::selectEvent(const QModelIndex& index)
 {
-    photoListModel->setTopLevelIndex(index);
     eventListModel->setTopLevelIndex(index);
 
     auto item = static_cast<EventTreeItem*>(index.internalPointer());
 
-    if (dynamic_cast<EventItem*>(item))
+    auto eventItem = dynamic_cast<EventItem*>(item);
+    if (dynamic_cast<EventItem*>(item)) {
+        photoListModel->setEventId(eventItem->getEventId());
         emit photoListRequested();
+    }
     else
         emit eventListRequested();
 }
@@ -62,7 +67,6 @@ void Shotwin::openEvent(int index)
 {
     auto clickedEvent = eventListModel->index(index, 0, QModelIndex());
     if (clickedEvent.isValid()) {
-        photoListModel->setTopLevelIndex(clickedEvent);
         auto treeClickedEvent = proxyModel->mapFromSource(eventListModel->mapToSource(clickedEvent));
         emit eventSelected(treeClickedEvent);
     }
