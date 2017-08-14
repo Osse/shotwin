@@ -9,7 +9,7 @@ public:
     RootItem();
     ~RootItem();
 
-    QPixmap getIcon() override;
+    QPixmap getIcon() const override;
 };
 
 #endif  // ROOTITEM_H

@@ -11,18 +11,18 @@ public:
     EventItem(EventTreeItem* parent, int eventId, const QString& eventName, const QString& primarySourceId);
     ~EventItem();
 
-    QString displayString() override;
-    QString getThumbnailId() override;
-    QString getEventTimeSpan() override;
-    QPixmap getIcon() override;
+    QString displayString() const override;
+    QString getThumbnailId() const override;
+    QString getEventTimeSpan() const override;
+    QPixmap getIcon() const override;
     QDateTime getStartTime() const;
     QDateTime getEndTime() const;
-    int sortData() override;
+    int sortData() const override;
 
     friend bool operator<(const EventItem& lhs, const EventItem& rhs);
 
 private:
-    QString createEventName();
+    QString createEventName() const;
 
 private:
     int eventId;

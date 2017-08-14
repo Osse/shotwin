@@ -23,27 +23,27 @@ PhotoItem::~PhotoItem()
 {
 }
 
-QString PhotoItem::displayString()
+QString PhotoItem::displayString() const
 {
     return fileName;
 }
 
-QString PhotoItem::getThumbnailId()
+QString PhotoItem::getThumbnailId() const
 {
     return QString("thumb%1").arg(photoId, 16, 16, QChar('0'));
 }
 
-QString PhotoItem::getFilename()
+QString PhotoItem::getFilename() const
 {
     return fileName;
 }
 
-QPixmap PhotoItem::getIcon()
+QPixmap PhotoItem::getIcon() const
 {
     return QPixmap();
 }
 
-int PhotoItem::sortData()
+int PhotoItem::sortData() const
 {
     return exposureTime.toSecsSinceEpoch();
 }

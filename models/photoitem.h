@@ -17,11 +17,11 @@ public:
               const QString& mappedFileName);
     virtual ~PhotoItem();
 
-    QString displayString() override;
-    QString getThumbnailId() override;
-    QString getFilename() override;
-    QPixmap getIcon() override;
-    int sortData() override;
+    QString displayString() const override;
+    QString getThumbnailId() const override;
+    QString getFilename() const override;
+    QPixmap getIcon() const override;
+    int sortData() const override;
 
     QDateTime getExposureTime() const;
     QDateTime getMappedFileName() const;

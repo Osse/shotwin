@@ -13,15 +13,15 @@ public:
     EventTreeItem(EventTreeItem* parent);
     virtual ~EventTreeItem() = 0;
 
-    int childCount();
-    virtual QString displayString();
-    virtual QString getThumbnailId();
-    virtual QString getEventTimeSpan();
-    virtual QString getFilename();
-    virtual QPixmap getIcon() = 0;
+    int childCount() const;
+    virtual QString displayString() const;
+    virtual QString getThumbnailId() const;
+    virtual QString getEventTimeSpan() const;
+    virtual QString getFilename() const;
+    virtual QPixmap getIcon() const = 0;
 
     void sortChildren();
-    virtual int sortData();
+    virtual int sortData() const;
     void appendChild(EventTreeItem* child);
     EventTreeItem* getChild(int row);
     int getRow(EventTreeItem* child);
