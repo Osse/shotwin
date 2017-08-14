@@ -16,6 +16,9 @@ public:
     int getEventId() const;
     void setEventId(int value);
 
+signals:
+    void eventChanged();
+
 private:
     int eventId;
 };

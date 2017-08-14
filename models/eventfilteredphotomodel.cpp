@@ -30,4 +30,5 @@ void EventFilteredPhotoModel::setEventId(int value)
     eventId = value;
     sort(0, eventId < 0 ? Qt::DescendingOrder : Qt::AscendingOrder);
     invalidateFilter();
+    emit eventChanged();
 }

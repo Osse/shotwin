@@ -87,6 +87,9 @@ void MainWindow::initModelsAndViews()
     connect(shotwin, &Shotwin::photoInfoReady, ui->infoBox, &InfoBox::showPhotoInfo);
     connect(shotwin, &Shotwin::eventInfoReady, ui->infoBox, &InfoBox::showEventInfo);
 
+    ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());
+    ui->photoView->engine()->addImageProvider("pictures", new PictureProvider());
+
     auto rootContext = ui->photoView->rootContext();
     qmlRegisterType<Shotwin>("shotwin", 1, 0, "shotwin");
     rootContext->setContextProperty("shotwin", shotwin);
@@ -95,8 +98,6 @@ void MainWindow::initModelsAndViews()
     rootContext->setContextProperty("eventListModel", shotwin->getEventList());
     rootContext->setContextProperty("shade", QSettings().value("shade", 128).toInt());
     ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/Main.qml"));
-    ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());
-    ui->photoView->engine()->addImageProvider("pictures", new PictureProvider());
 
     QObject* eventView = ui->photoView->rootObject()->findChild<QObject*>("eventView");
     if (eventView) {

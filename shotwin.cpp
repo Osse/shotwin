@@ -1,9 +1,11 @@
 #include "shotwin.h"
 
+#include "eventfilteredphotomodel.h"
 #include "eventitem.h"
 #include "eventtreemodel.h"
 #include "hidephotosproxymodel.h"
 #include "photoitem.h"
+#include "photomodel.h"
 
 Shotwin::Shotwin(QObject* parent) : QObject(parent)
 {
@@ -15,8 +17,9 @@ void Shotwin::initModels()
     proxyModel = new HidePhotosProxyModel(this);
     proxyModel->setSourceModel(eventTreeModel);
 
-    photoListModel = new FilterFlattenProxyModel<PhotoItem>(this);
-    photoListModel->setSourceModel(eventTreeModel);
+    photoModel = new PhotoModel(this);
+    photoListModel = new EventFilteredPhotoModel(this);
+    photoListModel->setSourceModel(photoModel);
 
     eventListModel = new FilterFlattenProxyModel<EventItem>(this);
     eventListModel->setSourceModel(eventTreeModel);
@@ -39,13 +42,15 @@ QAbstractItemModel* Shotwin::getPhotoList()
 
 void Shotwin::selectEvent(const QModelIndex& index)
 {
-    photoListModel->setTopLevelIndex(index);
     eventListModel->setTopLevelIndex(index);
 
     auto item = static_cast<EventTreeItem*>(index.internalPointer());
 
-    if (dynamic_cast<EventItem*>(item))
+    auto eventItem = dynamic_cast<EventItem*>(item);
+    if (eventItem) {
+        photoListModel->setEventId(eventItem->getEventId());
         emit photoListRequested();
+    }
     else
         emit eventListRequested();
 }
@@ -69,7 +74,6 @@ void Shotwin::openEvent(int index)
 {
     auto clickedEvent = eventListModel->index(index, 0, QModelIndex());
     if (clickedEvent.isValid()) {
-        photoListModel->setTopLevelIndex(clickedEvent);
         auto treeClickedEvent = proxyModel->mapFromSource(eventListModel->mapToSource(clickedEvent));
         emit eventSelected(treeClickedEvent);
     }
@@ -79,7 +83,8 @@ void Shotwin::handlePhotoSelected(int index)
 {
     auto clickedPhoto = photoListModel->index(index, 0, QModelIndex());
     if (clickedPhoto.isValid()) {
-        auto photoItem = static_cast<PhotoItem*>(clickedPhoto.internalPointer());
+        auto sourceIndex = photoListModel->mapToSource(clickedPhoto);
+        auto photoItem = static_cast<PhotoItem*>(sourceIndex.internalPointer());
         photoItem->populateFromExif();
         PhotoInfo info;
         info.exposureTime = photoItem->getExposureTime();
