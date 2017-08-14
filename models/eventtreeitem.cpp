@@ -10,27 +10,27 @@ EventTreeItem::~EventTreeItem()
 {
 }
 
-int EventTreeItem::childCount()
+int EventTreeItem::childCount() const
 {
     return children.size();
 }
 
-QString EventTreeItem::displayString()
+QString EventTreeItem::displayString() const
 {
     return QString();
 }
 
-QString EventTreeItem::getThumbnailId()
+QString EventTreeItem::getThumbnailId() const
 {
     return QString();
 }
 
-QString EventTreeItem::getFilename()
+QString EventTreeItem::getFilename() const
 {
     return QString();
 }
 
-QString EventTreeItem::getEventTimeSpan()
+QString EventTreeItem::getEventTimeSpan() const
 {
     return QString();
 }
@@ -41,7 +41,7 @@ void EventTreeItem::sortChildren()
     std::sort(children.begin(), children.end(), [](auto lhs, auto rhs) { return lhs->sortData() < rhs->sortData(); });
 }
 
-int EventTreeItem::sortData()
+int EventTreeItem::sortData() const
 {
     return 0;
 }

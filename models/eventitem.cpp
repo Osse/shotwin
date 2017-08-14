@@ -15,7 +15,7 @@ EventItem::~EventItem()
 {
 }
 
-QString EventItem::displayString()
+QString EventItem::displayString() const
 {
     if (!eventName.isEmpty())
         return eventName;
@@ -23,12 +23,12 @@ QString EventItem::displayString()
         return createEventName();
 }
 
-QString EventItem::getThumbnailId()
+QString EventItem::getThumbnailId() const
 {
     return primarySourceId;
 }
 
-QString EventItem::getEventTimeSpan()
+QString EventItem::getEventTimeSpan() const
 {
     auto start = getStartTime().date();
     auto end = getEndTime().date();
@@ -62,7 +62,7 @@ QString EventItem::getEventTimeSpan()
         return QString(span).arg(getStartTime().date().toString(startFormat));
 }
 
-QPixmap EventItem::getIcon()
+QPixmap EventItem::getIcon() const
 {
     auto style = QApplication::style();
     return style->standardPixmap(QStyle::SP_FileIcon);
@@ -88,7 +88,7 @@ QDateTime EventItem::getEndTime() const
     return QDateTime();
 }
 
-QString EventItem::createEventName()
+QString EventItem::createEventName() const
 {
     return getStartTime().date().toString();
 }
@@ -98,7 +98,7 @@ bool operator<(const EventItem& lhs, const EventItem& rhs)
     return lhs.getStartTime() < rhs.getStartTime();
 }
 
-int EventItem::sortData()
+int EventItem::sortData() const
 {
     return -getStartTime().toSecsSinceEpoch();
 }

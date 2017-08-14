@@ -10,7 +10,7 @@ RootItem::~RootItem()
 {
 }
 
-QPixmap RootItem::getIcon()
+QPixmap RootItem::getIcon() const
 {
     return QPixmap();
 }

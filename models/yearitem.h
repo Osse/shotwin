@@ -9,9 +9,9 @@ public:
     YearItem(EventTreeItem* parent, int year);
     ~YearItem();
 
-    QString displayString() override;
-    QPixmap getIcon() override;
-    int sortData() override;
+    QString displayString() const override;
+    QPixmap getIcon() const override;
+    int sortData() const override;
 
     friend bool operator<(const YearItem& lhs, const YearItem& rhs);
 
