@@ -7,6 +7,11 @@ PhotoItem::PhotoItem(EventTreeItem* parent, int photoId, const QDateTime& exposu
 {
 }
 
+PhotoItem::PhotoItem(int photoId, int eventId, const QDateTime& exposureTime, const QString& fileName)
+    : EventTreeItem(nullptr), photoId(photoId), eventId(eventId), exposureTime(exposureTime), fileName(fileName)
+{
+}
+
 PhotoItem::~PhotoItem()
 {
 }
@@ -39,6 +44,16 @@ int PhotoItem::sortData() const
 QDateTime PhotoItem::getExposureTime() const
 {
     return exposureTime;
+}
+
+int PhotoItem::getEventId() const
+{
+    return eventId;
+}
+
+int PhotoItem::getPhotoId() const
+{
+    return photoId;
 }
 
 bool operator<(const PhotoItem& lhs, const PhotoItem& rhs)

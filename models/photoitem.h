@@ -10,6 +10,7 @@ class PhotoItem : public EventTreeItem
 {
 public:
     PhotoItem(EventTreeItem* parent, int photoid, const QDateTime& exposureTime, const QString& fileName);
+    PhotoItem(int photoid, int eventId, const QDateTime& exposureTime, const QString& fileName);
     virtual ~PhotoItem();
 
     QString displayString() const override;
@@ -18,12 +19,15 @@ public:
     QPixmap getIcon() const override;
     int sortData() const override;
 
+    int getPhotoId() const;
+    int getEventId() const;
     QDateTime getExposureTime() const;
 
     friend bool operator<(const PhotoItem& lhs, const PhotoItem& rhs);
 
 private:
     int photoId;
+    int eventId;
     QDateTime exposureTime;
     QString fileName;
 };
