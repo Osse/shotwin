@@ -185,7 +185,7 @@ void EventTreeModel::init()
             months[{year, month}]->appendChild(newEvent);
         }
 
-        auto photo = new PhotoItem(events[eventId], photoId, exposureTime, fileName, mappedFile(fileName));
+        auto photo = new PhotoItem(events[eventId], photoId, eventId, exposureTime, fileName, mappedFile(fileName));
 
         events[eventId]->appendChild(photo);
     }

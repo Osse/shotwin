@@ -8,11 +8,13 @@
 
 PhotoItem::PhotoItem(EventTreeItem* parent,
                      int photoId,
+                     int eventId,
                      const QDateTime& exposureTime,
                      const QString& fileName,
                      const QString& mappedFileName)
     : EventTreeItem(parent),
       photoId(photoId),
+      eventId(eventId),
       exposureTime(exposureTime),
       fileName(fileName),
       mappedFileName(mappedFileName)
@@ -78,6 +80,11 @@ void PhotoItem::populateFromExif()
         exposureString.arg(speed.first).arg(speed.second).arg(1.0 * fNumber.first / fNumber.second).arg(iso);
 
     populatedDone = true;
+}
+
+int PhotoItem::getEventId() const
+{
+    return eventId;
 }
 
 QString PhotoItem::getExposureString() const
