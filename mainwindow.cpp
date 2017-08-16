@@ -14,7 +14,9 @@
 #include <QSettings>
 #include <QShortcut>
 #include <QSqlDatabase>
+#include <QSqlTableModel>
 #include <QStandardPaths>
+#include <QTableView>
 
 MainWindow::MainWindow(Shotwin* shotwin, QWidget* parent)
     : shotwin(shotwin), QMainWindow(parent), ui(new Ui::MainWindow)
@@ -133,6 +135,22 @@ void MainWindow::initDbViews()
 
     if (!query.exec(createEventViewWithStartTime))
         QMessageBox::warning(this, tr("Database error"), tr("Failed to create needed event view"));
+
+    auto m = new QSqlTableModel(this, QSqlDatabase::database());
+    m->setTable("EventViewWithTimes");
+    m->select();
+
+    auto w = new QTableView();
+    w->setModel(m);
+
+    auto l = new QVBoxLayout();
+    l->addWidget(w);
+
+    auto d = new QDialog(this);
+    connect(qApp, &QApplication::aboutToQuit, d, &QDialog::close);
+    d->setLayout(l);
+    d->setGeometry(100, 100, 800, 500);
+    d->show();
 }
 
 void MainWindow::aboutShotwin()
