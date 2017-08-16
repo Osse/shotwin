@@ -78,7 +78,8 @@ void MainWindow::openDataBaseConnection(const QString& dbName)
 
 void MainWindow::initModelsAndViews()
 {
-    shotwin->initModels();
+    if (!shotwin->initModels())
+        QMessageBox::warning(this, tr("Error"), tr("Failed to set up models."));
 
     ui->eventTree->setModel(shotwin->getEventTree());
     ui->eventTree->expandAll();

@@ -15,7 +15,7 @@ class Shotwin : public QObject
 public:
     explicit Shotwin(QObject* parent = nullptr);
 
-    void initModels();
+    bool initModels();
 
     QAbstractItemModel* getEventTree();
     QAbstractItemModel* getEventList();
@@ -29,6 +29,9 @@ signals:
 public slots:
     void selectEvent(const QModelIndex& index);
     void openEvent(int index);
+
+private:
+    bool initDbViews();
 
 private:
     EventTreeModel* eventTreeModel = nullptr;
