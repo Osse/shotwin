@@ -22,6 +22,7 @@ private:
     void openDatabase();
     void openDataBaseConnection(const QString& dbName);
     void initModelsAndViews();
+    void initDbViews();
     void aboutShotwin();
     void aboutQt();
     void showSettings();

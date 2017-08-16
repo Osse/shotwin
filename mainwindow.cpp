@@ -70,6 +70,7 @@ void MainWindow::openDataBaseConnection(const QString& dbName)
     db.setDatabaseName(dbName);
     if (db.open()) {
         QSettings().setValue("databasepath", dbName);
+        initDbViews();
         initModelsAndViews();
     }
     else
@@ -108,6 +109,30 @@ void MainWindow::initModelsAndViews()
     QObject* photoView2 = ui->photoView->rootObject()->findChild<QObject*>("photoView");
     if (photoView2)
         connect(photoView2, SIGNAL(photoSelected(int)), shotwin, SLOT(handlePhotoSelected(int)));
+}
+
+void MainWindow::initDbViews()
+{
+    QString createPhotoVideoView(
+        "create temporary view PhotoVideoView as "
+        "select id, event_id, exposure_time, filename, 'photo' as type from PhotoTable "
+        "union all "
+        "select id, event_id, exposure_time, filename, 'video' as type from VideoTable;");
+
+    QString createEventViewWithStartTime(
+        "create temporary view EventViewWithTimes as "
+        "select e.id, e.name, pv.start_time, pv.end_time, e.primary_source_id from ( "
+        "select event_id, min(exposure_time) as start_time, max(exposure_time) as end_time from PhotoVideoView group "
+        "by event_id) pv "
+        "left outer join EventTable as e on pv.event_id = e.id;");
+
+    QSqlQuery query(QSqlDatabase::database());
+
+    if (!query.exec(createPhotoVideoView))
+        QMessageBox::warning(this, tr("Database error"), tr("Failed to create needed photo view"));
+
+    if (!query.exec(createEventViewWithStartTime))
+        QMessageBox::warning(this, tr("Database error"), tr("Failed to create needed event view"));
 }
 
 void MainWindow::aboutShotwin()
