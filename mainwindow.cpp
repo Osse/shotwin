@@ -104,7 +104,7 @@ void MainWindow::initModelsAndViews()
 void MainWindow::aboutShotwin()
 {
     auto aboutText = tr("Simple Qt-based view onto a Shotwell database. Version %1.");
-    QMessageBox::about(this, tr("About QtShot"), aboutText.arg(GIT_VERSION));
+    QMessageBox::about(this, tr("About Shotwin"), aboutText.arg(GIT_VERSION));
 }
 
 void MainWindow::aboutQt()
