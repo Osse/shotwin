@@ -6,7 +6,7 @@
 #include <QSqlQuery>
 
 const QString photoListQuery(
-    "select id, event_id, exposure_time, filename from PhotoTable order by exposure_time desc;");
+    "select id, event_id, exposure_time, filename, type from PhotoVideoView order by exposure_time desc;");
 
 PhotoModel::PhotoModel(QObject* parent) : QAbstractListModel(parent)
 {
@@ -98,7 +98,8 @@ void PhotoModel::init()
         int eventId = query.value("event_id").toInt();
         auto exposureTime = QDateTime::fromSecsSinceEpoch(query.value("exposure_time").toInt());
         QString fileName = query.value("filename").toString();
+        QString type = query.value("type").toString();
 
-        photoList.push_back(PhotoItem(photoId, eventId, exposureTime, fileName));
+        photoList.push_back(PhotoItem(photoId, eventId, exposureTime, fileName, type));
     }
 }
