@@ -7,8 +7,14 @@ PhotoItem::PhotoItem(EventTreeItem* parent, int photoId, const QDateTime& exposu
 {
 }
 
-PhotoItem::PhotoItem(int photoId, int eventId, const QDateTime& exposureTime, const QString& fileName)
-    : EventTreeItem(nullptr), photoId(photoId), eventId(eventId), exposureTime(exposureTime), fileName(fileName)
+PhotoItem::PhotoItem(
+    int photoId, int eventId, const QDateTime& exposureTime, const QString& fileName, const QString& type)
+    : EventTreeItem(nullptr),
+      photoId(photoId),
+      eventId(eventId),
+      exposureTime(exposureTime),
+      fileName(fileName),
+      type(type)
 {
 }
 
@@ -23,7 +29,10 @@ QString PhotoItem::displayString() const
 
 QString PhotoItem::getThumbnailId() const
 {
-    return QString("thumb%1").arg(photoId, 16, 16, QChar('0'));
+    if (type == "photo")
+        return QString("thumb%1").arg(photoId, 16, 16, QChar('0'));
+    else
+        return QString("video-%1").arg(photoId, 16, 16, QChar('0'));
 }
 
 QString PhotoItem::getFilename() const
@@ -49,6 +58,11 @@ QDateTime PhotoItem::getExposureTime() const
 int PhotoItem::getEventId() const
 {
     return eventId;
+}
+
+QString PhotoItem::getType() const
+{
+    return type;
 }
 
 int PhotoItem::getPhotoId() const
