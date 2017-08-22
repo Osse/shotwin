@@ -30,6 +30,7 @@ public:
         ExposureTimeRole,
         PhotoIdRole,
         EventIdRole,
+        TypeRole,
     };
 
 private:
