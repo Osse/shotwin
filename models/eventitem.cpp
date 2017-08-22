@@ -11,6 +11,25 @@ EventItem::EventItem(EventTreeItem* parent, int eventId, const QString& eventNam
 {
 }
 
+EventItem::EventItem(EventTreeItem* parent,
+                     int eventId,
+                     const QString& eventName,
+                     const QDateTime& startTime,
+                     const QDateTime& endTime,
+                     int photos,
+                     int videos,
+                     const QString& primarySourceId)
+    : EventTreeItem(parent),
+      eventId(eventId),
+      eventName(eventName),
+      startTime(startTime),
+      endTime(endTime),
+      photos(photos),
+      videos(videos),
+      primarySourceId(primarySourceId)
+{
+}
+
 EventItem::~EventItem()
 {
 }
@@ -70,27 +89,27 @@ QPixmap EventItem::getIcon() const
 
 QDateTime EventItem::getStartTime() const
 {
-    if (children.size()) {
-        auto photo = std::dynamic_pointer_cast<PhotoItem>(children.front());
-        return photo->getExposureTime();
-    }
-
-    return QDateTime();
+    return startTime;
 }
 
 QDateTime EventItem::getEndTime() const
 {
-    if (children.size()) {
-        auto photo = std::dynamic_pointer_cast<PhotoItem>(children.back());
-        return photo->getExposureTime();
-    }
-
-    return QDateTime();
+    return endTime;
 }
 
 QString EventItem::createEventName() const
 {
     return getStartTime().date().toString();
+}
+
+int EventItem::getVideos() const
+{
+    return videos;
+}
+
+int EventItem::getPhotos() const
+{
+    return photos;
 }
 
 int EventItem::getEventId() const
