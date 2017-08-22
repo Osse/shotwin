@@ -48,6 +48,24 @@ CenteredGridView {
                 borderWidth: 4
             }
 
+            function eventCountString(photos, videos) {
+                var string = "";
+                if (photos)
+                    string += photos + " photo";
+                if (photos > 1)
+                    string += "s"
+
+                if (photos && videos)
+                    string += ", "
+
+                if (videos)
+                    string += videos + " video";
+                if (videos > 1)
+                    string += "s";
+
+                return string;
+            }
+
             ColumnLayout {
                 anchors.top: img.bottom
                 anchors.topMargin: 5
@@ -68,8 +86,8 @@ CenteredGridView {
                 }
 
                 Text {
-                    id: photocount
-                    text: childrencount > 1 ? childrencount + " photos" : childrencount + " photo"
+                    id: event
+                    text: parent.parent.eventCountString(photocount, videocount)
                     color: "white"
                 }
             }

@@ -12,11 +12,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
-const QString eventTreeQuery(
-    "select * from (select p.id as photoid, p.exposure_time as exposure_time, p.filename as "
-    "filename, e.id as event_id, e.name as event_name, e.primary_source_id  as primary_source_id from PhotoTable as p "
-    "left outer join EventTable as e on p.event_id = e.id) where event_id is not null order by "
-    "event_id asc, exposure_time asc");
+const QString eventTreeQuery("select * from EventViewWithTimes");
 
 EventTreeModel::EventTreeModel(QObject* parent) : QAbstractItemModel(parent)
 {
@@ -92,8 +88,16 @@ QVariant EventTreeModel::data(const QModelIndex& index, int role) const
         return item->getFilename();
     else if (role == TimespanRole)
         return item->getEventTimeSpan();
-    else if (role == ChildrenCountRole)
-        return item->childCount();
+    else if (role == PhotoCountRole) {
+        auto eventItem = dynamic_cast<EventItem*>(item);
+        if (eventItem)
+            return eventItem->getPhotos();
+    }
+    else if (role == VideoCountRole) {
+        auto eventItem = dynamic_cast<EventItem*>(item);
+        if (eventItem)
+            return eventItem->getVideos();
+    }
     else
         return QVariant();
 }
@@ -121,7 +125,8 @@ QHash<int, QByteArray> EventTreeModel::roleNames() const
     roleNames[ThumnailRole] = "thumbnail";
     roleNames[FilenameRole] = "filename";
     roleNames[TimespanRole] = "timespan";
-    roleNames[ChildrenCountRole] = "childrencount";
+    roleNames[PhotoCountRole] = "photocount";
+    roleNames[VideoCountRole] = "videocount";
     return roleNames;
 }
 
@@ -141,14 +146,15 @@ void EventTreeModel::init()
     QMap<int, EventItem*> events;
 
     while (query.next()) {
-        int photoId = query.value("photoid").toInt();
-        auto exposureTime = QDateTime::fromSecsSinceEpoch(query.value("exposure_time").toInt());
-        QString fileName = query.value("filename").toString();
-        int eventId = query.value("event_id").toInt();
-        QString eventName = query.value("event_name").toString();
+        auto startTime = QDateTime::fromSecsSinceEpoch(query.value("start_time").toInt());
+        auto endTime = QDateTime::fromSecsSinceEpoch(query.value("end_time").toInt());
+        int eventId = query.value("id").toInt();
+        QString eventName = query.value("name").toString();
         QString primarySourceId = query.value("primary_source_id").toString();
+        int photos = query.value("photos").toInt();
+        int videos = query.value("videos").toInt();
 
-        auto date = exposureTime.date();
+        auto date = startTime.date();
 
         int year = date.year();
         int month = date.month();
@@ -166,13 +172,11 @@ void EventTreeModel::init()
         }
 
         if (!events.contains(eventId)) {
-            auto newEvent = new EventItem(months[{year, month}], eventId, eventName, primarySourceId);
+            auto newEvent = new EventItem(
+                months[{year, month}], eventId, eventName, startTime, endTime, photos, videos, primarySourceId);
             events[eventId] = newEvent;
             months[{year, month}]->appendChild(newEvent);
         }
-
-        auto photo = new PhotoItem(events[eventId], photoId, exposureTime, fileName);
-        events[eventId]->appendChild(photo);
     }
 
     sort();

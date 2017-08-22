@@ -82,7 +82,7 @@ bool Shotwin::initDbViews()
 
     QString createEventViewWithStartTime(
         "create temporary view EventViewWithTimes as "
-        "select e.id, e.name, pv.start_time, pv.end_time, e.primary_source_id from ( "
+        "select e.id, e.name, pv.start_time, pv.end_time, pv.photos, pv.videos, e.primary_source_id from ( "
         "select event_id, min(exposure_time) as start_time, max(exposure_time) as end_time, "
         "count(case when type = 'photo' then 1 else null end) as photos, "
         "count(case when type = 'video' then 1 else null end) as videos "
