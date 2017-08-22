@@ -47,6 +47,8 @@ QVariant PhotoModel::data(const QModelIndex& index, int role) const
         return photoList[row].getEventId();
     else if (role == ExposureTimeRole)
         return photoList[row].getExposureTime();
+    else if (role == TypeRole)
+        return photoList[row].getType();
     else
         return QVariant();
 }
@@ -65,6 +67,7 @@ QHash<int, QByteArray> PhotoModel::roleNames() const
     roleNames[ThumnailRole] = "thumbnail";
     roleNames[FilenameRole] = "filename";
     roleNames[EventIdRole] = "eventid";
+    roleNames[TypeRole] = "type";
     return roleNames;
 }
 

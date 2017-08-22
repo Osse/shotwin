@@ -22,7 +22,14 @@ public:
     QModelIndex index(int row, int column, const QModelIndex& parent) const override;
 
     virtual QHash<int, QByteArray> roleNames() const;
-    enum UserRoles { ThumnailRole = Qt::UserRole + 1, FilenameRole, ExposureTimeRole, PhotoIdRole, EventIdRole };
+    enum UserRoles {
+        ThumnailRole = Qt::UserRole + 1,
+        FilenameRole,
+        ExposureTimeRole,
+        PhotoIdRole,
+        EventIdRole,
+        TypeRole
+    };
 
 private:
     QString mappedFile(const QString& file);
