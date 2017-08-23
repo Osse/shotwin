@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 
 #include "git_version.h"
-#include "pictureprovider.h"
 #include "settingsdialog.h"
 #include "shotwin.h"
 #include "thumbnailprovider.h"
@@ -87,7 +86,6 @@ void MainWindow::initModelsAndViews()
     connect(shotwin, &Shotwin::eventSelected, ui->eventTree, &QTreeView::setCurrentIndex);
 
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());
-    ui->photoView->engine()->addImageProvider("pictures", new PictureProvider());
 
     auto rootContext = ui->photoView->rootContext();
     qmlRegisterType<Shotwin>("shotwin", 1, 0, "shotwin");
@@ -122,10 +120,7 @@ void MainWindow::showSettings()
         static_cast<ThumbnailProvider*>(ui->photoView->engine()->imageProvider("thumbnails"))
             ->setThumbnailDirPath(QSettings().value("cachepath").toString());
     });
-    connect(&sd, &SettingsDialog::settingsChanged, [this]() {
-        static_cast<PictureProvider*>(ui->photoView->engine()->imageProvider("pictures"))
-            ->setMap(QSettings().value("map").toMap());
-    });
+    connect(&sd, &SettingsDialog::settingsChanged, [this]() { shotwin->setMap(QSettings().value("map").toMap()); });
     connect(&sd, &SettingsDialog::bgColorChanged, [this](int value) {
         ui->photoView->rootContext()->setContextProperty("shade", value);
     });

@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 
@@ -35,7 +35,8 @@ GridView {
             }
             Image {
                 asynchronous: true
-                source: "image://pictures/" + filename
+                source: "file:///" + mappedfilename
+                autoTransform: true
                 fillMode: Image.PreserveAspectFit
                 onStatusChanged: if (status == Image.Ready) { parent.currentIndex = 1 }
             }
