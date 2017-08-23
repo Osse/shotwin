@@ -19,12 +19,13 @@ public:
 
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
-    QModelIndex index(int row, int column, const QModelIndex& parent) const override;
+    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
 
     virtual QHash<int, QByteArray> roleNames() const;
     enum UserRoles {
         ThumnailRole = Qt::UserRole + 1,
         FilenameRole,
+        MappedFilenameRole,
         ExposureTimeRole,
         PhotoIdRole,
         EventIdRole,
@@ -32,11 +33,12 @@ public:
     };
 
 private:
-    QString mappedFile(const QString& file);
+    QString mappedFile(const QString& file) const;
     void init();
 
 private:
     std::vector<PhotoItem> photoList;
+    QMap<QString, QVariant> map;
 };
 
 #endif  // PHOTOMODEL_H

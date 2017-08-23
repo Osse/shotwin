@@ -16,6 +16,7 @@ class Shotwin : public QObject
     Q_OBJECT
 public:
     explicit Shotwin(QObject* parent = nullptr);
+    virtual ~Shotwin();
 
     bool initModels();
 
@@ -40,6 +41,7 @@ public slots:
 
 private:
     bool initDbViews();
+    void startThumbnailing();
 
 private:
     EventTreeModel* eventTreeModel = nullptr;

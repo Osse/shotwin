@@ -6,6 +6,7 @@
 #include "hidephotosproxymodel.h"
 #include "photoitem.h"
 #include "photomodel.h"
+#include "thumbnailcreator.h"
 
 #include <QSettings>
 #include <QSqlDatabase>
@@ -14,6 +15,10 @@
 Shotwin::Shotwin(QObject* parent) : QObject(parent)
 {
     map = QSettings().value("map").toMap();
+}
+
+Shotwin::~Shotwin()
+{
 }
 
 bool Shotwin::initModels()
@@ -32,6 +37,8 @@ bool Shotwin::initModels()
     eventListModel = new FilterFlattenProxyModel<EventItem>(this);
     eventListModel->setSourceModel(eventTreeModel);
 
+    // startThumbnailing();
+
     return true;
 }
 
@@ -48,6 +55,11 @@ QAbstractItemModel* Shotwin::getEventList()
 QAbstractItemModel* Shotwin::getPhotoList()
 {
     return photoListModel;
+}
+
+QAbstractItemModel* Shotwin::getPhotoModel()
+{
+    return photoModel;
 }
 
 void Shotwin::selectEvent(const QModelIndex& index)
@@ -101,6 +113,21 @@ bool Shotwin::initDbViews()
         return false;
 
     return true;
+}
+
+void Shotwin::startThumbnailing()
+{
+    auto kek = new ThumbnailCreator(this);
+    QMap<QString, QString> files;
+
+    auto pm = getPhotoList();
+    for (int i = 0; i < pm->rowCount(); i++) {
+        auto index = pm->index(i, 0);
+        files[pm->data(index, PhotoModel::ThumnailRole).toString()] =
+            mappedFile(pm->data(index, PhotoModel::FilenameRole).toString());
+    }
+
+    kek->start(files);
 }
 
 QMap<QString, QVariant> Shotwin::getMap() const

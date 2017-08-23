@@ -10,6 +10,7 @@ const QString photoListQuery(
 
 PhotoModel::PhotoModel(QObject* parent) : QAbstractListModel(parent)
 {
+    map = QSettings().value("map").toMap();
     init();
 }
 
@@ -41,6 +42,8 @@ QVariant PhotoModel::data(const QModelIndex& index, int role) const
         return photoList[row].getThumbnailId();
     else if (role == FilenameRole)
         return photoList[row].getFilename();
+    else if (role == MappedFilenameRole)
+        return mappedFile(photoList[row].getFilename());
     else if (role == PhotoIdRole)
         return photoList[row].getPhotoId();
     else if (role == EventIdRole)
@@ -71,7 +74,7 @@ QHash<int, QByteArray> PhotoModel::roleNames() const
     return roleNames;
 }
 
-QString PhotoModel::mappedFile(const QString& file)
+QString PhotoModel::mappedFile(const QString& file) const
 {
     static auto map = QSettings().value("map").toMap();
     QString fileName(file);

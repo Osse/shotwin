@@ -36,6 +36,7 @@ set(SOURCES
     settingsdialog.cpp
     shotwin.cpp
     thumbnailprovider.cpp
+    thumbnailcreator.cpp
 )
 
 set(UIFORMS

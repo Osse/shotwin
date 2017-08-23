@@ -85,7 +85,7 @@ void MainWindow::initModelsAndViews()
     connect(ui->eventTree, &QTreeView::clicked, shotwin, &Shotwin::selectEvent);
     connect(shotwin, &Shotwin::eventSelected, ui->eventTree, &QTreeView::setCurrentIndex);
 
-    ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider());
+    ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider(shotwin->getPhotoModel()));
 
     auto rootContext = ui->photoView->rootContext();
     qmlRegisterType<Shotwin>("shotwin", 1, 0, "shotwin");
