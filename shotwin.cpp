@@ -7,11 +7,13 @@
 #include "photoitem.h"
 #include "photomodel.h"
 
+#include <QSettings>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
 Shotwin::Shotwin(QObject* parent) : QObject(parent)
 {
+    map = QSettings().value("map").toMap();
 }
 
 bool Shotwin::initModels()
@@ -99,4 +101,26 @@ bool Shotwin::initDbViews()
         return false;
 
     return true;
+}
+
+QMap<QString, QVariant> Shotwin::getMap() const
+{
+    return map;
+}
+
+void Shotwin::setMap(const QMap<QString, QVariant>& value)
+{
+    map = value;
+}
+
+QString Shotwin::mappedFile(const QString& file)
+{
+    QString fileName(file);
+    for (auto it = map.begin(); it != map.end(); ++it) {
+        if (fileName.startsWith(it.key())) {
+            fileName.replace(it.key(), it.value().toString());
+            return fileName;
+        }
+    }
+    return QString();
 }

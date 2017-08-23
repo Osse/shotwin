@@ -24,6 +24,11 @@ public:
     QAbstractItemModel* getPhotoList();
     QAbstractItemModel* getPhotoModel();
 
+    QMap<QString, QVariant> getMap() const;
+    void setMap(const QMap<QString, QVariant>& value);
+
+    Q_INVOKABLE QString mappedFile(const QString& file);
+
 signals:
     void eventListRequested();
     void photoListRequested();
@@ -44,6 +49,8 @@ private:
 
     EventOrTagFilteredPhotoModel* photoListModel = nullptr;
     FilterFlattenProxyModel<EventItem>* eventListModel = nullptr;
+
+    QMap<QString, QVariant> map;
 };
 
 #endif  // SHOTWIN_H
