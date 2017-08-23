@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-ThumbnailProvider::ThumbnailProvider() : QQuickImageProvider(QQmlImageProviderBase::Pixmap)
+ThumbnailProvider::ThumbnailProvider() : QQuickImageProvider(QQmlImageProviderBase::Image)
 {
     cachePath = QSettings().value("cachepath", QString()).toString();
 }
@@ -15,22 +15,22 @@ ThumbnailProvider::~ThumbnailProvider()
 {
 }
 
-QPixmap ThumbnailProvider::requestPixmap(const QString& id, QSize* size, const QSize& requestedSize)
+QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSize& requestedSize)
 {
     int maxSize = std::max(requestedSize.width(), requestedSize.height());
     QString sizeDir(maxSize > 128 ? "thumbs360" : "thumbs128");
     auto thumbnailPath = QString("%1/%2/%3.jpg").arg(cachePath, sizeDir, id);
 
-    QPixmap pm;
+    QImage image;
     if (QFile::exists(thumbnailPath))
-        pm = QPixmap(thumbnailPath);
+        image = QImage(thumbnailPath);
     else
-        pm = generateFallback(requestedSize);
+        image = generateFallback(requestedSize);
 
     if (size)
-        *size = pm.size();
+        *size = image.size();
 
-    return pm;
+    return image;
 }
 
 void ThumbnailProvider::setThumbnailDirPath(const QString& value)
@@ -38,9 +38,9 @@ void ThumbnailProvider::setThumbnailDirPath(const QString& value)
     cachePath = value;
 }
 
-QPixmap ThumbnailProvider::generateFallback(QSize size)
+QImage ThumbnailProvider::generateFallback(QSize size)
 {
-    QPixmap pm(size);
-    pm.fill("steelblue");
-    return pm;
+    QImage image(size, QImage::Format_RGB32);
+    image.fill("steelblue");
+    return image;
 }

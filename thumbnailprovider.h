@@ -9,12 +9,12 @@ public:
     ThumbnailProvider();
     ~ThumbnailProvider();
 
-    virtual QPixmap requestPixmap(const QString& id, QSize* size, const QSize& requestedSize);
+    virtual QImage requestImage(const QString& id, QSize* size, const QSize& requestedSize);
 
     void setThumbnailDirPath(const QString& value);
 
 private:
-    QPixmap generateFallback(QSize size);
+    QImage generateFallback(QSize size);
 
 private:
     QString cachePath;
