@@ -36,6 +36,7 @@ CenteredGridView {
 
             BorderedImage {
                 id: img
+                asynchronous: true
                 fillMode: Image.PreserveAspectCrop
                 width: parent.width - 3 - 50
                 height: width

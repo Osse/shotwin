@@ -18,6 +18,8 @@ public:
 
 private:
     QImage generateFallback(QSize size);
+    QImage generateThumbnail(int thumbSize, const QString& thumbPath, const QString& filename);
+    QImage generateVideoThumbnail(int thumbSize, const QString& thumbPath, const QString& filename);
 
 private:
     QString cachePath;

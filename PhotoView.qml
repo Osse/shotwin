@@ -47,6 +47,7 @@ Item {
 
                 BorderedImage {
                     id: img
+                    asynchronous: true
                     fillMode: Image.PreserveAspectFit
                     width: parent.width
                     height: parent.height
@@ -56,7 +57,7 @@ Item {
                     sourceSize.height: height
 
                     anchors.centerIn: parent
-                    source: "image://thumbnails/" + thumbnail
+                    source: "image://thumbnails/" + thumbnail //+ "/" + id + "/" + type + "/" + mappedfilename
 
                     borderWidth: 1
                     borderColor: "white"
