@@ -50,6 +50,11 @@ QAbstractItemModel* Shotwin::getPhotoList()
     return photoListModel;
 }
 
+QAbstractItemModel* Shotwin::getPhotoModel()
+{
+    return photoModel;
+}
+
 void Shotwin::selectEvent(const QModelIndex& index)
 {
     eventListModel->setTopLevelIndex(index);
