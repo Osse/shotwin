@@ -1,12 +1,15 @@
 #include "thumbnailprovider.h"
 
+#include "photomodel.h"
+
 #include <QDebug>
 #include <QFile>
 #include <QSettings>
 
 #include <algorithm>
 
-ThumbnailProvider::ThumbnailProvider() : QQuickImageProvider(QQmlImageProviderBase::Image)
+ThumbnailProvider::ThumbnailProvider(QAbstractItemModel* photoListModel)
+    : QQuickImageProvider(QQmlImageProviderBase::Image), photoListModel(dynamic_cast<PhotoModel*>(photoListModel))
 {
     cachePath = QSettings().value("cachepath", QString()).toString();
 }

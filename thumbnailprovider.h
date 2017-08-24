@@ -3,10 +3,13 @@
 
 #include <QQuickImageProvider>
 
+class QAbstractItemModel;
+class PhotoModel;
+
 class ThumbnailProvider : public QQuickImageProvider
 {
 public:
-    ThumbnailProvider();
+    ThumbnailProvider(QAbstractItemModel* photoListModel);
     ~ThumbnailProvider();
 
     virtual QImage requestImage(const QString& id, QSize* size, const QSize& requestedSize);
@@ -18,6 +21,8 @@ private:
 
 private:
     QString cachePath;
+
+    PhotoModel* photoListModel;
 };
 
 #endif  // THUMBNAILPROVIDER_H
