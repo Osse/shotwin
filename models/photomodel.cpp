@@ -71,6 +71,7 @@ QHash<int, QByteArray> PhotoModel::roleNames() const
     roleNames[FilenameRole] = "filename";
     roleNames[MappedFilenameRole] = "mappedfilename";
     roleNames[EventIdRole] = "eventid";
+    roleNames[PhotoIdRole] = "id";
     roleNames[TypeRole] = "type";
     return roleNames;
 }
