@@ -5,6 +5,7 @@ Item {
     property alias source: img.source
     property alias sourceSize: img.sourceSize
     property alias fillMode: img.fillMode
+    property alias asynchronous: img.asynchronous
 
     property int borderWidth: 0
     property string borderColor: "white"
@@ -15,6 +16,12 @@ Item {
         width: parent.width - 2*parent.borderWidth
         height: parent.height - 2*parent.borderWidth
         anchors.centerIn: parent
+        onStatusChanged: {
+            if (status == Image.Ready) {
+                borderrect.width = Math.min(Math.floor(img.paintedWidth), img.width) + 2*parent.borderWidth
+                borderrect.height = Math.min(Math.floor(img.paintedHeight), img.height) + 2*parent.borderWidth
+            }
+        }
     }
 
     ColorOverlay {
@@ -28,8 +35,8 @@ Item {
     Rectangle {
         id: borderrect
         anchors.centerIn: img
-        width: Math.min(Math.floor(img.paintedWidth), img.width) + 2*parent.borderWidth
-        height: Math.min(Math.floor(img.paintedHeight), img.height) + 2*parent.borderWidth
+        width: parent.width // Math.min(Math.floor(img.paintedWidth), img.width) + 2*parent.borderWidth
+        height: parent.height //Math.min(Math.floor(img.paintedHeight), img.height) + 2*parent.borderWidth
         border.width: parent.borderWidth
         border.color: parent.borderColor
         color: "transparent"
