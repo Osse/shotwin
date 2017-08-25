@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "framegrabber.h"
 #include "git_version.h"
 #include "settingsdialog.h"
 #include "shotwin.h"
@@ -109,7 +110,8 @@ void MainWindow::aboutShotwin()
 
 void MainWindow::aboutQt()
 {
-    QMessageBox::aboutQt(this);
+    auto grabber = new FrameGrabber(this);
+    grabber->grab("D:/shotwell/Pictures/2017/04/15/20170415_161703.mp4");
 }
 
 void MainWindow::showSettings()

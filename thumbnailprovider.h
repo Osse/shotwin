@@ -1,6 +1,8 @@
 #ifndef THUMBNAILPROVIDER_H
 #define THUMBNAILPROVIDER_H
 
+#include "framegrabber.h"
+
 #include <QQuickImageProvider>
 
 class QAbstractItemModel;
@@ -23,6 +25,8 @@ private:
 
 private:
     QString cachePath;
+
+    FrameGrabber frameGrabber;
 
     PhotoModel* photoListModel;
 };
