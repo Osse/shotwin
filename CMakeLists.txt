@@ -18,9 +18,10 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 14)
 
-find_package(Qt5 COMPONENTS Widgets Sql QuickWidgets)
+find_package(Qt5 COMPONENTS Widgets Sql QuickWidgets Multimedia)
 
 set(SOURCES
+    framegrabber.cpp
     main.cpp
     mainwindow.cpp
     models/eventitem.cpp
@@ -65,4 +66,4 @@ add_executable(${PROJECT_NAME}
 
 add_definitions("-DCMAKE_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\"")
 target_include_directories(${PROJECT_NAME} PUBLIC models)
-target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Sql Qt5::QuickWidgets)
+target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Sql Qt5::QuickWidgets Qt5::Multimedia)

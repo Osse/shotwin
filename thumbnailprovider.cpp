@@ -106,6 +106,5 @@ QImage ThumbnailProvider::generateThumbnail(int thumbSize, const QString& thumbP
 
 QImage ThumbnailProvider::generateVideoThumbnail(int thumbSize, const QString& thumbPath, const QString& filename)
 {
-    qDebug() << filename;
     return QImage();
 }
