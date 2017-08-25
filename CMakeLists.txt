@@ -19,6 +19,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 14)
 
 find_package(Qt5 COMPONENTS Widgets Sql QuickWidgets Multimedia)
+find_package(Exiv2 REQUIRED)
 
 set(SOURCES
     framegrabber.cpp
@@ -66,4 +67,4 @@ add_executable(${PROJECT_NAME}
 
 add_definitions("-DCMAKE_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\"")
 target_include_directories(${PROJECT_NAME} PUBLIC models)
-target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Sql Qt5::QuickWidgets Qt5::Multimedia)
+target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Sql Qt5::QuickWidgets Qt5::Multimedia Exiv2::exiv2)

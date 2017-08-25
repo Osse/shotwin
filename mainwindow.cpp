@@ -7,6 +7,8 @@
 #include "shotwin.h"
 #include "thumbnailprovider.h"
 
+#include <exiv2/image.hpp>
+
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QQmlContext>
@@ -111,7 +113,38 @@ void MainWindow::aboutShotwin()
 void MainWindow::aboutQt()
 {
     auto grabber = new FrameGrabber(this);
-    grabber->grab("D:/shotwell/Pictures/2017/04/15/20170415_161703.mp4");
+    QString file("D:/shotwell/Pictures/2017/04/15/20170415_161703.mp4");
+
+    Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(file.toStdString());
+
+    if (!image->good()) {
+        qDebug() << "not good";
+    }
+    else {
+        image->readMetadata();
+
+        auto mime = image->mimeType();
+        if (mime.find("video") == 0) {
+            auto& xmpData = image->xmpData();
+            auto& exifData = image->exifData();
+            auto& iptcData = image->iptcData();
+
+            qDebug() << "xmpData.empty()" << xmpData.empty();
+            qDebug() << "exifData.empty()" << exifData.empty();
+            qDebug() << "iptcData.empty()" << iptcData.empty();
+
+            for (auto it = xmpData.begin(); it != xmpData.end(); ++it) {
+                qDebug() << QString::fromStdString(it->key());
+                if (it->key() == "Xmp.video.Width" || it->key() == "Xmp.video.Height" ||
+                    it->key() == "Xmp.video.SourceImageWidth" || it->key() == "Xmp.video.SourceImageHeight" ||
+                    it->key() == "Xmp.video.XResolution" || it->key() == "Xmp.video.YResolution")
+                    qDebug() << QString::number(it->value().toLong());
+            }
+        }
+    }
+
+    return;
+    grabber->grab(file);
 }
 
 void MainWindow::showSettings()
