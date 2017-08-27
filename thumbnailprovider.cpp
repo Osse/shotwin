@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QFile>
 #include <QImageReader>
+#include <QProcess>
 #include <QSettings>
 #include <QStandardPaths>
 
@@ -20,7 +21,10 @@ ThumbnailProvider::ThumbnailProvider(QAbstractItemModel* photoListModel)
         QDir cacheDir(cachePath);
         cacheDir.mkpath(cachePath + "/thumbs360");
         cacheDir.mkpath(cachePath + "/thumbs128");
+        cacheDir.mkpath(cachePath + "/videoframes");
     }
+
+    ffmpegCmd = QSettings().value("ffmpegcmd").toString();
 }
 
 ThumbnailProvider::~ThumbnailProvider()
@@ -36,6 +40,7 @@ QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSi
 
     QString thumbId = id.contains("/") ? id.section("/", 0, 0) : id;
     QString thumbPath = QString("%1/thumbs%2/%3.jpg").arg(cachePath, QString::number(thumbSize), thumbId);
+    QString videoFramePath = QString("%1/videoframes/%2.jpg").arg(cachePath, thumbId);
 
     if (QFile::exists(thumbPath))
         return QImage(thumbPath);
@@ -62,8 +67,11 @@ QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSi
     QImage image;
     if (type == "photo")
         image = generateThumbnail(thumbSize, thumbPath, filename);
-    else
-        image = generateVideoThumbnail(thumbSize, thumbPath, filename);
+    else {
+        if (!QFile::exists(videoFramePath))
+            grabVideoFrame(videoFramePath, filename);
+        image = generateThumbnail(thumbSize, thumbPath, videoFramePath);
+    }
 
     if (image.isNull())
         image = generateFallback(requestedSize);
@@ -104,8 +112,24 @@ QImage ThumbnailProvider::generateThumbnail(int thumbSize, const QString& thumbP
     return thumbnail;
 }
 
-QImage ThumbnailProvider::generateVideoThumbnail(int thumbSize, const QString& thumbPath, const QString& filename)
+QImage ThumbnailProvider::grabVideoFrame(const QString& thumbPath, const QString& filename)
 {
-    qDebug() << filename;
-    return QImage();
+    auto ffmpeg = std::make_unique<QProcess>();
+
+    QStringList arguments = {
+        "-loglevel", "panic", "-i", filename, "-ss", "0.5", "-q:v", "2", "-vframes", "1", thumbPath};
+
+    ffmpeg->start(ffmpegCmd, arguments);
+    ffmpeg->waitForFinished(20000);
+
+    if (!ffmpeg->exitCode()) {
+        return QImage(thumbPath);
+    }
+    else
+        return QImage();
+}
+
+void ThumbnailProvider::setFfmpegCmd(const QString& value)
+{
+    ffmpegCmd = value;
 }

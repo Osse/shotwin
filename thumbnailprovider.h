@@ -15,14 +15,16 @@ public:
     virtual QImage requestImage(const QString& id, QSize* size, const QSize& requestedSize);
 
     void setThumbnailDirPath(const QString& value);
+    void setFfmpegCmd(const QString& value);
 
 private:
     QImage generateFallback(QSize size);
     QImage generateThumbnail(int thumbSize, const QString& thumbPath, const QString& filename);
-    QImage generateVideoThumbnail(int thumbSize, const QString& thumbPath, const QString& filename);
+    QImage grabVideoFrame(const QString& thumbPath, const QString& filename);
 
 private:
     QString cachePath;
+    QString ffmpegCmd;
 
     PhotoModel* photoListModel;
 };
