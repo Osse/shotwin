@@ -117,8 +117,9 @@ void MainWindow::showSettings()
     SettingsDialog sd(this);
 
     connect(&sd, &SettingsDialog::settingsChanged, [this]() {
-        static_cast<ThumbnailProvider*>(ui->photoView->engine()->imageProvider("thumbnails"))
-            ->setThumbnailDirPath(QSettings().value("cachepath").toString());
+        auto provider = static_cast<ThumbnailProvider*>(ui->photoView->engine()->imageProvider("thumbnails"));
+        provider->setThumbnailDirPath(QSettings().value("cachepath").toString());
+        provider->setFfmpegCmd(QSettings().value("ffmpegcmd").toString());
     });
     connect(&sd, &SettingsDialog::settingsChanged, [this]() { shotwin->setMap(QSettings().value("map").toMap()); });
     connect(&sd, &SettingsDialog::bgColorChanged, [this](int value) {

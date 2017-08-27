@@ -49,7 +49,7 @@ GridView {
                     id: image
                     Image {
                         asynchronous: true
-                        source: "file:///" + mappedfilename
+                        source: "image://videoframes/" + thumbnail
                         autoTransform: true
                         fillMode: Image.PreserveAspectFit
                         onStatusChanged: if (status == Image.Ready) { layout.currentIndex = 1; }
