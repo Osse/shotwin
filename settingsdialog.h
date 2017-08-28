@@ -22,6 +22,7 @@ signals:
 
 private:
     void chooseCachePath();
+    void chooseFfmpegPath();
     void store();
     void revert();
 
