@@ -14,17 +14,21 @@
    <string>Shotwin settings</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="7" column="1" colspan="2">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Path mappings:</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1" colspan="2">
+   <item row="3" column="0">
+    <widget class="QLabel" name="labelBackground">
+     <property name="text">
+      <string>Background:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="2">
     <widget class="QSlider" name="sliderBgColor">
      <property name="maximum">
       <number>255</number>
@@ -40,10 +44,13 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="labelBackground">
-     <property name="text">
-      <string>Background:</string>
+   <item row="8" column="1" colspan="2">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
@@ -54,10 +61,13 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Path mappings:</string>
+   <item row="5" column="1" colspan="2">
+    <widget class="QDialogButtonBox" name="bbMapping">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::NoButton</set>
+     </property>
+     <property name="centerButtons">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -71,18 +81,32 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1" colspan="2">
-    <widget class="QDialogButtonBox" name="bbMapping">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::NoButton</set>
+   <item row="6" column="0" colspan="3">
+    <widget class="QPlainTextEdit" name="tePathMappings"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Courier New';&quot;&gt;ffmpeg&lt;/span&gt; command:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
-     <property name="centerButtons">
-      <bool>false</bool>
+     <property name="textFormat">
+      <enum>Qt::AutoText</enum>
      </property>
     </widget>
    </item>
-   <item row="5" column="0" colspan="3">
-    <widget class="QPlainTextEdit" name="tePathMappings"/>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="leFfmpegCmd">
+     <property name="text">
+      <string>ffmpeg</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QPushButton" name="pbBrowseForFfmpeg">
+     <property name="text">
+      <string>Browse</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
