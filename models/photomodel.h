@@ -5,6 +5,7 @@
 
 #include "photoitem.h"
 
+#include <map>
 #include <vector>
 
 class PhotoModel : public QAbstractListModel
@@ -20,6 +21,12 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
     QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
+
+    QList<QModelIndex> match(const QModelIndex& start,
+                             int role,
+                             const QVariant& value,
+                             int hits = 1,
+                             Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
 
     QHash<int, QByteArray> roleNames() const;
 
@@ -39,6 +46,7 @@ private:
 
 private:
     std::vector<PhotoItem> photoList;
+    std::map<int, int> idPhotoMap;
     QMap<QString, QVariant> map;
 };
 
