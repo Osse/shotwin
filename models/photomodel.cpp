@@ -64,6 +64,17 @@ QModelIndex PhotoModel::index(int row, int column, const QModelIndex& parent) co
     return createIndex(row, column, const_cast<PhotoItem*>(&photoList[row]));
 }
 
+QList<QModelIndex> PhotoModel::match(
+    const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags) const
+{
+    if (role == PhotoIdRole) {
+        int id = value.toInt();
+        return {index(idPhotoMap.at(id), 0)};
+    }
+    else
+        return QAbstractListModel::match(start, role, value, hits, flags);
+}
+
 QHash<int, QByteArray> PhotoModel::roleNames() const
 {
     auto roleNames = QAbstractItemModel::roleNames();
@@ -105,5 +116,6 @@ void PhotoModel::init()
         QString type = query.value("type").toString();
 
         photoList.push_back(PhotoItem(photoId, eventId, exposureTime, fileName, type));
+        idPhotoMap[photoId] = photoList.size() - 1;
     }
 }
