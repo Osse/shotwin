@@ -3,7 +3,6 @@
 #include "eventitem.h"
 #include "eventortagfilteredphotomodel.h"
 #include "eventtreemodel.h"
-#include "hidephotosproxymodel.h"
 #include "photoitem.h"
 #include "photomodel.h"
 
@@ -22,8 +21,6 @@ bool Shotwin::initModels()
         return false;
 
     eventTreeModel = new EventTreeModel(this);
-    proxyModel = new HidePhotosProxyModel(this);
-    proxyModel->setSourceModel(eventTreeModel);
 
     photoModel = new PhotoModel(this);
     photoListModel = new EventOrTagFilteredPhotoModel(this);
@@ -37,7 +34,7 @@ bool Shotwin::initModels()
 
 QAbstractItemModel* Shotwin::getEventTree()
 {
-    return proxyModel;
+    return eventTreeModel;
 }
 
 QAbstractItemModel* Shotwin::getEventList()
@@ -74,7 +71,7 @@ void Shotwin::openEvent(int index)
 {
     auto clickedEvent = eventListModel->index(index, 0, QModelIndex());
     if (clickedEvent.isValid()) {
-        auto treeClickedEvent = proxyModel->mapFromSource(eventListModel->mapToSource(clickedEvent));
+        auto treeClickedEvent = eventListModel->mapToSource(clickedEvent);
         emit eventSelected(treeClickedEvent);
     }
 }

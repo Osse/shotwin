@@ -27,7 +27,6 @@ set(SOURCES
     models/eventtreeitem.cpp
     models/eventtreemodel.cpp
     models/eventortagfilteredphotomodel.cpp
-    models/hidephotosproxymodel.cpp
     models/monthitem.cpp
     models/photoitem.cpp
     models/photomodel.cpp

@@ -43,7 +43,6 @@ private:
 
 private:
     EventTreeModel* eventTreeModel = nullptr;
-    HidePhotosProxyModel* proxyModel = nullptr;
 
     PhotoModel* photoModel = nullptr;
 
