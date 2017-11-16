@@ -54,10 +54,6 @@ GridView {
                         fillMode: Image.PreserveAspectFit
                         onStatusChanged: if (status == Image.Ready) { layout.currentIndex = 1; }
 
-                        // This makes the image provider get a proper requestedSize
-                        sourceSize.width: width
-                        sourceSize.height: height
-
                         MouseArea {
                             anchors.fill: parent
                             onDoubleClicked: stack.currentIndex = 0
