@@ -23,7 +23,9 @@ find_package(Qt5 COMPONENTS Widgets Sql QuickWidgets)
 set(SOURCES
     main.cpp
     mainwindow.cpp
+    models/datefilteredeventmodel.cpp
     models/eventitem.cpp
+    models/eventmodel.cpp
     models/eventtreeitem.cpp
     models/eventtreemodel.cpp
     models/eventortagfilteredphotomodel.cpp
