@@ -74,6 +74,11 @@ void Shotwin::openEvent(int index)
         auto treeClickedEvent = eventListModel->mapToSource(clickedEvent);
         emit eventSelected(treeClickedEvent);
     }
+
+    auto item = static_cast<EventTreeItem*>(clickedEvent.internalPointer());
+    auto eventItem = dynamic_cast<EventItem*>(item);
+    if (eventItem)
+        photoListModel->setEventId(eventItem->getEventId());
 }
 
 bool Shotwin::initDbViews()
