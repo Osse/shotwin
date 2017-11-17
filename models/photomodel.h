@@ -30,6 +30,10 @@ public:
 
     QHash<int, QByteArray> roleNames() const;
 
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
+
     enum UserRoles {
         ThumnailRole = Qt::UserRole + 1,
         FilenameRole,

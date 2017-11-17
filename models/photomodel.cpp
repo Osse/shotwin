@@ -1,6 +1,7 @@
 #include "photomodel.h"
 
 #include <QDateTime>
+#include <QFont>
 #include <QSettings>
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -87,6 +88,38 @@ QHash<int, QByteArray> PhotoModel::roleNames() const
     return roleNames;
 }
 
+QVariant PhotoModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (section != 0 || orientation != Qt::Horizontal)
+        return QVariant();
+
+    if (role == Qt::DisplayRole)
+        return QVariant("Photos");
+
+    if (role == Qt::FontRole) {
+        auto font = QAbstractItemModel::headerData(section, orientation, Qt::FontRole).value<QFont>();
+        font.setBold(true);
+        return font;
+    }
+
+    return QVariant();
+}
+
+void PhotoModel::sort(int column, Qt::SortOrder order)
+{
+    if (column != 0)
+        return;
+
+    if (order == Qt::AscendingOrder)
+        std::sort(photoList.begin(), photoList.end(), [](const auto& p1, const auto& p2) {
+            return p1.getExposureTime() < p2.getExposureTime();
+        });
+    else
+        std::sort(photoList.begin(), photoList.end(), [](const auto& p1, const auto& p2) {
+            return p1.getExposureTime() > p2.getExposureTime();
+        });
+}
+
 QString PhotoModel::mappedFile(const QString& file) const
 {
     QString fileName(file);
@@ -118,4 +151,6 @@ void PhotoModel::init()
         photoList.push_back(PhotoItem(photoId, eventId, exposureTime, fileName, type));
         idPhotoMap[photoId] = photoList.size() - 1;
     }
+
+    sort(0, Qt::DescendingOrder);
 }
