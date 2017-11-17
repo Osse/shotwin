@@ -31,6 +31,7 @@ set(SOURCES
     models/photomodel.cpp
     models/tagmodel.cpp
     models/treeproxymodel.cpp
+    modelviewdialog.cpp
     settingsdialog.cpp
     shotwin.cpp
     thumbnailprovider.cpp
@@ -38,6 +39,7 @@ set(SOURCES
 
 set(UIFORMS
     mainwindow.ui
+    modelviewdialog.ui
     settingsdialog.ui
 )
 

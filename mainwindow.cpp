@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "git_version.h"
+#include "modelviewdialog.h"
 #include "settingsdialog.h"
 #include "shotwin.h"
 #include "thumbnailprovider.h"
@@ -34,6 +35,13 @@ MainWindow::MainWindow(Shotwin* shotwin, QWidget* parent)
         pv->engine()->clearComponentCache();
         pv->setSource(tmp);
         ui->photoView->rootContext()->setContextProperty("stackIndex", 1);
+    });
+
+    auto startDebugWindow = new QShortcut(Qt::Key_F1, this);
+    connect(startDebugWindow, &QShortcut::activated, this, [=]() {
+        auto m = new ModelViewDialog(shotwin, this);
+        m->show();
+        m->exec();
     });
 
     ui->splitter->setSizes({33000, 67000});

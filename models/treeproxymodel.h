@@ -11,6 +11,7 @@
 
 class TreeProxyModel : public QAbstractProxyModel
 {
+    Q_OBJECT
 public:
     TreeProxyModel(QObject* parent = nullptr);
 

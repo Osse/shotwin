@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ModelViewDialog</class>
+ <widget class="QDialog" name="ModelViewDialog">
+  <property name="windowTitle">
+   <string>Tree views</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTreeView" name="eventTreeView"/>
+   </item>
+   <item>
+    <widget class="QTreeView" name="tagTreeView"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
