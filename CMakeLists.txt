@@ -32,6 +32,7 @@ set(SOURCES
     models/photomodel.cpp
     models/rootitem.cpp
     models/yearitem.cpp
+    models/treeproxymodel.cpp
     settingsdialog.cpp
     shotwin.cpp
     thumbnailprovider.cpp
