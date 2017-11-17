@@ -8,6 +8,7 @@ class EventTreeItem;
 
 class EventTreeModel : public QAbstractItemModel
 {
+    Q_OBJECT
 public:
     EventTreeModel(QObject* parent = nullptr);
     ~EventTreeModel();

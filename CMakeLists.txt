@@ -35,6 +35,7 @@ set(SOURCES
     models/rootitem.cpp
     models/yearitem.cpp
     models/treeproxymodel.cpp
+    modelviewdialog.cpp
     settingsdialog.cpp
     shotwin.cpp
     thumbnailprovider.cpp
@@ -42,6 +43,7 @@ set(SOURCES
 
 set(UIFORMS
     mainwindow.ui
+    modelviewdialog.ui
     settingsdialog.ui
 )
 
