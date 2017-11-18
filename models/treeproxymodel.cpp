@@ -21,10 +21,12 @@ QModelIndex TreeProxyModel::index(int row, int column, const QModelIndex& parent
         c = getCoordinate(parent);
 
     c.push_back(row);
-    if (!coordinatesMap.count(c))
+    // if (!coordinatesMap.count(c))
+    auto it = std::find_if(coordinatesMap.begin(), coordinatesMap.end(), [&c](const auto& cptr) { return c == *cptr; });
+    if (it == coordinatesMap.end())
         return QModelIndex();
     else
-        return createIndex(row, coordinatesMap.at(c));
+        return createIndex(row, *it);
 }
 
 QModelIndex TreeProxyModel::parent(const QModelIndex& child) const
@@ -42,7 +44,11 @@ QModelIndex TreeProxyModel::parent(const QModelIndex& child) const
     if (parentCoord.empty())
         return QModelIndex();
 
-    return createIndex(parentCoord.back(), coordinatesMap.at(parentCoord));
+    auto it = std::find_if(coordinatesMap.begin(), coordinatesMap.end(), [&parentCoord](const auto& cptr) {
+        return parentCoord == *cptr;
+    });
+
+    return createIndex(parentCoord.back(), *it);
 }
 
 int TreeProxyModel::rowCount(const QModelIndex& parent) const
@@ -53,7 +59,8 @@ int TreeProxyModel::rowCount(const QModelIndex& parent) const
 
     int rows = 0;
     std::for_each(coordinatesMap.begin(), coordinatesMap.end(), [&rows, p](const auto& c) {
-        if (c.second->size() == p.size() + 1 && std::equal(p.begin(), p.end(), c.second->begin()))
+        // if (c.second->size() == p.size() + 1 && std::equal(p.begin(), p.end(), c.second->begin()))
+        if (c->size() == p.size() + 1 && std::equal(p.begin(), p.end(), c->begin()))
             rows++;
     });
     return rows;
@@ -150,7 +157,8 @@ void TreeProxyModel::refreshMappings()
             coordinate[1] = -1;
             coordinate[2] = -1;
             Coordinate temp(1, coordinate[0]);
-            coordinatesMap[temp] = std::make_unique<Coordinate>(temp);
+            // coordinatesMap[temp] = std::make_unique<Coordinate>(temp);
+            coordinatesMap.emplace(std::make_unique<Coordinate>(temp));
             displayData[temp] = groupingData[0].second;
             sourceData[temp] = year;
             seenYears.insert(year);
@@ -160,7 +168,8 @@ void TreeProxyModel::refreshMappings()
             coordinate[1]++;
             coordinate[2] = -1;
             Coordinate temp{coordinate[0], coordinate[1]};
-            coordinatesMap[temp] = std::make_unique<Coordinate>(temp);
+            // coordinatesMap[temp] = std::make_unique<Coordinate>(temp);
+            coordinatesMap.emplace(std::make_unique<Coordinate>(temp));
             displayData[temp] = groupingData[1].second;
             sourceData[temp] = month;
             seenMonths.insert({year, month});
@@ -170,7 +179,8 @@ void TreeProxyModel::refreshMappings()
 
         sourceRows[coordinate] = row;
         coordinates[row] = coordinate;
-        coordinatesMap[coordinate] = std::make_unique<Coordinate>(coordinate);
+        // coordinatesMap[coordinate] = std::make_unique<Coordinate>(coordinate);
+        coordinatesMap.insert(std::make_unique<Coordinate>(coordinate));
     }
 }
 
