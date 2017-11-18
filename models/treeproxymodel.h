@@ -49,7 +49,8 @@ private:
     GroupingDataCbType getGroupingData;
 
     // All coordinates
-    std::map<Coordinate, CoordinatePtr> coordinatesMap;
+    // std::map<Coordinate, CoordinatePtr> coordinatesMap;
+    std::set<CoordinatePtr> coordinatesMap;
 
     // mapping to source
     std::map<Coordinate, int> sourceRows;
