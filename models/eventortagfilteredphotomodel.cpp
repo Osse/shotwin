@@ -58,6 +58,8 @@ void EventOrTagFilteredPhotoModel::setEventIds(const QList<int>& value)
 
 void EventOrTagFilteredPhotoModel::sortAndInvalidate()
 {
+    // Showing a specific event should list photos in chronological
+    // order, but in other cases they should be in decending other
     sort(0, eventIds.size() != 1 ? Qt::DescendingOrder : Qt::AscendingOrder);
     invalidateFilter();
     emit filterChanged();
