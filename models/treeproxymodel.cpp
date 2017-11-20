@@ -121,12 +121,14 @@ QVariant TreeProxyModel::data(const QModelIndex& proxyIndex, int role) const
         return sourceModel()->data(sourceIndex, role);
     else if (role == Qt::DecorationRole)
         return groupIcon;
-    else if (role == SourceDataRole)
-        return sourceData.at(getCoordinate(proxyIndex));
+    else if (role == SourceDataRole) {
+        auto c = getCoordinate(proxyIndex);
+        return sourceData.count(c) ? sourceData.at(c) : QVariant();
+    }
     else if (role != Qt::DisplayRole)
         return QVariant();
 
-    return displayData.at(getCoordinate(proxyIndex));
+    return groupData.at(getCoordinate(proxyIndex));
 }
 
 void TreeProxyModel::respondToLayoutChanged()
@@ -142,45 +144,48 @@ void TreeProxyModel::refreshMappings()
 
     clearMappings(m->rowCount());
 
-    std::set<int> seenYears;
-    std::set<std::pair<int, int>> seenMonths;
+    std::set<std::vector<QVariant>> seenGroups;
 
-    Coordinate coordinate{-1, -1, -1};
+    // At the beginning of each iteration cookie[0, depth + 1]
+    // is the coordinate of the most recently inserted node
+    Coordinate cookie(20, -1);
+
     for (int row = 0; row < m->rowCount(); row++) {
         auto groupingData = getGroupingData(m->index(row, 0));
+        std::vector<QVariant> sourceDataForIndex;
+        if (getSourceData)
+            sourceDataForIndex = getSourceData(m->index(row, 0));
 
-        int year = groupingData[0].first;
-        int month = groupingData[1].first;
+        int depth = groupingData.size();
 
-        if (!seenYears.count(year)) {
-            coordinate[0]++;
-            coordinate[1] = -1;
-            coordinate[2] = -1;
-            Coordinate temp(1, coordinate[0]);
-            // coordinatesMap[temp] = std::make_unique<Coordinate>(temp);
-            coordinatesMap.emplace(std::make_unique<Coordinate>(temp));
-            displayData[temp] = groupingData[0].second;
-            sourceData[temp] = year;
-            seenYears.insert(year);
+        std::vector<QVariant> newGroup;
+        newGroup.reserve(depth);
+
+        for (int i = 0; i < depth; i++) {
+            newGroup.push_back(groupingData[i]);
+
+            if (!seenGroups.count(newGroup)) {
+                cookie[i]++;
+                auto tempEnd = cookie.begin() + i + 1;
+
+                Coordinate temp(cookie.begin(), tempEnd);
+                coordinatesMap.insert(std::make_unique<Coordinate>(temp));
+                groupData[temp] = groupingData[i];
+                if (sourceDataForIndex.size() > i)
+                    sourceData[temp] = sourceDataForIndex[i];
+                seenGroups.insert(newGroup);
+
+                // New node inserted, on the next iteration the search start from zero
+                std::fill(tempEnd, cookie.end(), -1);
+            }
         }
 
-        if (!seenMonths.count({year, month})) {
-            coordinate[1]++;
-            coordinate[2] = -1;
-            Coordinate temp{coordinate[0], coordinate[1]};
-            // coordinatesMap[temp] = std::make_unique<Coordinate>(temp);
-            coordinatesMap.emplace(std::make_unique<Coordinate>(temp));
-            displayData[temp] = groupingData[1].second;
-            sourceData[temp] = month;
-            seenMonths.insert({year, month});
-        }
+        cookie[depth]++;
 
-        coordinate[2]++;
-
-        sourceRows[coordinate] = row;
-        coordinates[row] = coordinate;
-        // coordinatesMap[coordinate] = std::make_unique<Coordinate>(coordinate);
-        coordinatesMap.insert(std::make_unique<Coordinate>(coordinate));
+        Coordinate temp(cookie.begin(), cookie.begin() + depth + 1);
+        coordinatesMap.insert(std::make_unique<Coordinate>(temp));
+        sourceRows[temp] = row;
+        coordinates[row] = temp;
     }
 }
 
@@ -190,8 +195,7 @@ void TreeProxyModel::clearMappings(int rowCount)
     sourceRows.clear();
     coordinates.clear();
     coordinates.resize(rowCount);
-    displayData.clear();
-    sourceData.clear();
+    groupData.clear();
 }
 
 TreeProxyModel::Coordinate TreeProxyModel::getCoordinate(const QModelIndex& proxyIndex) const
@@ -220,6 +224,11 @@ QModelIndex TreeProxyModel::createIndex(int row, const CoordinatePtr& coordinate
 void TreeProxyModel::setGroupingDataCb(const GroupingDataCbType& value)
 {
     getGroupingData = value;
+}
+
+void TreeProxyModel::setSourceDataCb(const GroupingDataCbType& value)
+{
+    getSourceData = value;
 }
 
 void TreeProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
