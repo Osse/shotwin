@@ -27,6 +27,7 @@ public:
 
     using GroupingDataCbType = std::function<std::vector<QVariant>(const QModelIndex&)>;
     void setGroupingDataCb(const GroupingDataCbType& value);
+    void setSourceDataCb(const GroupingDataCbType& value);
 
     void setSourceModel(QAbstractItemModel* sourceModel) override;
 
@@ -47,6 +48,7 @@ private:
 
 private:
     GroupingDataCbType getGroupingData;
+    GroupingDataCbType getSourceData;
 
     // All coordinates
     // std::map<Coordinate, CoordinatePtr> coordinatesMap;
@@ -59,7 +61,7 @@ private:
     std::vector<Coordinate> coordinates;
 
     // Data for extra nodes
-    std::map<Coordinate, QVariant> displayData;
+    std::map<Coordinate, QVariant> groupData;
     std::map<Coordinate, QVariant> sourceData;
 
     QPixmap groupIcon;
