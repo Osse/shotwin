@@ -6,10 +6,11 @@
 #include <QObject>
 
 class QAbstractItemModel;
-class EventTreeModel;
-class HidePhotosProxyModel;
-class PhotoModel;
+class DateFilteredEventModel;
+class EventModel;
 class EventOrTagFilteredPhotoModel;
+class PhotoModel;
+class TreeProxyModel;
 
 class Shotwin : public QObject
 {
@@ -42,12 +43,13 @@ private:
     bool initDbViews();
 
 private:
-    EventTreeModel* eventTreeModel = nullptr;
-
+    EventModel* eventModel = nullptr;
     PhotoModel* photoModel = nullptr;
 
     EventOrTagFilteredPhotoModel* photoListModel = nullptr;
-    FilterFlattenProxyModel<EventItem>* eventListModel = nullptr;
+    DateFilteredEventModel* eventListModel = nullptr;
+
+    TreeProxyModel* eventTreeModel = nullptr;
 
     QMap<QString, QVariant> map;
 };

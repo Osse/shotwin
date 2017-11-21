@@ -1,10 +1,12 @@
 #include "shotwin.h"
 
+#include "datefilteredeventmodel.h"
 #include "eventitem.h"
+#include "eventmodel.h"
 #include "eventortagfilteredphotomodel.h"
-#include "eventtreemodel.h"
 #include "photoitem.h"
 #include "photomodel.h"
+#include "treeproxymodel.h"
 
 #include <QSettings>
 #include <QSqlDatabase>
@@ -20,14 +22,26 @@ bool Shotwin::initModels()
     if (!initDbViews())
         return false;
 
-    eventTreeModel = new EventTreeModel(this);
-
     photoModel = new PhotoModel(this);
     photoListModel = new EventOrTagFilteredPhotoModel(this);
     photoListModel->setSourceModel(photoModel);
 
-    eventListModel = new FilterFlattenProxyModel<EventItem>(this);
-    eventListModel->setSourceModel(eventTreeModel);
+    eventModel = new EventModel(this);
+    eventListModel = new DateFilteredEventModel(this);
+    eventListModel->setSourceModel(eventModel);
+
+    eventTreeModel = new TreeProxyModel(this);
+    eventTreeModel->setGroupingDataCb([](const QModelIndex& index) {
+        auto eventItem = static_cast<const EventItem*>(index.internalPointer());
+        auto date = eventItem->getStartTime();
+        return std::vector<QVariant>{date.toString("yyyy"), date.toString("MMMM")};
+    });
+    eventTreeModel->setSourceDataCb([](const QModelIndex& index) {
+        auto eventItem = static_cast<const EventItem*>(index.internalPointer());
+        auto date = eventItem->getStartTime().date();
+        return std::vector<QVariant>{date.year(), date.month()};
+    });
+    eventTreeModel->setSourceModel(eventModel);
 
     return true;
 }
@@ -54,31 +68,37 @@ QAbstractItemModel* Shotwin::getPhotoModel()
 
 void Shotwin::selectEvent(const QModelIndex& index)
 {
-    eventListModel->setTopLevelIndex(index);
-
-    auto item = static_cast<EventTreeItem*>(index.internalPointer());
-
-    auto eventItem = dynamic_cast<EventItem*>(item);
-    if (dynamic_cast<EventItem*>(item)) {
-        photoListModel->setEventId(eventItem->getEventId());
+    auto sourceIndex = eventTreeModel->mapToSource(index);
+    if (sourceIndex.isValid()) {
+        auto item = static_cast<EventItem*>(sourceIndex.internalPointer());
+        photoListModel->setEventId(item->getEventId());
         emit photoListRequested();
     }
-    else
+    else {
+        if (index.parent().isValid()) {
+            int year = eventTreeModel->data(index.parent(), TreeProxyModel::SourceDataRole).toInt();
+            int month = eventTreeModel->data(index, TreeProxyModel::SourceDataRole).toInt();
+            eventListModel->setFilterMonth(year, month);
+        }
+        else {
+            int year = eventTreeModel->data(index, TreeProxyModel::SourceDataRole).toInt();
+            eventListModel->setFilterYear(year);
+        }
         emit eventListRequested();
+    }
 }
 
 void Shotwin::openEvent(int index)
 {
-    auto clickedEvent = eventListModel->index(index, 0, QModelIndex());
-    if (clickedEvent.isValid()) {
-        auto treeClickedEvent = eventListModel->mapToSource(clickedEvent);
-        emit eventSelected(treeClickedEvent);
-    }
+    auto clickedEvent = eventListModel->index(index, 0);
+    auto sourceClickedEvent = eventListModel->mapToSource(clickedEvent);
+    if (sourceClickedEvent.isValid()) {
+        auto clickedEventInTree = eventTreeModel->mapFromSource(sourceClickedEvent);
+        emit eventSelected(clickedEventInTree);
 
-    auto item = static_cast<EventTreeItem*>(clickedEvent.internalPointer());
-    auto eventItem = dynamic_cast<EventItem*>(item);
-    if (eventItem)
-        photoListModel->setEventId(eventItem->getEventId());
+        auto item = static_cast<EventItem*>(sourceClickedEvent.internalPointer());
+        photoListModel->setEventId(item->getEventId());
+    }
 }
 
 bool Shotwin::initDbViews()
