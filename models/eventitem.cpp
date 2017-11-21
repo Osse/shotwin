@@ -1,26 +1,21 @@
 #include "eventitem.h"
 
-#include "eventtreeitem.h"
-#include "photoitem.h"
-
 #include <QApplication>
 #include <QStyle>
 
-EventItem::EventItem(EventTreeItem* parent, int eventId, const QString& eventName, const QString& primarySourceId)
-    : EventTreeItem(parent), eventId(eventId), eventName(eventName), primarySourceId(primarySourceId)
+EventItem::EventItem(int eventId, const QString& eventName, const QString& primarySourceId)
+    : eventId(eventId), eventName(eventName), primarySourceId(primarySourceId)
 {
 }
 
-EventItem::EventItem(EventTreeItem* parent,
-                     int eventId,
+EventItem::EventItem(int eventId,
                      const QString& eventName,
                      const QDateTime& startTime,
                      const QDateTime& endTime,
                      int photos,
                      int videos,
                      const QString& primarySourceId)
-    : EventTreeItem(parent),
-      eventId(eventId),
+    : eventId(eventId),
       eventName(eventName),
       startTime(startTime),
       endTime(endTime),

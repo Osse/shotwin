@@ -44,8 +44,6 @@ QVariant EventModel::data(const QModelIndex& index, int role) const
         return eventList[row].getEndTime();
     else if (role == ThumnailRole)
         return eventList[row].getThumbnailId();
-    else if (role == FilenameRole)
-        return eventList[row].getFilename();
     else if (role == TimespanRole)
         return eventList[row].getEventTimeSpan();
     else if (role == PhotoCountRole)
@@ -87,7 +85,6 @@ QHash<int, QByteArray> EventModel::roleNames() const
     roleNames[ThumnailRole] = "thumbnail";
     roleNames[StartTimeRole] = "starttime";
     roleNames[EndTimeRole] = "endtime";
-    roleNames[FilenameRole] = "filename";
     roleNames[TimespanRole] = "timespan";
     roleNames[PhotoCountRole] = "photocount";
     roleNames[VideoCountRole] = "videocount";
@@ -129,8 +126,7 @@ void EventModel::init()
         int photos = query.value("photos").toInt();
         int videos = query.value("videos").toInt();
 
-        eventList.push_back(
-            EventItem(nullptr, eventId, eventName, startTime, endTime, photos, videos, primarySourceId));
+        eventList.push_back(EventItem(eventId, eventName, startTime, endTime, photos, videos, primarySourceId));
     }
 
     sort(0, Qt::DescendingOrder);

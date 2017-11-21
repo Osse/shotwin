@@ -26,14 +26,9 @@ set(SOURCES
     models/datefilteredeventmodel.cpp
     models/eventitem.cpp
     models/eventmodel.cpp
-    models/eventtreeitem.cpp
-    models/eventtreemodel.cpp
     models/eventortagfilteredphotomodel.cpp
-    models/monthitem.cpp
     models/photoitem.cpp
     models/photomodel.cpp
-    models/rootitem.cpp
-    models/yearitem.cpp
     models/treeproxymodel.cpp
     settingsdialog.cpp
     shotwin.cpp

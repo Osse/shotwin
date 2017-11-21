@@ -1,23 +1,22 @@
 #ifndef PHOTOITEM_H
 #define PHOTOITEM_H
 
-#include "eventtreeitem.h"
-
 #include <QDateTime>
+#include <QPixmap>
 #include <QString>
 
-class PhotoItem : public EventTreeItem
+class PhotoItem
 {
 public:
-    PhotoItem(EventTreeItem* parent, int photoid, const QDateTime& exposureTime, const QString& fileName);
+    PhotoItem(int photoid, const QDateTime& exposureTime, const QString& fileName);
     PhotoItem(int photoid, int eventId, const QDateTime& exposureTime, const QString& fileName, const QString& type);
     virtual ~PhotoItem();
 
-    QString displayString() const override;
-    QString getThumbnailId() const override;
-    QString getFilename() const override;
-    QPixmap getIcon() const override;
-    int sortData() const override;
+    QString displayString() const;
+    QString getThumbnailId() const;
+    QString getFilename() const;
+    QPixmap getIcon() const;
+    int sortData() const;
 
     int getPhotoId() const;
     int getEventId() const;
