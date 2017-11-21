@@ -49,7 +49,7 @@ GridView {
                     id: image
                     Image {
                         asynchronous: true
-                        source: "image://videoframes/" + thumbnail
+                        source: "file:///" + mappedfilename
                         autoTransform: true
                         fillMode: Image.PreserveAspectFit
                         onStatusChanged: if (status == Image.Ready) { layout.currentIndex = 1; }
@@ -63,7 +63,7 @@ GridView {
                 Component {
                     id: video
                     Video {
-                        source: "file:///" + shotwin.mappedFile(filename)
+                        source: "file:///" + mappedfilename
                         onStatusChanged: if (status == MediaPlayer.Loaded) { layout.currentIndex = 1; }
                         MouseArea {
                             anchors.fill: parent
