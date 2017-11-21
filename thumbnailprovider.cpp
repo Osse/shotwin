@@ -11,6 +11,7 @@
 #include <QStandardPaths>
 
 #include <algorithm>
+#include <memory>
 
 ThumbnailProvider::ThumbnailProvider(QAbstractItemModel* photoListModel)
     : QQuickImageProvider(QQmlImageProviderBase::Image), photoListModel(dynamic_cast<PhotoModel*>(photoListModel))

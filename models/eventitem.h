@@ -1,16 +1,14 @@
 #ifndef EVENTITEM_H
 #define EVENTITEM_H
 
-#include "eventtreeitem.h"
-
 #include <QDateTime>
+#include <QPixmap>
 
-class EventItem : public EventTreeItem
+class EventItem
 {
 public:
-    EventItem(EventTreeItem* parent, int eventId, const QString& eventName, const QString& primarySourceId);
-    EventItem(EventTreeItem* parent,
-              int eventId,
+    EventItem(int eventId, const QString& eventName, const QString& primarySourceId);
+    EventItem(int eventId,
               const QString& eventName,
               const QDateTime& startTime,
               const QDateTime& endTime,
@@ -19,13 +17,13 @@ public:
               const QString& primarySourceId);
     ~EventItem();
 
-    QString displayString() const override;
-    QString getThumbnailId() const override;
-    QString getEventTimeSpan() const override;
-    QPixmap getIcon() const override;
+    QString displayString() const;
+    QString getThumbnailId() const;
+    QString getEventTimeSpan() const;
+    QPixmap getIcon() const;
     QDateTime getStartTime() const;
     QDateTime getEndTime() const;
-    int sortData() const override;
+    int sortData() const;
     int getEventId() const;
     int getPhotos() const;
     int getVideos() const;

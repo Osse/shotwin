@@ -1,20 +1,13 @@
 #include "photoitem.h"
 
-#include "eventtreeitem.h"
-
-PhotoItem::PhotoItem(EventTreeItem* parent, int photoId, const QDateTime& exposureTime, const QString& fileName)
-    : EventTreeItem(parent), photoId(photoId), exposureTime(exposureTime), fileName(fileName)
+PhotoItem::PhotoItem(int photoId, const QDateTime& exposureTime, const QString& fileName)
+    : photoId(photoId), exposureTime(exposureTime), fileName(fileName)
 {
 }
 
 PhotoItem::PhotoItem(
     int photoId, int eventId, const QDateTime& exposureTime, const QString& fileName, const QString& type)
-    : EventTreeItem(nullptr),
-      photoId(photoId),
-      eventId(eventId),
-      exposureTime(exposureTime),
-      fileName(fileName),
-      type(type)
+    : photoId(photoId), eventId(eventId), exposureTime(exposureTime), fileName(fileName), type(type)
 {
 }
 
