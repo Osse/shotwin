@@ -3,6 +3,8 @@
 
 #include <QSortFilterProxyModel>
 
+#include <vector>
+
 class EventOrTagFilteredPhotoModel : public QSortFilterProxyModel
 {
     Q_OBJECT
@@ -13,22 +15,23 @@ public:
 
     bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 
-    QList<int> getEventIds() const;
-    void setEventIds(const QList<int>& value);
+    std::vector<int> getEventIds() const;
+    void setEventIds(const std::vector<int>& value);
     void setEventId(int eventId);
 
-    QList<int> getPhotoIds() const;
-    void setPhotoIds(const QList<int>& value);
+    std::vector<int> getPhotoIds() const;
+    void setPhotoIds(const std::vector<int>& value);
 
 signals:
     void filterChanged();
 
 private:
     void sortAndInvalidate();
+    bool contains(const std::vector<int>& v, int i) const;
 
 private:
-    QList<int> eventIds;
-    QList<int> photoIds;
+    std::vector<int> eventIds;
+    std::vector<int> photoIds;
 };
 
 #endif  // EVENTFILTEREDPHOTOMODEL_H
