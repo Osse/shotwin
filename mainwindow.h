@@ -9,6 +9,7 @@ class MainWindow;
 }
 
 class Shotwin;
+class QTreeView;
 
 class MainWindow : public QMainWindow
 {
@@ -22,6 +23,7 @@ private:
     void openDatabase();
     void openDataBaseConnection(const QString& dbName);
     void initModelsAndViews();
+    void setupTree(QTreeView* tree);
     void aboutShotwin();
     void aboutQt();
     void showSettings();

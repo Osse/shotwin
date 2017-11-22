@@ -80,10 +80,15 @@ void MainWindow::initModelsAndViews()
     if (!shotwin->initModels())
         QMessageBox::warning(this, tr("Error"), tr("Failed to set up models."));
 
+    setupTree(ui->eventTree);
     ui->eventTree->setModel(shotwin->getEventTree());
     ui->eventTree->expandAll();
     connect(ui->eventTree, &QTreeView::clicked, shotwin, &Shotwin::selectEvent);
     connect(shotwin, &Shotwin::eventSelected, ui->eventTree, &QTreeView::setCurrentIndex);
+
+    setupTree(ui->tags);
+    ui->tags->setModel(shotwin->getTagModel());
+    connect(ui->tags, &QTreeView::clicked, shotwin, &Shotwin::selectTag);
 
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider(shotwin->getPhotoModel()));
 
@@ -99,6 +104,13 @@ void MainWindow::initModelsAndViews()
     QObject* eventView = ui->photoView->rootObject()->findChild<QObject*>("eventView");
     if (eventView)
         connect(eventView, SIGNAL(eventDoubleClicked(int)), shotwin, SLOT(openEvent(int)));
+}
+
+void MainWindow::setupTree(QTreeView* tree)
+{
+    tree->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    tree->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+    tree->setSizePolicy(tree->sizePolicy().horizontalPolicy(), QSizePolicy::Fixed);
 }
 
 void MainWindow::aboutShotwin()
