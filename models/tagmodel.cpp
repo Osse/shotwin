@@ -68,6 +68,19 @@ QVariant TagModel::headerData(int section, Qt::Orientation orientation, int role
     return QVariant();
 }
 
+QStringList TagModel::getTagsForPhoto(int id)
+{
+    QStringList tags;
+    auto startEnd = idToTags.equal_range(id);
+    std::multimap<int, QString>::const_iterator it = startEnd.first;
+    while (it != startEnd.second) {
+        tags << it->second;
+        it++;
+    }
+
+    return tags;
+}
+
 void TagModel::init()
 {
     auto db = QSqlDatabase::database();
@@ -87,6 +100,7 @@ void TagModel::init()
         for (const auto& idString : photo_id_list) {
             int id = idString.right(idString.size() - idString.indexOf("0")).toInt(nullptr, 16);
             photos.push_back(id);
+            idToTags.insert({id, name});
         }
 
         tags.push_back(TagItem{id, name, photos});

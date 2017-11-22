@@ -31,16 +31,19 @@ public:
     void setMap(const QMap<QString, QVariant>& value);
 
     Q_INVOKABLE QString mappedFile(const QString& file);
+    Q_INVOKABLE QStringList getTagsForPhoto(int id);
 
 signals:
     void eventListRequested();
     void photoListRequested();
     void eventSelected(const QModelIndex& index);
+    void tagSelected(const QModelIndex& index);
 
 public slots:
     void selectEvent(const QModelIndex& index);
     void openEvent(int index);
     void selectTag(const QModelIndex& index);
+    void selectTagByString(const QString& tag);
 
 private:
     bool initDbViews();

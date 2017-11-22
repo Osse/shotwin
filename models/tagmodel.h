@@ -4,6 +4,8 @@
 #include <QAbstractListModel>
 #include <QPixmap>
 
+#include <map>
+
 class TagModel : public QAbstractListModel
 {
 public:
@@ -25,10 +27,13 @@ public:
         std::vector<int> photos;
     };
 
+    QStringList getTagsForPhoto(int id);
+
 private:
     void init();
 
     std::vector<TagItem> tags;
+    std::multimap<int, QString> idToTags;
     QPixmap icon;
 };
 

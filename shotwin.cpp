@@ -93,6 +93,7 @@ void Shotwin::selectEvent(const QModelIndex& index)
         }
         emit eventListRequested();
     }
+    emit tagSelected(QModelIndex());
 }
 
 void Shotwin::openEvent(int index)
@@ -102,6 +103,7 @@ void Shotwin::openEvent(int index)
     if (sourceClickedEvent.isValid()) {
         auto clickedEventInTree = eventTreeModel->mapFromSource(sourceClickedEvent);
         emit eventSelected(clickedEventInTree);
+        emit tagSelected(QModelIndex());
 
         auto item = static_cast<EventItem*>(sourceClickedEvent.internalPointer());
         photoListModel->setEventId(item->getEventId());
@@ -113,6 +115,15 @@ void Shotwin::selectTag(const QModelIndex& index)
     auto tagItem = static_cast<TagModel::TagItem*>(index.internalPointer());
     photoListModel->setPhotoIds(tagItem->photos);
     emit photoListRequested();
+    emit eventSelected(QModelIndex());
+}
+
+void Shotwin::selectTagByString(const QString& tag)
+{
+    auto tagIndex = tagModel->match(QModelIndex(), Qt::DisplayRole, tag);
+    selectTag(tagIndex.first());
+    emit tagSelected(tagIndex.first());
+    emit eventSelected(QModelIndex());
 }
 
 bool Shotwin::initDbViews()
@@ -164,4 +175,9 @@ QString Shotwin::mappedFile(const QString& file)
         }
     }
     return QString();
+}
+
+QStringList Shotwin::getTagsForPhoto(int id)
+{
+    return tagModel->getTagsForPhoto(id);
 }

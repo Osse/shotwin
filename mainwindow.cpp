@@ -89,6 +89,10 @@ void MainWindow::initModelsAndViews()
     setupTree(ui->tags);
     ui->tags->setModel(shotwin->getTagModel());
     connect(ui->tags, &QTreeView::clicked, shotwin, &Shotwin::selectTag);
+    connect(shotwin, &Shotwin::tagSelected, ui->tags, &QTreeView::setCurrentIndex);
+
+    ui->tags->setModel(shotwin->getTagModel());
+    connect(ui->tags, &QTreeView::clicked, shotwin, &Shotwin::selectTag);
 
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider(shotwin->getPhotoModel()));
 
@@ -98,12 +102,17 @@ void MainWindow::initModelsAndViews()
 
     rootContext->setContextProperty("photoListModel", shotwin->getPhotoList());
     rootContext->setContextProperty("eventListModel", shotwin->getEventList());
+    rootContext->setContextProperty("tagsModel", shotwin->getTagModel());
     rootContext->setContextProperty("shade", QSettings().value("shade", 128).toInt());
     ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/Main.qml"));
 
     QObject* eventView = ui->photoView->rootObject()->findChild<QObject*>("eventView");
     if (eventView)
         connect(eventView, SIGNAL(eventDoubleClicked(int)), shotwin, SLOT(openEvent(int)));
+
+    QObject* photoView = ui->photoView->rootObject()->findChild<QObject*>("photoView");
+    if (photoView)
+        connect(photoView, SIGNAL(tagClicked(QString)), shotwin, SLOT(selectTagByString(QString)));
 }
 
 void MainWindow::setupTree(QTreeView* tree)
