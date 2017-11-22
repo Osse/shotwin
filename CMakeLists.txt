@@ -29,6 +29,7 @@ set(SOURCES
     models/eventortagfilteredphotomodel.cpp
     models/photoitem.cpp
     models/photomodel.cpp
+    models/tagmodel.cpp
     models/treeproxymodel.cpp
     settingsdialog.cpp
     shotwin.cpp
