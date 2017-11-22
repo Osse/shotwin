@@ -11,6 +11,7 @@ class EventModel;
 class EventOrTagFilteredPhotoModel;
 class PhotoModel;
 class TreeProxyModel;
+class TagModel;
 
 class Shotwin : public QObject
 {
@@ -24,6 +25,7 @@ public:
     QAbstractItemModel* getEventList();
     QAbstractItemModel* getPhotoList();
     QAbstractItemModel* getPhotoModel();
+    QAbstractItemModel* getTagModel();
 
     QMap<QString, QVariant> getMap() const;
     void setMap(const QMap<QString, QVariant>& value);
@@ -38,6 +40,7 @@ signals:
 public slots:
     void selectEvent(const QModelIndex& index);
     void openEvent(int index);
+    void selectTag(const QModelIndex& index);
 
 private:
     bool initDbViews();
@@ -50,6 +53,8 @@ private:
     DateFilteredEventModel* eventListModel = nullptr;
 
     TreeProxyModel* eventTreeModel = nullptr;
+
+    TagModel* tagModel = nullptr;
 
     QMap<QString, QVariant> map;
 };

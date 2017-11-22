@@ -6,6 +6,7 @@
 #include "eventortagfilteredphotomodel.h"
 #include "photoitem.h"
 #include "photomodel.h"
+#include "tagmodel.h"
 #include "treeproxymodel.h"
 
 #include <QSettings>
@@ -43,6 +44,7 @@ bool Shotwin::initModels()
     });
     eventTreeModel->setSourceModel(eventModel);
 
+    tagModel = new TagModel(this);
     return true;
 }
 
@@ -64,6 +66,11 @@ QAbstractItemModel* Shotwin::getPhotoList()
 QAbstractItemModel* Shotwin::getPhotoModel()
 {
     return photoModel;
+}
+
+QAbstractItemModel* Shotwin::getTagModel()
+{
+    return tagModel;
 }
 
 void Shotwin::selectEvent(const QModelIndex& index)
@@ -99,6 +106,13 @@ void Shotwin::openEvent(int index)
         auto item = static_cast<EventItem*>(sourceClickedEvent.internalPointer());
         photoListModel->setEventId(item->getEventId());
     }
+}
+
+void Shotwin::selectTag(const QModelIndex& index)
+{
+    auto tagItem = static_cast<TagModel::TagItem*>(index.internalPointer());
+    photoListModel->setPhotoIds(tagItem->photos);
+    emit photoListRequested();
 }
 
 bool Shotwin::initDbViews()
