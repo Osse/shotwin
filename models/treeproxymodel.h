@@ -28,6 +28,8 @@ public:
     using GroupingDataCbType = std::function<std::vector<QVariant>(const QModelIndex&)>;
     void setGroupingDataCb(const GroupingDataCbType& value);
     void setSourceDataCb(const GroupingDataCbType& value);
+    using AlternateDisplayDataCbType = std::function<QVariant(const QVariant& value)>;
+    void setAlternateDisplayDataCb(const AlternateDisplayDataCbType& value);
 
     void setSourceModel(QAbstractItemModel* sourceModel) override;
 
@@ -49,6 +51,7 @@ private:
 private:
     GroupingDataCbType getGroupingData;
     GroupingDataCbType getSourceData;
+    AlternateDisplayDataCbType getAlternateDisplayData;
 
     // All coordinates
     // std::map<Coordinate, CoordinatePtr> coordinatesMap;

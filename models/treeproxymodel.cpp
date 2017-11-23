@@ -115,8 +115,12 @@ Qt::ItemFlags TreeProxyModel::flags(const QModelIndex& index) const
 QVariant TreeProxyModel::data(const QModelIndex& proxyIndex, int role) const
 {
     auto sourceIndex = mapToSource(proxyIndex);
-    if (sourceIndex.isValid())
-        return sourceModel()->data(sourceIndex, role);
+    if (sourceIndex.isValid()) {
+        if (getAlternateDisplayData && role == Qt::DisplayRole)
+            return getAlternateDisplayData(sourceModel()->data(sourceIndex, role));
+        else
+            return sourceModel()->data(sourceIndex, role);
+    }
     else if (role == Qt::DecorationRole)
         return groupIcon;
     else if (role == SourceDataRole) {
@@ -217,6 +221,11 @@ QModelIndex TreeProxyModel::getModelIndex(const TreeProxyModel::Coordinate& coor
 QModelIndex TreeProxyModel::createIndex(int row, const CoordinatePtr& coordinate) const
 {
     return createIndex(row, 0, static_cast<void*>(coordinate.get()));
+}
+
+void TreeProxyModel::setAlternateDisplayDataCb(const AlternateDisplayDataCbType& value)
+{
+    getAlternateDisplayData = value;
 }
 
 void TreeProxyModel::setGroupingDataCb(const GroupingDataCbType& value)
