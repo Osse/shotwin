@@ -26,6 +26,7 @@ public:
     QAbstractItemModel* getPhotoList();
     QAbstractItemModel* getPhotoModel();
     QAbstractItemModel* getTagModel();
+    QAbstractItemModel* getFileSystemModel();
 
     QMap<QString, QVariant> getMap() const;
     void setMap(const QMap<QString, QVariant>& value);
@@ -56,6 +57,7 @@ private:
     DateFilteredEventModel* eventListModel = nullptr;
 
     TreeProxyModel* eventTreeModel = nullptr;
+    TreeProxyModel* fileSystemModel = nullptr;
 
     TagModel* tagModel = nullptr;
 

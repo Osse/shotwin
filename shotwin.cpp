@@ -12,6 +12,7 @@
 #include <QSettings>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QStringList>
 
 Shotwin::Shotwin(QObject* parent) : QObject(parent)
 {
@@ -44,6 +45,17 @@ bool Shotwin::initModels()
     });
     eventTreeModel->setSourceModel(eventModel);
 
+    fileSystemModel = new TreeProxyModel(this);
+    fileSystemModel->setGroupingDataCb([](const QModelIndex& index) {
+        auto photoItem = static_cast<const PhotoItem*>(index.internalPointer());
+        auto path = photoItem->getFilename();
+        auto split = path.split("/", QString::SkipEmptyParts);
+        return std::vector<QVariant>(split.begin(), split.begin() + split.length() - 1);
+    });
+    fileSystemModel->setAlternateDisplayDataCb(
+        [](const QVariant& value) { return value.toString().split("/", QString::SkipEmptyParts).last(); });
+    fileSystemModel->setSourceModel(photoModel);
+
     tagModel = new TagModel(this);
     return true;
 }
@@ -71,6 +83,11 @@ QAbstractItemModel* Shotwin::getPhotoModel()
 QAbstractItemModel* Shotwin::getTagModel()
 {
     return tagModel;
+}
+
+QAbstractItemModel* Shotwin::getFileSystemModel()
+{
+    return fileSystemModel;
 }
 
 void Shotwin::selectEvent(const QModelIndex& index)

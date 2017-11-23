@@ -91,8 +91,15 @@ void MainWindow::initModelsAndViews()
     connect(ui->tags, &QTreeView::clicked, shotwin, &Shotwin::selectTag);
     connect(shotwin, &Shotwin::tagSelected, ui->tags, &QTreeView::setCurrentIndex);
 
-    ui->tags->setModel(shotwin->getTagModel());
-    connect(ui->tags, &QTreeView::clicked, shotwin, &Shotwin::selectTag);
+    setupTree(ui->fileTree);
+    ui->fileTree->setModel(shotwin->getFileSystemModel());
+    int depth = 0;
+    QModelIndex index;
+    while (ui->fileTree->model()->rowCount(index) == 1) {
+        index = ui->fileTree->model()->index(0, 0, index);
+        depth++;
+    }
+    ui->fileTree->expandToDepth(depth - 1);
 
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider(shotwin->getPhotoModel()));
 
