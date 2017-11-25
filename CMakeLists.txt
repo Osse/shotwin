@@ -20,7 +20,7 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 14)
 
-find_package(Qt5 COMPONENTS Widgets Sql QuickWidgets)
+find_package(Qt5 COMPONENTS Core Widgets Sql QuickWidgets Multimedia)
 
 set(SOURCES
     main.cpp
@@ -67,5 +67,28 @@ if(QML_FROM_SOURCE)
     add_definitions("-DCMAKE_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\"")
 endif()
 
+get_target_property(libtype Qt5::Core TYPE)
+if(libtype STREQUAL "STATIC_LIBRARY")
+    get_target_property(qtcorelocation Qt5::Core LOCATION)
+    get_filename_component(qtcorepath "${qtcorelocation}" DIRECTORY)
+    set(qtprefix "${qtcorepath}/..")
+    set(qtqmlprefix "${qtprefix}/share/qt5/qml")
+    target_link_libraries(${PROJECT_NAME}
+        ${qtqmlprefix}/QtGraphicalEffects/libqtgraphicaleffectsplugin.a
+        ${qtqmlprefix}/QtGraphicalEffects/private/libqtgraphicaleffectsprivate.a
+        ${qtqmlprefix}/QtMultimedia/libdeclarative_multimedia.a
+        ${qtqmlprefix}/QtQuick.2/libqtquick2plugin.a
+        ${qtqmlprefix}/QtQuick/Controls/libqtquickcontrolsplugin.a
+        ${qtqmlprefix}/QtQuick/Layouts/libqquicklayoutsplugin.a
+        ${qtqmlprefix}/QtQuick/Window.2/libwindowplugin.a
+        ${qtprefix}/lib/libQt5MultimediaQuick_p.a
+    )
+endif()
+
 target_include_directories(${PROJECT_NAME} PUBLIC models)
-target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Sql Qt5::QuickWidgets)
+target_link_libraries(${PROJECT_NAME}
+    Qt5::Widgets
+    Qt5::Sql
+    Qt5::QuickWidgets
+    Qt5::Multimedia
+)

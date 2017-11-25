@@ -4,6 +4,8 @@
 #include <QApplication>
 #include <QSettings>
 
+#include "initstaticplugins.h"
+
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
