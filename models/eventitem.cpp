@@ -31,10 +31,7 @@ EventItem::~EventItem()
 
 QString EventItem::displayString() const
 {
-    if (!eventName.isEmpty())
-        return eventName;
-    else
-        return createEventName();
+    return eventName;
 }
 
 QString EventItem::getThumbnailId() const

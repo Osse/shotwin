@@ -50,21 +50,14 @@ CenteredGridView {
             }
 
             function eventCountString(photos, videos) {
-                var string = "";
+                var format = "%1 %2%3";
+                var string = []
                 if (photos)
-                    string += photos + " photo";
-                if (photos > 1)
-                    string += "s"
-
-                if (photos && videos)
-                    string += ", "
-
+                    string.push(format.arg(photos).arg("photo").arg(photos > 1 ? "s" : ""))
                 if (videos)
-                    string += videos + " video";
-                if (videos > 1)
-                    string += "s";
+                    string.push(format.arg(videos).arg("video").arg(videos > 1 ? "s" : ""))
 
-                return string;
+                return string.join(", ");
             }
 
             ColumnLayout {
@@ -73,23 +66,15 @@ CenteredGridView {
                 //anchors.bottom: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
                 spacing: 2
-                Text {
-                    id: title
-                    text: display
-                    color: "white"
-                    font.bold: true
-                }
-
-                Text {
-                    id: span
-                    text: timespan
-                    color: "white"
-                }
-
-                Text {
-                    id: event
-                    text: parent.parent.eventCountString(photocount, videocount)
-                    color: "white"
+                property string color: container.shadef > 0.6 ? "black" : "white"
+                Repeater {
+                    model: display.length ? [ display, timespan, parent.parent.eventCountString(photocount, videocount) ] :
+                                            [ timespan, parent.parent.eventCountString(photocount, videocount) ]
+                    Text {
+                        text: modelData
+                        color: parent.color
+                        font.bold: index == 0 ? true : false
+                    }
                 }
             }
 
