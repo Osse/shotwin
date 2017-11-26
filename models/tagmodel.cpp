@@ -12,8 +12,6 @@ const QString tagListQuery("select * from TagTable");
 
 TagModel::TagModel(QObject* parent) : QAbstractListModel(parent)
 {
-    auto style = QApplication::style();
-    icon = style->standardPixmap(QStyle::SP_DriveDVDIcon);
     init();
 }
 

@@ -34,7 +34,7 @@ private:
 
     std::vector<TagItem> tags;
     std::multimap<int, QString> idToTags;
-    QPixmap icon;
+    QPixmap icon{":/icons/one-tag.png"};
 };
 
 #endif  // TAGMODEL_H

@@ -37,7 +37,7 @@ QVariant EventModel::data(const QModelIndex& index, int role) const
     if (role == Qt::DisplayRole)
         return eventList[row].displayString();
     else if (role == Qt::DecorationRole)
-        return eventList[row].getIcon();
+        return icon;
     else if (role == StartTimeRole)
         return eventList[row].getStartTime();
     else if (role == EndTimeRole)

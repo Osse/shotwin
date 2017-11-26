@@ -76,12 +76,6 @@ QString EventItem::getEventTimeSpan() const
         return QString(span).arg(getStartTime().date().toString(startFormat));
 }
 
-QPixmap EventItem::getIcon() const
-{
-    auto style = QApplication::style();
-    return style->standardPixmap(QStyle::SP_FileIcon);
-}
-
 QDateTime EventItem::getStartTime() const
 {
     return startTime;

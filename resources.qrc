@@ -6,5 +6,7 @@
         <file>FullScreenView.qml</file>
         <file>Main.qml</file>
         <file>PhotoView.qml</file>
+        <file>icons/one-event.png</file>
+        <file>icons/one-tag.png</file>
     </qresource>
 </RCC>

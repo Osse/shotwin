@@ -37,6 +37,7 @@ private:
     void init();
 
 private:
+    QPixmap icon{":/icons/one-event.png"};
     std::vector<EventItem> eventList;
 };
 

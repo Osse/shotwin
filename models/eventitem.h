@@ -20,7 +20,6 @@ public:
     QString displayString() const;
     QString getThumbnailId() const;
     QString getEventTimeSpan() const;
-    QPixmap getIcon() const;
     QDateTime getStartTime() const;
     QDateTime getEndTime() const;
     int sortData() const;
