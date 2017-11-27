@@ -8,8 +8,12 @@
 class PhotoItem
 {
 public:
-    PhotoItem(int photoid, const QDateTime& exposureTime, const QString& fileName);
-    PhotoItem(int photoid, int eventId, const QDateTime& exposureTime, const QString& fileName, const QString& type);
+    PhotoItem(int photoid,
+              int eventId,
+              const QDateTime& exposureTime,
+              const QString& fileName,
+              const QString& type,
+              int rating);
     virtual ~PhotoItem();
 
     QString displayString() const;
@@ -25,12 +29,15 @@ public:
 
     friend bool operator<(const PhotoItem& lhs, const PhotoItem& rhs);
 
+    int getRating() const;
+
 private:
     int photoId;
     int eventId;
     QDateTime exposureTime;
     QString fileName;
     QString type;
+    int rating = -1;
 };
 
 #endif  // PHOTOITEM_H

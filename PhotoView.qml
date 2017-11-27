@@ -68,7 +68,10 @@ Item {
 
                     borderWidth: 1
                     borderColor: "white"
+
+                    rating: model.rating
                 }
+
                 Text {
                     function formatTagsList(strings, hovered) {
                         var linkformat = "<a href=\"%1\">%1</a>";

@@ -1,13 +1,8 @@
 #include "photoitem.h"
 
-PhotoItem::PhotoItem(int photoId, const QDateTime& exposureTime, const QString& fileName)
-    : photoId(photoId), exposureTime(exposureTime), fileName(fileName)
-{
-}
-
 PhotoItem::PhotoItem(
-    int photoId, int eventId, const QDateTime& exposureTime, const QString& fileName, const QString& type)
-    : photoId(photoId), eventId(eventId), exposureTime(exposureTime), fileName(fileName), type(type)
+    int photoId, int eventId, const QDateTime& exposureTime, const QString& fileName, const QString& type, int rating)
+    : photoId(photoId), eventId(eventId), exposureTime(exposureTime), fileName(fileName), type(type), rating(rating)
 {
 }
 
@@ -56,6 +51,11 @@ int PhotoItem::getEventId() const
 QString PhotoItem::getType() const
 {
     return type;
+}
+
+int PhotoItem::getRating() const
+{
+    return rating;
 }
 
 int PhotoItem::getPhotoId() const

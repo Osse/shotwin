@@ -7,7 +7,7 @@
 #include <QSqlQuery>
 
 const QString photoListQuery(
-    "select id, event_id, exposure_time, filename, type from PhotoVideoView order by exposure_time desc;");
+    "select id, event_id, exposure_time, filename, type, rating from PhotoVideoView order by exposure_time desc;");
 
 PhotoModel::PhotoModel(QObject* parent) : QAbstractListModel(parent)
 {
@@ -53,6 +53,8 @@ QVariant PhotoModel::data(const QModelIndex& index, int role) const
         return photoList[row].getExposureTime();
     else if (role == TypeRole)
         return photoList[row].getType();
+    else if (role == RatingRole)
+        return photoList[row].getRating();
     else
         return QVariant();
 }
@@ -85,6 +87,7 @@ QHash<int, QByteArray> PhotoModel::roleNames() const
     roleNames[EventIdRole] = "eventid";
     roleNames[PhotoIdRole] = "id";
     roleNames[TypeRole] = "type";
+    roleNames[RatingRole] = "rating";
     return roleNames;
 }
 
@@ -145,10 +148,11 @@ void PhotoModel::init()
         int photoId = query.value("id").toInt();
         int eventId = query.value("event_id").toInt();
         auto exposureTime = QDateTime::fromSecsSinceEpoch(query.value("exposure_time").toInt());
+        int rating = query.value("rating").toInt();
         QString fileName = query.value("filename").toString();
         QString type = query.value("type").toString();
 
-        photoList.push_back(PhotoItem(photoId, eventId, exposureTime, fileName, type));
+        photoList.push_back(PhotoItem(photoId, eventId, exposureTime, fileName, type, rating));
         idPhotoMap[photoId] = photoList.size() - 1;
     }
 

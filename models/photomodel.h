@@ -42,6 +42,7 @@ public:
         PhotoIdRole,
         EventIdRole,
         TypeRole,
+        RatingRole,
     };
 
 private:

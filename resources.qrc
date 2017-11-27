@@ -8,5 +8,6 @@
         <file>PhotoView.qml</file>
         <file>icons/one-event.png</file>
         <file>icons/one-tag.png</file>
+        <file>icons/one-star.svg</file>
     </qresource>
 </RCC>

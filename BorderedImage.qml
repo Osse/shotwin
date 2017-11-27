@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtGraphicalEffects 1.0
+import QtQuick.Layouts 1.1
 
 Item {
     property alias source: img.source
@@ -8,6 +9,7 @@ Item {
     property alias asynchronous: img.asynchronous
 
     property int borderWidth: 0
+    property int rating: 0
     property string borderColor: "white"
     property bool hovered: false
 
@@ -40,5 +42,21 @@ Item {
         border.width: parent.borderWidth
         border.color: parent.borderColor
         color: "transparent"
+    }
+
+    Row {
+        anchors.bottom: borderrect.bottom
+        anchors.left: borderrect.left
+        leftPadding: parent.borderWidth
+        bottomPadding: parent.borderWidth
+
+        Repeater {
+            model: rating
+            Image {
+                source: "qrc:/icons/one-star.svg"
+                sourceSize.width: 12
+                sourceSize.height: 12
+            }
+        }
     }
 }

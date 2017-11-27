@@ -147,9 +147,9 @@ bool Shotwin::initDbViews()
 {
     QString createPhotoVideoView(
         "create temporary view PhotoVideoView as "
-        "select id, event_id, exposure_time, filename, 'photo' as type from PhotoTable "
+        "select id, event_id, exposure_time, filename, rating, 'photo' as type from PhotoTable "
         "union all "
-        "select id, event_id, exposure_time, filename, 'video' as type from VideoTable;");
+        "select id, event_id, exposure_time, filename, rating, 'video' as type from VideoTable;");
 
     QString createEventViewWithStartTime(
         "create temporary view EventViewWithTimes as "
