@@ -66,7 +66,7 @@ QVariant TagModel::headerData(int section, Qt::Orientation orientation, int role
     return QVariant();
 }
 
-QStringList TagModel::getTagsForPhoto(int id)
+QStringList TagModel::getTagsForPhoto(int id) const
 {
     QStringList tags;
     auto startEnd = idToTags.equal_range(id);

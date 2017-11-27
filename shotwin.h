@@ -21,18 +21,18 @@ public:
 
     bool initModels();
 
-    QAbstractItemModel* getEventTree();
-    QAbstractItemModel* getEventList();
-    QAbstractItemModel* getPhotoList();
-    QAbstractItemModel* getPhotoModel();
-    QAbstractItemModel* getTagModel();
-    QAbstractItemModel* getFileSystemModel();
+    QAbstractItemModel* getEventTree() const;
+    QAbstractItemModel* getEventList() const;
+    QAbstractItemModel* getPhotoList() const;
+    QAbstractItemModel* getPhotoModel() const;
+    QAbstractItemModel* getTagModel() const;
+    QAbstractItemModel* getFileSystemModel() const;
 
     QMap<QString, QVariant> getMap() const;
     void setMap(const QMap<QString, QVariant>& value);
 
-    Q_INVOKABLE QString mappedFile(const QString& file);
-    Q_INVOKABLE QStringList getTagsForPhoto(int id);
+    Q_INVOKABLE QString mappedFile(const QString& file) const;
+    Q_INVOKABLE QStringList getTagsForPhoto(int id) const;
 
 signals:
     void eventListRequested();

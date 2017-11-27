@@ -27,7 +27,7 @@ public:
         std::vector<int> photos;
     };
 
-    QStringList getTagsForPhoto(int id);
+    QStringList getTagsForPhoto(int id) const;
 
 private:
     void init();

@@ -60,32 +60,32 @@ bool Shotwin::initModels()
     return true;
 }
 
-QAbstractItemModel* Shotwin::getEventTree()
+QAbstractItemModel* Shotwin::getEventTree() const
 {
     return eventTreeModel;
 }
 
-QAbstractItemModel* Shotwin::getEventList()
+QAbstractItemModel* Shotwin::getEventList() const
 {
     return eventListModel;
 }
 
-QAbstractItemModel* Shotwin::getPhotoList()
+QAbstractItemModel* Shotwin::getPhotoList() const
 {
     return photoListModel;
 }
 
-QAbstractItemModel* Shotwin::getPhotoModel()
+QAbstractItemModel* Shotwin::getPhotoModel() const
 {
     return photoModel;
 }
 
-QAbstractItemModel* Shotwin::getTagModel()
+QAbstractItemModel* Shotwin::getTagModel() const
 {
     return tagModel;
 }
 
-QAbstractItemModel* Shotwin::getFileSystemModel()
+QAbstractItemModel* Shotwin::getFileSystemModel() const
 {
     return fileSystemModel;
 }
@@ -182,7 +182,7 @@ void Shotwin::setMap(const QMap<QString, QVariant>& value)
     map = value;
 }
 
-QString Shotwin::mappedFile(const QString& file)
+QString Shotwin::mappedFile(const QString& file) const
 {
     QString fileName(file);
     for (auto it = map.begin(); it != map.end(); ++it) {
@@ -194,7 +194,7 @@ QString Shotwin::mappedFile(const QString& file)
     return QString();
 }
 
-QStringList Shotwin::getTagsForPhoto(int id)
+QStringList Shotwin::getTagsForPhoto(int id) const
 {
     return tagModel->getTagsForPhoto(id);
 }
