@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 
 project(Shotwin)
 
+option(QML_FROM_SOURCE "Load QML files from source" OFF)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(GetGitRevisionDescription)
@@ -61,6 +63,9 @@ add_executable(${PROJECT_NAME}
     ${QMLFILES}
 )
 
-add_definitions("-DCMAKE_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\"")
+if(QML_FROM_SOURCE)
+    add_definitions("-DCMAKE_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\"")
+endif()
+
 target_include_directories(${PROJECT_NAME} PUBLIC models)
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Sql Qt5::QuickWidgets)

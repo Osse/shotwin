@@ -48,6 +48,7 @@ MainWindow::MainWindow(Shotwin* shotwin, QWidget* parent)
     connect(ui->actionAbout_Qt, &QAction::triggered, this, &MainWindow::aboutQt);
     connect(ui->actionSettings, &QAction::triggered, this, &MainWindow::showSettings);
 
+#ifdef CMAKE_SOURCE_DIR
     auto reloadQml = new QShortcut(Qt::Key_F5, this);
     connect(reloadQml, &QShortcut::activated, [this]() {
         auto pv = ui->photoView;
@@ -57,6 +58,7 @@ MainWindow::MainWindow(Shotwin* shotwin, QWidget* parent)
         pv->setSource(tmp);
         ui->photoView->rootContext()->setContextProperty("stackIndex", 1);
     });
+#endif
 
     ui->splitter->setSizes({33000, 67000});
     ui->mainToolBar->hide();
@@ -135,7 +137,11 @@ void MainWindow::initModelsAndViews()
     rootContext->setContextProperty("eventListModel", shotwin->getEventList());
     rootContext->setContextProperty("tagsModel", shotwin->getTagModel());
     rootContext->setContextProperty("shade", QSettings().value("shade", 128).toInt());
+#ifdef CMAKE_SOURCE_DIR
     ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/Main.qml"));
+#else
+    ui->photoView->setSource(QUrl("qrc:/Main.qml"));
+#endif
 
     QObject* eventView = ui->photoView->rootObject()->findChild<QObject*>("eventView");
     if (eventView)
