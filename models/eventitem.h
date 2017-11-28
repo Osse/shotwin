@@ -22,12 +22,9 @@ public:
     QString getEventTimeSpan() const;
     QDateTime getStartTime() const;
     QDateTime getEndTime() const;
-    int sortData() const;
     int getEventId() const;
     int getPhotos() const;
     int getVideos() const;
-
-    friend bool operator<(const EventItem& lhs, const EventItem& rhs);
 
 private:
     QString createEventName() const;
@@ -43,5 +40,7 @@ private:
     int photos;
     int videos;
 };
+
+bool operator<(const EventItem& lhs, const EventItem& rhs);
 
 #endif  // EVENTITEM_H

@@ -28,16 +28,6 @@ QString PhotoItem::getFilename() const
     return fileName;
 }
 
-QPixmap PhotoItem::getIcon() const
-{
-    return QPixmap();
-}
-
-int PhotoItem::sortData() const
-{
-    return exposureTime.toSecsSinceEpoch();
-}
-
 QDateTime PhotoItem::getExposureTime() const
 {
     return exposureTime;
@@ -65,5 +55,5 @@ int PhotoItem::getPhotoId() const
 
 bool operator<(const PhotoItem& lhs, const PhotoItem& rhs)
 {
-    return lhs.exposureTime < rhs.exposureTime;
+    return lhs.getExposureTime() < rhs.getExposureTime();
 }

@@ -107,8 +107,3 @@ bool operator<(const EventItem& lhs, const EventItem& rhs)
 {
     return lhs.getStartTime() < rhs.getStartTime();
 }
-
-int EventItem::sortData() const
-{
-    return -getStartTime().toSecsSinceEpoch();
-}
