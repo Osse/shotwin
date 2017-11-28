@@ -9,6 +9,7 @@
 #include "tagmodel.h"
 #include "treeproxymodel.h"
 
+#include <QAbstractItemView>
 #include <QSettings>
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -141,6 +142,28 @@ void Shotwin::selectTagByString(const QString& tag)
     selectTag(tagIndex.first());
     emit tagSelected(tagIndex.first());
     emit eventSelected(QModelIndex());
+}
+
+void Shotwin::resetFilterAndShowTree()
+{
+    auto view = static_cast<QAbstractItemView*>(sender());
+    if (view == nullptr)
+        return;
+
+    auto model = view->model();
+
+    if (model == eventTreeModel) {
+        eventListModel->resetFilter();
+        emit eventListRequested();
+    }
+    else if (model == fileSystemModel) {
+        photoListModel->setEventIds({});
+        emit photoListRequested();
+    }
+    else if (model == tagModel) {
+        photoListModel->setPhotoIds(tagModel->getAllTaggedPhotos());
+        emit photoListRequested();
+    }
 }
 
 bool Shotwin::initDbViews()

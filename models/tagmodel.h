@@ -28,6 +28,7 @@ public:
     };
 
     QStringList getTagsForPhoto(int id) const;
+    std::vector<int> getAllTaggedPhotos() const;
 
 private:
     void init();

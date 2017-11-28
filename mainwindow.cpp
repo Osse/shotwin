@@ -151,6 +151,8 @@ void MainWindow::setupTree(QTreeView* tree)
     tree->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     tree->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
     tree->setSizePolicy(tree->sizePolicy().horizontalPolicy(), QSizePolicy::Fixed);
+    tree->header()->setSectionsClickable(true);
+    connect(tree->header(), &QHeaderView::sectionClicked, shotwin, &Shotwin::resetFilterAndShowTree);
 }
 
 void MainWindow::aboutShotwin()

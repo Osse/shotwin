@@ -79,6 +79,17 @@ QStringList TagModel::getTagsForPhoto(int id) const
     return tags;
 }
 
+std::vector<int> TagModel::getAllTaggedPhotos() const
+{
+    std::vector<int> photos;
+    photos.reserve(idToTags.size());
+
+    for (const auto& kv : idToTags)
+        photos.push_back(kv.first);
+
+    return photos;
+}
+
 void TagModel::init()
 {
     auto db = QSqlDatabase::database();

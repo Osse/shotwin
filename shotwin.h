@@ -45,6 +45,7 @@ public slots:
     void openEvent(int index);
     void selectTag(const QModelIndex& index);
     void selectTagByString(const QString& tag);
+    void resetFilterAndShowTree();
 
 private:
     bool initDbViews();
