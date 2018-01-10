@@ -64,7 +64,7 @@ Item {
 
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.top: parent.top
-                    source: "image://thumbnails/" + thumbnail //+ "/" + id + "/" + type + "/" + mappedfilename
+                    source: "image://thumbnails/" + thumbnail
 
                     borderWidth: 1
                     borderColor: "white"

@@ -39,9 +39,8 @@ QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSi
 
     int thumbSize = std::max(requestedSize.width(), requestedSize.height()) > 128 ? 360 : 128;
 
-    QString thumbId = id.contains("/") ? id.section("/", 0, 0) : id;
-    QString thumbPath = QString("%1/thumbs%2/%3.jpg").arg(cachePath, QString::number(thumbSize), thumbId);
-    QString videoFramePath = QString("%1/videoframes/%2.jpg").arg(cachePath, thumbId);
+    QString thumbPath = QString("%1/thumbs%2/%3.jpg").arg(cachePath, QString::number(thumbSize), id);
+    QString videoFramePath = QString("%1/videoframes/%2.jpg").arg(cachePath, id);
 
     if (QFile::exists(thumbPath))
         return QImage(thumbPath);
@@ -49,21 +48,15 @@ QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSi
     QString filename;
     QString type;
 
-    if (id.contains("/")) {
-        type = id.section("/", 1, 1);
-        filename = id.section("/", 2);
-    }
-    else {
-        auto matches = photoListModel->match(photoListModel->index(0, 0), PhotoModel::ThumnailRole, id);
-        QModelIndex match;
-        if (matches.size())
-            match = matches.first();
-        else
-            return generateFallback(requestedSize);
+    auto matches = photoListModel->match(photoListModel->index(0, 0), PhotoModel::ThumnailRole, id);
+    QModelIndex match;
+    if (matches.size())
+        match = matches.first();
+    else
+        return generateFallback(requestedSize);
 
-        filename = photoListModel->data(match, PhotoModel::MappedFilenameRole).toString();
-        type = photoListModel->data(match, PhotoModel::TypeRole).toString();
-    }
+    filename = photoListModel->data(match, PhotoModel::MappedFilenameRole).toString();
+    type = photoListModel->data(match, PhotoModel::TypeRole).toString();
 
     QImage image;
     if (type == "photo")
