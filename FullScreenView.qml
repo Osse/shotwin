@@ -62,20 +62,36 @@ GridView {
                 }
                 Component {
                     id: video
-                    Video {
-                        source: "file:///" + mappedfilename
-                        onStatusChanged: if (status == MediaPlayer.Loaded) { layout.currentIndex = 1; }
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: {
-                                if (parent.playbackState != MediaPlayer.PlayingState)
-                                    parent.play();
-                                else
-                                    parent.pause();
+                    StackLayout {
+                        id: videostack
+                        Image {
+                            id: videoframe
+                            source: "image://videoframes/" + thumbnail
+                            fillMode: Image.PreserveAspectFit
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    videostack.currentIndex = 1;
+                                    videoplayer.play();
+                                }
                             }
-                            onDoubleClicked: {
-                                parent.stop()
-                                stack.currentIndex = 0
+                        }
+                        Video {
+                            id: videoplayer
+                            source: "file:///" + mappedfilename
+                            onStatusChanged: if (status == MediaPlayer.Loaded) { layout.currentIndex = 1; }
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    if (parent.playbackState != MediaPlayer.PlayingState)
+                                        parent.play();
+                                    else
+                                        parent.pause();
+                                }
+                                onDoubleClicked: {
+                                    parent.stop()
+                                    stack.currentIndex = 0
+                                }
                             }
                         }
                     }
