@@ -37,5 +37,4 @@ HEADERS = mainwindow.h \
           models/treeproxymodel.h \
           settingsdialog.h \
           shotwin.h \
-          thumbnailprovider.h \
-          workaroundquickwidget.h
+          thumbnailprovider.h

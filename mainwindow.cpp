@@ -14,6 +14,8 @@
 #include <QMessageBox>
 #include <QQmlContext>
 #include <QQmlEngine>
+#include <QQuickItem>
+#include <QQuickWidget>
 #include <QSettings>
 #include <QShortcut>
 #include <QSqlDatabase>
