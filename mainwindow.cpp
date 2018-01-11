@@ -2,7 +2,9 @@
 #include "ui_mainwindow.h"
 
 #include "eventmodel.h"
+#ifndef GIT_VERSION
 #include "git_version.h"
+#endif
 #include "settingsdialog.h"
 #include "shotwin.h"
 #include "thumbnailprovider.h"
