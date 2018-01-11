@@ -17,11 +17,11 @@ EventItem::EventItem(int eventId,
                      const QString& primarySourceId)
     : eventId(eventId),
       eventName(eventName),
+      primarySourceId(primarySourceId),
       startTime(startTime),
       endTime(endTime),
       photos(photos),
-      videos(videos),
-      primarySourceId(primarySourceId)
+      videos(videos)
 {
 }
 

@@ -42,7 +42,7 @@ public:
 };
 
 MainWindow::MainWindow(Shotwin* shotwin, QWidget* parent)
-    : shotwin(shotwin), QMainWindow(parent), ui(new Ui::MainWindow)
+    : QMainWindow(parent), ui(new Ui::MainWindow), shotwin(shotwin)
 {
     ui->setupUi(this);
 
