@@ -14,12 +14,10 @@ SettingsDialog::SettingsDialog(QWidget* parent) : QDialog(parent), ui(new Ui::Se
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &SettingsDialog::store);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &SettingsDialog::revert);
-    connect(ui->pbBrowseForCache, &QPushButton::clicked, this, &SettingsDialog::chooseCachePath);
     connect(ui->pbBrowseForFfmpeg, &QPushButton::clicked, this, &SettingsDialog::chooseFfmpegPath);
 
     QSettings settings;
 
-    ui->leCachePath->setText(settings.value("cachepath", QString()).toString());
     ui->leFfmpegCmd->setText(settings.value("ffmpegcmd", "ffmpeg").toString());
 
     int shade = settings.value("shade", 128).toInt();
@@ -41,17 +39,9 @@ SettingsDialog::~SettingsDialog()
     delete ui;
 }
 
-void SettingsDialog::chooseCachePath()
-{
-    auto currentPath = ui->leCachePath->text();
-    auto newPath = QFileDialog::getExistingDirectory(this, tr("Path to existing cache"), currentPath);
-    if (!newPath.isEmpty())
-        ui->leCachePath->setText(newPath);
-}
-
 void SettingsDialog::chooseFfmpegPath()
 {
-    auto currentPath = ui->leCachePath->text();
+    auto currentPath = ui->leFfmpegCmd->text();
     auto newPath =
         QFileDialog::getOpenFileName(this, tr("Path to ffmpeg executable"), currentPath, tr("Executables (*.exe)"));
     if (!newPath.isEmpty())
@@ -68,7 +58,6 @@ void SettingsDialog::store()
 
     QSettings settings;
     settings.setValue("shade", ui->sliderBgColor->value());
-    settings.setValue("cachepath", ui->leCachePath->text());
     settings.setValue("ffmpegpath", ui->leFfmpegCmd->text());
     settings.setValue("map", map);
 

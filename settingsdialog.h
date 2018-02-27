@@ -21,7 +21,6 @@ signals:
     void bgColorChanged(int value);
 
 private:
-    void chooseCachePath();
     void chooseFfmpegPath();
     void store();
     void revert();

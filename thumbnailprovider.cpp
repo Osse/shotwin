@@ -76,11 +76,6 @@ QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSi
     return image;
 }
 
-void ThumbnailProvider::setThumbnailDirPath(const QString& value)
-{
-    cachePath = value;
-}
-
 QImage ThumbnailProvider::generateFallback(QSize size)
 {
     QImage image(size, QImage::Format_RGB32);
