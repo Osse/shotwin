@@ -1,6 +1,6 @@
 #include "filterflattenproxymodel.h"
 
-#include "PhotoItem.h"
+#include "photoitem.h"
 #include "eventitem.h"
 
 #include <QDebug>
