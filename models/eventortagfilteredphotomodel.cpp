@@ -11,12 +11,12 @@ EventOrTagFilteredPhotoModel::EventOrTagFilteredPhotoModel(QObject* parent) : QS
 
 bool EventOrTagFilteredPhotoModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
 {
-    if (eventIds.size() && photoIds.size() == 0) {
+    if (!eventIds.empty() && photoIds.empty()) {
         auto index = sourceModel()->index(source_row, 0, source_parent);
         int eventId = sourceModel()->data(index, PhotoModel::EventIdRole).toInt();
         return contains(eventIds, eventId);
     }
-    else if (eventIds.size() == 0 && photoIds.size()) {
+    if (eventIds.empty() && !photoIds.empty()) {
         auto index = sourceModel()->index(source_row, 0, source_parent);
         int eventId = sourceModel()->data(index, PhotoModel::PhotoIdRole).toInt();
         return contains(photoIds, eventId);
