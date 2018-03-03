@@ -12,10 +12,6 @@ EventModel::EventModel(QObject* parent) : QAbstractListModel(parent)
     init();
 }
 
-EventModel::~EventModel()
-{
-}
-
 int EventModel::rowCount(const QModelIndex& parent) const
 {
     if (parent.isValid())

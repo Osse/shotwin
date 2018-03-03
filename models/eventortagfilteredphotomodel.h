@@ -11,7 +11,7 @@ class EventOrTagFilteredPhotoModel : public QSortFilterProxyModel
 
 public:
     explicit EventOrTagFilteredPhotoModel(QObject* parent = nullptr);
-    ~EventOrTagFilteredPhotoModel();
+    ~EventOrTagFilteredPhotoModel() = default;
 
     bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 

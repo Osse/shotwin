@@ -28,10 +28,6 @@ ThumbnailProvider::ThumbnailProvider(QAbstractItemModel* photoListModel)
     ffmpegCmd = QSettings().value("ffmpegpath").toString();
 }
 
-ThumbnailProvider::~ThumbnailProvider()
-{
-}
-
 QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSize& requestedSize)
 {
     if (requestedSize == QSize(-1, -1))

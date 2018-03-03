@@ -15,7 +15,7 @@ public:
               int photos,
               int videos,
               const QString& primarySourceId);
-    ~EventItem();
+    ~EventItem() = default;
 
     QString displayString() const;
     QString getThumbnailId() const;

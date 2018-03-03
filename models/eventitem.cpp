@@ -27,10 +27,6 @@ EventItem::EventItem(int eventId,
         this->eventName = createEventName();
 }
 
-EventItem::~EventItem()
-{
-}
-
 QString EventItem::displayString() const
 {
     return eventName;

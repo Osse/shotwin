@@ -14,7 +14,7 @@ public:
               const QString& fileName,
               const QString& type,
               int rating);
-    virtual ~PhotoItem();
+    virtual ~PhotoItem() = default;
 
     QString displayString() const;
     QString getThumbnailId() const;
