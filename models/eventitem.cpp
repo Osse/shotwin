@@ -23,6 +23,8 @@ EventItem::EventItem(int eventId,
       photos(photos),
       videos(videos)
 {
+    if (this->eventName.isEmpty())
+        this->eventName = createEventName();
 }
 
 EventItem::~EventItem()

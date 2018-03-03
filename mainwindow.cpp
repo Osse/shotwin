@@ -21,26 +21,6 @@
 #include <QSqlDatabase>
 #include <QStandardPaths>
 
-class DateFormatProxyModel : public QIdentityProxyModel
-{
-public:
-    DateFormatProxyModel(QObject* parent) : QIdentityProxyModel(parent)
-    {
-    }
-
-    QVariant data(const QModelIndex& index, int role) const
-    {
-        if (role != Qt::DisplayRole)
-            return QIdentityProxyModel::data(index, role);
-
-        auto display = sourceModel()->data(index, role).toString();
-        if (display.isEmpty())
-            return sourceModel()->data(index, EventModel::StartTimeRole).toDate().toString();
-        else
-            return display;
-    }
-};
-
 MainWindow::MainWindow(Shotwin* shotwin, QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), shotwin(shotwin)
 {
@@ -109,9 +89,7 @@ void MainWindow::initModelsAndViews()
         QMessageBox::warning(this, tr("Error"), tr("Failed to set up models."));
 
     setupTree(ui->eventTree);
-    auto proxy = new DateFormatProxyModel(this);
-    proxy->setSourceModel(shotwin->getEventTree());
-    ui->eventTree->setModel(proxy);
+    ui->eventTree->setModel(shotwin->getEventTree());
     ui->eventTree->expandAll();
     connect(ui->eventTree, &QTreeView::clicked, shotwin, &Shotwin::selectEvent);
     connect(shotwin, &Shotwin::eventSelected, ui->eventTree, &QTreeView::setCurrentIndex);
