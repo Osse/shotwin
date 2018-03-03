@@ -24,6 +24,8 @@ private:
     void openDataBaseConnection(const QString& dbName);
     void initModelsAndViews();
     void setupTree(QTreeView* tree);
+    void showTreeMenu(QTreeView* tree);
+    void expandSingleNodes(QTreeView* tree);
     void aboutShotwin();
     void aboutQt();
     void showSettings();

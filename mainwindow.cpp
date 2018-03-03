@@ -101,13 +101,8 @@ void MainWindow::initModelsAndViews()
 
     setupTree(ui->fileTree);
     ui->fileTree->setModel(shotwin->getFileSystemModel());
-    int depth = 0;
-    QModelIndex index;
-    while (ui->fileTree->model()->rowCount(index) == 1) {
-        index = ui->fileTree->model()->index(0, 0, index);
-        depth++;
-    }
-    ui->fileTree->expandToDepth(depth - 1);
+
+    expandSingleNodes(ui->fileTree);
 
     ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider(shotwin->getPhotoModel()));
 
@@ -140,7 +135,41 @@ void MainWindow::setupTree(QTreeView* tree)
     tree->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
     tree->setSizePolicy(tree->sizePolicy().horizontalPolicy(), QSizePolicy::Fixed);
     tree->header()->setSectionsClickable(true);
+    tree->header()->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(tree->header(), &QHeaderView::sectionClicked, shotwin, &Shotwin::resetFilterAndShowTree);
+    connect(tree->header(), &QHeaderView::customContextMenuRequested, [this, tree](const QPoint& pos) {
+        showTreeMenu(tree);
+    });
+}
+
+void MainWindow::showTreeMenu(QTreeView* tree)
+{
+    QMenu menu;
+    if (tree != ui->tags) {
+        menu.addAction("Collapse all", tree, &QTreeView::collapseAll);
+        menu.addAction("Expand all", tree, &QTreeView::expandAll);
+    }
+    if (tree == ui->fileTree)
+        menu.addAction("Expand single nodes", [this]() { expandSingleNodes(ui->fileTree); });
+
+    menu.addAction("Hide", [tree]() { tree->setFixedHeight(tree->header()->height()); });
+    menu.addAction("Show", [tree]() {
+        tree->setMinimumHeight(0);
+        tree->setMaximumHeight(QWIDGETSIZE_MAX);
+    });
+
+    menu.exec(QCursor::pos());
+}
+
+void MainWindow::expandSingleNodes(QTreeView* tree)
+{
+    int depth = 0;
+    QModelIndex index;
+    while (tree->model()->rowCount(index) == 1) {
+        index = tree->model()->index(0, 0, index);
+        depth++;
+    }
+    tree->expandToDepth(depth - 1);
 }
 
 void MainWindow::aboutShotwin()
