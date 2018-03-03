@@ -138,7 +138,7 @@ void Shotwin::selectTag(const QModelIndex& index)
 
 void Shotwin::selectTagByString(const QString& tag)
 {
-    auto tagIndex = tagModel->match(QModelIndex(), Qt::DisplayRole, tag);
+    auto tagIndex = tagModel->match(tagModel->index(0, 0), Qt::DisplayRole, tag);
     selectTag(tagIndex.first());
     emit tagSelected(tagIndex.first());
     emit eventSelected(QModelIndex());
