@@ -1,9 +1,10 @@
 #ifndef SHOTWIN_H
 #define SHOTWIN_H
 
-#include "filterflattenproxymodel.h"
-
 #include <QObject>
+#include <QMap>
+#include <QString>
+#include <QVariant>
 
 class QAbstractItemModel;
 class DateFilteredEventModel;
