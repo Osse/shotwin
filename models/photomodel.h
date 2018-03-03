@@ -14,7 +14,7 @@ class PhotoModel : public QAbstractListModel
 
 public:
     explicit PhotoModel(QMap<QString, QVariant> map, QObject* parent = nullptr);
-    ~PhotoModel();
+    ~PhotoModel() = default;
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 

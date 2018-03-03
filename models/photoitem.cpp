@@ -6,10 +6,6 @@ PhotoItem::PhotoItem(
 {
 }
 
-PhotoItem::~PhotoItem()
-{
-}
-
 QString PhotoItem::displayString() const
 {
     return fileName;

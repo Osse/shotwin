@@ -10,7 +10,7 @@ class ThumbnailProvider : public QQuickImageProvider
 {
 public:
     ThumbnailProvider(QAbstractItemModel* photoListModel);
-    ~ThumbnailProvider();
+    ~ThumbnailProvider() = default;
 
     virtual QImage requestImage(const QString& id, QSize* size, const QSize& requestedSize);
 

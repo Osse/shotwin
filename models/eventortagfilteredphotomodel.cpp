@@ -9,10 +9,6 @@ EventOrTagFilteredPhotoModel::EventOrTagFilteredPhotoModel(QObject* parent) : QS
     setSortRole(PhotoModel::ExposureTimeRole);
 }
 
-EventOrTagFilteredPhotoModel::~EventOrTagFilteredPhotoModel()
-{
-}
-
 bool EventOrTagFilteredPhotoModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
 {
     if (eventIds.size() && photoIds.size() == 0) {

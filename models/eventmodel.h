@@ -9,7 +9,7 @@ class EventModel : public QAbstractListModel
 {
 public:
     explicit EventModel(QObject* parent = nullptr);
-    ~EventModel();
+    ~EventModel() = default;
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 

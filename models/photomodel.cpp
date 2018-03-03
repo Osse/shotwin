@@ -14,10 +14,6 @@ PhotoModel::PhotoModel(QMap<QString, QVariant> map, QObject* parent) : QAbstract
     init();
 }
 
-PhotoModel::~PhotoModel()
-{
-}
-
 int PhotoModel::rowCount(const QModelIndex& parent) const
 {
     if (parent.isValid())
