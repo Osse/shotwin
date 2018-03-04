@@ -8,6 +8,7 @@
 
 class TagModel : public QAbstractListModel
 {
+    Q_OBJECT
 public:
     TagModel(QObject* parent = nullptr);
 

@@ -7,6 +7,7 @@
 
 class EventModel : public QAbstractListModel
 {
+    Q_OBJECT
 public:
     explicit EventModel(QObject* parent = nullptr);
     ~EventModel() = default;
