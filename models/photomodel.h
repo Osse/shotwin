@@ -28,11 +28,11 @@ public:
                              int hits = 1,
                              Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
 
-    QHash<int, QByteArray> roleNames() const;
+    QHash<int, QByteArray> roleNames() const override;
 
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
-    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
     enum UserRoles {
         ThumnailRole = Qt::UserRole + 1,
