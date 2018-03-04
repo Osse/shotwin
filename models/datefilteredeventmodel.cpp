@@ -46,5 +46,5 @@ void DateFilteredEventModel::resetFilter()
 void DateFilteredEventModel::invalidate()
 {
     invalidateFilter();
-    emit filterChanged();
+    emit dateFilterChanged();
 }

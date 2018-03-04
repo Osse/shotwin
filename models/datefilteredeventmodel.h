@@ -18,7 +18,7 @@ public:
     void resetFilter();
 
 signals:
-    void filterChanged();
+    void dateFilterChanged();
 
 private:
     void invalidate();

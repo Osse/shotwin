@@ -23,7 +23,7 @@ public:
     void setPhotoIds(const std::vector<int>& value);
 
 signals:
-    void filterChanged();
+    void photoFilterChanged();
 
 private:
     void sortAndInvalidate();

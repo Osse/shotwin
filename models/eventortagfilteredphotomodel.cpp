@@ -60,7 +60,7 @@ void EventOrTagFilteredPhotoModel::sortAndInvalidate()
     // order, but in other cases they should be in decending other
     sort(0, eventIds.size() != 1 ? Qt::DescendingOrder : Qt::AscendingOrder);
     invalidateFilter();
-    emit filterChanged();
+    emit photoFilterChanged();
 }
 
 bool EventOrTagFilteredPhotoModel::contains(const std::vector<int>& v, int i) const
