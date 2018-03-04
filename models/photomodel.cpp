@@ -6,8 +6,8 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
-const QString photoListQuery(
-    "select id, event_id, exposure_time, filename, type, rating from PhotoVideoView order by exposure_time desc;");
+const QString photoListQuery(QStringLiteral(
+    "select id, event_id, exposure_time, filename, type, rating from PhotoVideoView order by exposure_time desc;"));
 
 PhotoModel::PhotoModel(QMap<QString, QVariant> map, QObject* parent) : QAbstractListModel(parent), map(map)
 {
@@ -140,12 +140,12 @@ void PhotoModel::init()
         return;
 
     while (query.next()) {
-        int photoId = query.value("id").toInt();
-        int eventId = query.value("event_id").toInt();
-        auto exposureTime = QDateTime::fromSecsSinceEpoch(query.value("exposure_time").toInt());
-        int rating = query.value("rating").toInt();
-        QString fileName = query.value("filename").toString();
-        QString type = query.value("type").toString();
+        int photoId = query.value(QStringLiteral("id")).toInt();
+        int eventId = query.value(QStringLiteral("event_id")).toInt();
+        auto exposureTime = QDateTime::fromSecsSinceEpoch(query.value(QStringLiteral("exposure_time")).toInt());
+        int rating = query.value(QStringLiteral("rating")).toInt();
+        QString fileName = query.value(QStringLiteral("filename")).toString();
+        QString type = query.value(QStringLiteral("type")).toString();
 
         photoList.push_back(PhotoItem(photoId, eventId, exposureTime, fileName, type, rating));
         idPhotoMap[photoId] = photoList.size() - 1;

@@ -49,11 +49,12 @@ bool Shotwin::initModels()
     fileSystemModel->setGroupingDataCb([](const QModelIndex& index) {
         auto photoItem = static_cast<const PhotoItem*>(index.internalPointer());
         auto path = photoItem->getFilename();
-        auto split = path.split("/", QString::SkipEmptyParts);
+        auto split = path.split(QStringLiteral("/"), QString::SkipEmptyParts);
         return std::vector<QVariant>(split.begin(), split.begin() + split.length() - 1);
     });
-    fileSystemModel->setAlternateDisplayDataCb(
-        [](const QVariant& value) { return value.toString().split("/", QString::SkipEmptyParts).last(); });
+    fileSystemModel->setAlternateDisplayDataCb([](const QVariant& value) {
+        return value.toString().split(QStringLiteral("/"), QString::SkipEmptyParts).last();
+    });
     fileSystemModel->setSourceModel(photoModel);
 
     tagModel = new TagModel(this);

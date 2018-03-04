@@ -8,7 +8,7 @@
 #include <QStringList>
 #include <QStyle>
 
-const QString tagListQuery("select * from TagTable");
+const QString tagListQuery(QStringLiteral("select * from TagTable"));
 
 TagModel::TagModel(QObject* parent) : QAbstractListModel(parent)
 {
@@ -100,14 +100,14 @@ void TagModel::init()
         return;
 
     while (query.next()) {
-        auto id = query.value("id").toInt();
-        auto name = query.value("name").toString();
-        auto photo_id_list = query.value("photo_id_list").toString().split(",", QString::SkipEmptyParts);
+        auto id = query.value(QStringLiteral("id")).toInt();
+        auto name = query.value(QStringLiteral("name")).toString();
+        auto photo_id_list = query.value(QStringLiteral("photo_id_list")).toString().split(QStringLiteral(","), QString::SkipEmptyParts);
         std::vector<int> photos;
         photos.reserve(photo_id_list.size());
 
         for (const auto& idString : photo_id_list) {
-            int id = idString.right(idString.size() - idString.indexOf("0")).toInt(nullptr, 16);
+            int id = idString.right(idString.size() - idString.indexOf(QLatin1String("0"))).toInt(nullptr, 16);
             photos.push_back(id);
             idToTags.insert({id, name});
         }

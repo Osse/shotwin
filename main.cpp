@@ -13,9 +13,9 @@ int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
 
-    QCoreApplication::setOrganizationDomain("http://github.com/Osse/shotwin");
-    QCoreApplication::setOrganizationName("Øystein Walle");
-    QCoreApplication::setApplicationName("Shotwin");
+    QCoreApplication::setOrganizationDomain(QStringLiteral("http://github.com/Osse/shotwin"));
+    QCoreApplication::setOrganizationName(QStringLiteral("Øystein Walle"));
+    QCoreApplication::setApplicationName(QStringLiteral("Shotwin"));
     QCoreApplication::setApplicationVersion(GIT_VERSION);
     QSettings::setDefaultFormat(QSettings::IniFormat);
 

@@ -44,24 +44,24 @@ QString EventItem::getEventTimeSpan() const
 
     QString startFormat;
     QString endFormat;
-    QString span{"%1 - %2"};
+    QString span{QStringLiteral("%1 - %2")};
     bool twoDates = true;
 
     if (start.year() != end.year()) {
-        startFormat = "MMM dd, yyyy";
+        startFormat = QLatin1String("MMM dd, yyyy");
         endFormat = startFormat;
     }
     else if (start.month() != end.month()) {
-        startFormat = "MMM dd";
+        startFormat = QLatin1String("MMM dd");
         endFormat = startFormat;
     }
     else if (start.day() != end.day()) {
-        startFormat = "MMM dd";
-        endFormat = "dd";
+        startFormat = QLatin1String("MMM dd");
+        endFormat = QLatin1String("dd");
     }
     else {
-        startFormat = "MMM dd";
-        span = "%1";
+        startFormat = QLatin1String("MMM dd");
+        span = QLatin1String("%1");
         twoDates = false;
     }
 

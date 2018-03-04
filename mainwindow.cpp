@@ -91,7 +91,7 @@ void MainWindow::handleArgs(const Args& args)
 void MainWindow::openDatabase()
 {
     auto home = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
-    auto dbName = QFileDialog::getOpenFileName(this, "Choose Shotwell database", home);
+    auto dbName = QFileDialog::getOpenFileName(this, QStringLiteral("Choose Shotwell database"), home);
 
     if (!dbName.isEmpty()) {
         openDataBaseConnection(dbName);
@@ -101,7 +101,7 @@ void MainWindow::openDatabase()
 
 void MainWindow::openDataBaseConnection(const QString& dbName)
 {
-    auto db = QSqlDatabase::addDatabase("QSQLITE");
+    auto db = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"));
     db.setDatabaseName(dbName);
     if (db.open()) {
         initModelsAndViews();
@@ -131,27 +131,28 @@ void MainWindow::initModelsAndViews()
 
     expandSingleNodes(ui->fileTree);
 
-    ui->photoView->engine()->addImageProvider("thumbnails", new ThumbnailProvider(shotwin->getPhotoModel()));
+    ui->photoView->engine()->addImageProvider(QStringLiteral("thumbnails"),
+                                              new ThumbnailProvider(shotwin->getPhotoModel()));
 
     auto rootContext = ui->photoView->rootContext();
     qmlRegisterType<Shotwin>("shotwin", 1, 0, "shotwin");
-    rootContext->setContextProperty("shotwin", shotwin);
+    rootContext->setContextProperty(QStringLiteral("shotwin"), shotwin);
 
-    rootContext->setContextProperty("photoListModel", shotwin->getPhotoList());
-    rootContext->setContextProperty("eventListModel", shotwin->getEventList());
-    rootContext->setContextProperty("tagsModel", shotwin->getTagModel());
-    rootContext->setContextProperty("shade", QSettings().value("shade", 128).toInt());
+    rootContext->setContextProperty(QStringLiteral("photoListModel"), shotwin->getPhotoList());
+    rootContext->setContextProperty(QStringLiteral("eventListModel"), shotwin->getEventList());
+    rootContext->setContextProperty(QStringLiteral("tagsModel"), shotwin->getTagModel());
+    rootContext->setContextProperty(QStringLiteral("shade"), QSettings().value(QStringLiteral("shade"), 128).toInt());
 #ifdef CMAKE_SOURCE_DIR
     ui->photoView->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/Main.qml"));
 #else
-    ui->photoView->setSource(QUrl("qrc:/Main.qml"));
+    ui->photoView->setSource(QUrl(QStringLiteral("qrc:/Main.qml")));
 #endif
 
-    QObject* eventView = ui->photoView->rootObject()->findChild<QObject*>("eventView");
+    QObject* eventView = ui->photoView->rootObject()->findChild<QObject*>(QStringLiteral("eventView"));
     if (eventView)
         connect(eventView, SIGNAL(eventDoubleClicked(int)), shotwin, SLOT(openEvent(int)));
 
-    QObject* photoView = ui->photoView->rootObject()->findChild<QObject*>("photoView");
+    QObject* photoView = ui->photoView->rootObject()->findChild<QObject*>(QStringLiteral("photoView"));
     if (photoView)
         connect(photoView, SIGNAL(tagClicked(QString)), shotwin, SLOT(selectTagByString(QString)));
 }
@@ -173,14 +174,14 @@ void MainWindow::showTreeMenu(QTreeView* tree)
 {
     QMenu menu;
     if (tree != ui->tags) {
-        menu.addAction("Collapse all", tree, &QTreeView::collapseAll);
-        menu.addAction("Expand all", tree, &QTreeView::expandAll);
+        menu.addAction(QStringLiteral("Collapse all"), tree, &QTreeView::collapseAll);
+        menu.addAction(QStringLiteral("Expand all"), tree, &QTreeView::expandAll);
     }
     if (tree == ui->fileTree)
-        menu.addAction("Expand single nodes", [this]() { expandSingleNodes(ui->fileTree); });
+        menu.addAction(QStringLiteral("Expand single nodes"), [this]() { expandSingleNodes(ui->fileTree); });
 
-    menu.addAction("Hide", [tree]() { tree->setFixedHeight(tree->header()->height()); });
-    menu.addAction("Show", [tree]() {
+    menu.addAction(QStringLiteral("Hide"), [tree]() { tree->setFixedHeight(tree->header()->height()); });
+    menu.addAction(QStringLiteral("Show"), [tree]() {
         tree->setMinimumHeight(0);
         tree->setMaximumHeight(QWIDGETSIZE_MAX);
     });
@@ -215,13 +216,16 @@ void MainWindow::showSettings()
     SettingsDialog sd(this);
 
     connect(&sd, &SettingsDialog::settingsChanged, [this]() {
-        auto provider = static_cast<ThumbnailProvider*>(ui->photoView->engine()->imageProvider("thumbnails"));
+        auto provider =
+            static_cast<ThumbnailProvider*>(ui->photoView->engine()->imageProvider(QStringLiteral("thumbnails")));
         if (provider)
-            provider->setFfmpegCmd(QSettings().value("ffmpegcmd").toString());
+            provider->setFfmpegCmd(QSettings().value(QStringLiteral("ffmpegcmd")).toString());
     });
-    connect(&sd, &SettingsDialog::settingsChanged, [this]() { shotwin->setMap(QSettings().value("map").toMap()); });
+    connect(&sd, &SettingsDialog::settingsChanged, [this]() {
+        shotwin->setMap(QSettings().value(QStringLiteral("map")).toMap());
+    });
     connect(&sd, &SettingsDialog::bgColorChanged, [this](int value) {
-        ui->photoView->rootContext()->setContextProperty("shade", value);
+        ui->photoView->rootContext()->setContextProperty(QStringLiteral("shade"), value);
     });
 
     sd.exec();

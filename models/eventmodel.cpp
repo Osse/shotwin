@@ -5,7 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
-const QString eventListQuery("select * from EventViewWithTimes");
+const QString eventListQuery(QStringLiteral("select * from EventViewWithTimes"));
 
 EventModel::EventModel(QObject* parent) : QAbstractListModel(parent)
 {
@@ -114,13 +114,13 @@ void EventModel::init()
         return;
 
     while (query.next()) {
-        auto startTime = QDateTime::fromSecsSinceEpoch(query.value("start_time").toInt());
-        auto endTime = QDateTime::fromSecsSinceEpoch(query.value("end_time").toInt());
-        int eventId = query.value("id").toInt();
-        QString eventName = query.value("name").toString();
-        QString primarySourceId = query.value("primary_source_id").toString();
-        int photos = query.value("photos").toInt();
-        int videos = query.value("videos").toInt();
+        auto startTime = QDateTime::fromSecsSinceEpoch(query.value(QStringLiteral("start_time")).toInt());
+        auto endTime = QDateTime::fromSecsSinceEpoch(query.value(QStringLiteral("end_time")).toInt());
+        int eventId = query.value(QStringLiteral("id")).toInt();
+        QString eventName = query.value(QStringLiteral("name")).toString();
+        QString primarySourceId = query.value(QStringLiteral("primary_source_id")).toString();
+        int photos = query.value(QStringLiteral("photos")).toInt();
+        int videos = query.value(QStringLiteral("videos")).toInt();
 
         eventList.push_back(EventItem(eventId, eventName, startTime, endTime, photos, videos, primarySourceId));
     }

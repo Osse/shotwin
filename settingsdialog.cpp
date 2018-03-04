@@ -18,13 +18,13 @@ SettingsDialog::SettingsDialog(QWidget* parent) : QDialog(parent), ui(new Ui::Se
 
     QSettings settings;
 
-    ui->leFfmpegCmd->setText(settings.value("ffmpegcmd", "ffmpeg").toString());
+    ui->leFfmpegCmd->setText(settings.value(QStringLiteral("ffmpegcmd"), "ffmpeg").toString());
 
-    int shade = settings.value("shade", 128).toInt();
+    int shade = settings.value(QStringLiteral("shade"), 128).toInt();
     ui->sliderBgColor->setValue(shade);
     connect(ui->sliderBgColor, &QSlider::valueChanged, this, &SettingsDialog::bgColorChanged);
 
-    auto map = settings.value("map").toMap();
+    auto map = settings.value(QStringLiteral("map")).toMap();
 
     QString str;
     for (auto it = map.begin(); it != map.end(); ++it) {
@@ -51,20 +51,20 @@ void SettingsDialog::chooseFfmpegPath()
 void SettingsDialog::store()
 {
     QMap<QString, QVariant> map;
-    for (const auto& line : ui->tePathMappings->toPlainText().split("\n", QString::SkipEmptyParts)) {
-        auto parts = line.split(";");
+    for (const auto& line : ui->tePathMappings->toPlainText().split(QStringLiteral("\n"), QString::SkipEmptyParts)) {
+        auto parts = line.split(QStringLiteral(";"));
         map[parts[0]] = parts[1];
     }
 
     QSettings settings;
-    settings.setValue("shade", ui->sliderBgColor->value());
-    settings.setValue("ffmpegpath", ui->leFfmpegCmd->text());
-    settings.setValue("map", map);
+    settings.setValue(QStringLiteral("shade"), ui->sliderBgColor->value());
+    settings.setValue(QStringLiteral("ffmpegpath"), ui->leFfmpegCmd->text());
+    settings.setValue(QStringLiteral("map"), map);
 
     emit settingsChanged();
 }
 
 void SettingsDialog::revert()
 {
-    emit bgColorChanged(QSettings().value("shade").toInt());
+    emit bgColorChanged(QSettings().value(QStringLiteral("shade")).toInt());
 }

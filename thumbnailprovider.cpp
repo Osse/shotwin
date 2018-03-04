@@ -25,7 +25,7 @@ ThumbnailProvider::ThumbnailProvider(QAbstractItemModel* photoListModel)
         cacheDir.mkpath(cachePath + "/videoframes");
     }
 
-    ffmpegCmd = QSettings().value("ffmpegpath").toString();
+    ffmpegCmd = QSettings().value(QStringLiteral("ffmpegpath")).toString();
 }
 
 QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSize& requestedSize)
@@ -35,8 +35,8 @@ QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSi
 
     int thumbSize = std::max(requestedSize.width(), requestedSize.height()) > 128 ? 360 : 128;
 
-    QString thumbPath = QString("%1/thumbs%2/%3.jpg").arg(cachePath, QString::number(thumbSize), id);
-    QString videoFramePath = QString("%1/videoframes/%2.jpg").arg(cachePath, id);
+    QString thumbPath = QStringLiteral("%1/thumbs%2/%3.jpg").arg(cachePath, QString::number(thumbSize), id);
+    QString videoFramePath = QStringLiteral("%1/videoframes/%2.jpg").arg(cachePath, id);
 
     if (QFile::exists(thumbPath))
         return QImage(thumbPath);
@@ -55,7 +55,7 @@ QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSi
     type = photoListModel->data(match, PhotoModel::TypeRole).toString();
 
     QImage image;
-    if (type == "photo")
+    if (type == QLatin1String("photo"))
         image = generateThumbnail(thumbSize, thumbPath, filename);
     else {
         if (!QFile::exists(videoFramePath))

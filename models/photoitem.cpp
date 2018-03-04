@@ -13,10 +13,10 @@ QString PhotoItem::displayString() const
 
 QString PhotoItem::getThumbnailId() const
 {
-    if (type == "photo")
-        return QString("thumb%1").arg(photoId, 16, 16, QChar('0'));
+    if (type == QLatin1String("photo"))
+        return QStringLiteral("thumb%1").arg(photoId, 16, 16, QChar('0'));
     else
-        return QString("video-%1").arg(photoId, 16, 16, QChar('0'));
+        return QStringLiteral("video-%1").arg(photoId, 16, 16, QChar('0'));
 }
 
 QString PhotoItem::getFilename() const
