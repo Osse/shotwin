@@ -54,6 +54,7 @@ set(QMLFILES
     EventView.qml
     Main.qml
     PhotoView.qml
+    NewGui.qml
 )
 
 add_executable(${PROJECT_NAME}
@@ -81,7 +82,6 @@ if(libtype STREQUAL "STATIC_LIBRARY")
         ${qtqmlprefix}/QtQuick/Controls/libqtquickcontrolsplugin.a
         ${qtqmlprefix}/QtQuick/Layouts/libqquicklayoutsplugin.a
         ${qtqmlprefix}/QtQuick/Window.2/libwindowplugin.a
-        ${qtprefix}/lib/libQt5MultimediaQuick_p.a
     )
 endif()
 

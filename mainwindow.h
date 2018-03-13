@@ -29,6 +29,7 @@ private:
     void aboutShotwin();
     void aboutQt();
     void showSettings();
+    void openSecondGui();
 
 private:
     Ui::MainWindow* ui;

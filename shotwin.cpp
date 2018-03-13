@@ -91,6 +91,11 @@ QAbstractItemModel* Shotwin::getFileSystemModel() const
     return fileSystemModel;
 }
 
+void Shotwin::selectEventFromQML(const QVariant& index)
+{
+    selectEvent(index.toModelIndex());
+}
+
 void Shotwin::selectEvent(const QModelIndex& index)
 {
     auto sourceIndex = eventTreeModel->mapToSource(index);

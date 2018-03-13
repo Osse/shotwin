@@ -9,5 +9,6 @@
         <file>icons/one-event.png</file>
         <file>icons/one-tag.png</file>
         <file>icons/one-star.svg</file>
+        <file>NewGui.qml</file>
     </qresource>
 </RCC>

@@ -1,8 +1,8 @@
 #ifndef SHOTWIN_H
 #define SHOTWIN_H
 
-#include <QObject>
 #include <QMap>
+#include <QObject>
 #include <QString>
 #include <QVariant>
 
@@ -42,6 +42,7 @@ signals:
     void tagSelected(const QModelIndex& index);
 
 public slots:
+    void selectEventFromQML(const QVariant& index);
     void selectEvent(const QModelIndex& index);
     void openEvent(int index);
     void selectTag(const QModelIndex& index);

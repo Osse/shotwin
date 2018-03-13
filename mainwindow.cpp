@@ -15,6 +15,7 @@
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QQuickItem>
+#include <QQuickView>
 #include <QQuickWidget>
 #include <QSettings>
 #include <QShortcut>
@@ -127,6 +128,8 @@ void MainWindow::initModelsAndViews()
     QObject* photoView = ui->photoView->rootObject()->findChild<QObject*>("photoView");
     if (photoView)
         connect(photoView, SIGNAL(tagClicked(QString)), shotwin, SLOT(selectTagByString(QString)));
+
+    openSecondGui();
 }
 
 void MainWindow::setupTree(QTreeView* tree)
@@ -198,4 +201,17 @@ void MainWindow::showSettings()
     });
 
     sd.exec();
+}
+
+void MainWindow::openSecondGui()
+{
+    auto view = new QQuickView();
+    auto rootContext = view->rootContext();
+    rootContext->setContextProperty("eventListModel", shotwin->getEventTree());
+    view->setSource(QUrl::fromLocalFile(CMAKE_SOURCE_DIR "/NewGui.qml"));
+
+    QObject* treeView = view->rootObject();
+    connect(treeView, SIGNAL(clicked(QVariant)), shotwin, SLOT(selectEventFromQML(QVariant)));
+
+    view->show();
 }
