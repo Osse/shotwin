@@ -17,7 +17,6 @@
 
 Shotwin::Shotwin(QObject* parent) : QObject(parent)
 {
-    map = QSettings().value("map").toMap();
 }
 
 bool Shotwin::initModels()

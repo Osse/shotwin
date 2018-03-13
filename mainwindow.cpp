@@ -20,6 +20,8 @@
 #include <QShortcut>
 #include <QSqlDatabase>
 #include <QStandardPaths>
+#include <QString>
+#include <QVariant>
 
 MainWindow::MainWindow(Shotwin* shotwin, QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), shotwin(shotwin)
@@ -46,15 +48,6 @@ MainWindow::MainWindow(Shotwin* shotwin, QWidget* parent)
 
     ui->splitter->setSizes({33000, 67000});
     ui->mainToolBar->hide();
-
-    auto argv = QApplication::arguments();
-    if (argv.length() > 1)
-        openDataBaseConnection(argv[1]);
-    else {
-        QSettings settings;
-        if (settings.contains("databasepath"))
-            openDataBaseConnection(settings.value("databasepath").toString());
-    }
 }
 
 MainWindow::~MainWindow()
@@ -62,13 +55,44 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::handleArgs(const Args& args)
+{
+    QSettings settings;
+
+    if (!args.map.isEmpty()) {
+        QMap<QString, QVariant> map;
+        if (args.readConfig)
+            map = settings.value("map").toMap();
+
+        for (const auto& string : args.map) {
+            auto parts = string.split(";");
+            map[parts[0]] = parts[1];
+        }
+
+        if (args.updateConfig)
+            settings.setValue("map", map);
+
+        shotwin->setMap(map);
+    }
+
+    if (!args.database.isEmpty()) {
+        openDataBaseConnection(args.database);
+        if (args.updateConfig)
+            settings.setValue("databasepath", args.database);
+    }
+    else if (settings.contains("databasepath"))
+        openDataBaseConnection(settings.value("databasepath").toString());
+}
+
 void MainWindow::openDatabase()
 {
     auto home = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
     auto dbName = QFileDialog::getOpenFileName(this, "Choose Shotwell database", home);
 
-    if (!dbName.isEmpty())
+    if (!dbName.isEmpty()) {
         openDataBaseConnection(dbName);
+        QSettings().setValue("databasepath", dbName);
+    }
 }
 
 void MainWindow::openDataBaseConnection(const QString& dbName)
@@ -76,7 +100,6 @@ void MainWindow::openDataBaseConnection(const QString& dbName)
     auto db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(dbName);
     if (db.open()) {
-        QSettings().setValue("databasepath", dbName);
         initModelsAndViews();
     }
     else
