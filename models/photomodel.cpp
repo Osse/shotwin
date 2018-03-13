@@ -9,9 +9,8 @@
 const QString photoListQuery(
     "select id, event_id, exposure_time, filename, type, rating from PhotoVideoView order by exposure_time desc;");
 
-PhotoModel::PhotoModel(QObject* parent) : QAbstractListModel(parent)
+PhotoModel::PhotoModel(QMap<QString, QVariant> map, QObject* parent) : QAbstractListModel(parent), map(map)
 {
-    map = QSettings().value("map").toMap();
     init();
 }
 
@@ -157,4 +156,15 @@ void PhotoModel::init()
     }
 
     sort(0, Qt::DescendingOrder);
+}
+
+void PhotoModel::setMap(const QMap<QString, QVariant>& value)
+{
+    map = value;
+    emit dataChanged(index(0, 0), index(rowCount() - 1, 0), {MappedFilenameRole});
+}
+
+QMap<QString, QVariant> PhotoModel::getMap() const
+{
+    return map;
 }

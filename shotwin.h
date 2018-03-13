@@ -32,7 +32,6 @@ public:
     QMap<QString, QVariant> getMap() const;
     void setMap(const QMap<QString, QVariant>& value);
 
-    Q_INVOKABLE QString mappedFile(const QString& file) const;
     Q_INVOKABLE QStringList getTagsForPhoto(int id) const;
 
 signals:

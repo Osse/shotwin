@@ -13,7 +13,7 @@ class PhotoModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    explicit PhotoModel(QObject* parent = nullptr);
+    explicit PhotoModel(QMap<QString, QVariant> map, QObject* parent = nullptr);
     ~PhotoModel();
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -44,6 +44,9 @@ public:
         TypeRole,
         RatingRole,
     };
+
+    QMap<QString, QVariant> getMap() const;
+    void setMap(const QMap<QString, QVariant>& value);
 
 private:
     QString mappedFile(const QString& file) const;

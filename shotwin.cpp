@@ -25,7 +25,7 @@ bool Shotwin::initModels()
     if (!initDbViews())
         return false;
 
-    photoModel = new PhotoModel(this);
+    photoModel = new PhotoModel(map, this);
     photoListModel = new EventOrTagFilteredPhotoModel(this);
     photoListModel->setSourceModel(photoModel);
 
@@ -203,18 +203,7 @@ QMap<QString, QVariant> Shotwin::getMap() const
 void Shotwin::setMap(const QMap<QString, QVariant>& value)
 {
     map = value;
-}
-
-QString Shotwin::mappedFile(const QString& file) const
-{
-    QString fileName(file);
-    for (auto it = map.begin(); it != map.end(); ++it) {
-        if (fileName.startsWith(it.key())) {
-            fileName.replace(it.key(), it.value().toString());
-            return fileName;
-        }
-    }
-    return QString();
+    photoModel->setMap(map);
 }
 
 QStringList Shotwin::getTagsForPhoto(int id) const
