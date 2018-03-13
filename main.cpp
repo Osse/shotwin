@@ -7,7 +7,7 @@
 #include <QCommandLineParser>
 #include <QSettings>
 
-#include "initstaticplugins.h"
+//#include "initstaticplugins.h"
 
 int main(int argc, char* argv[])
 {
