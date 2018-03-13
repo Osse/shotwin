@@ -11,6 +11,13 @@ class MainWindow;
 class Shotwin;
 class QTreeView;
 
+struct Args {
+    QString database;
+    QStringList mapList;
+    bool updateConfig = true;
+    bool readConfig = false;
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -18,6 +25,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(Shotwin* shotwin, QWidget* parent = 0);
     ~MainWindow();
+
+    void handleArgs(const Args& args);
 
 private:
     void openDatabase();

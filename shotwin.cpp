@@ -17,7 +17,6 @@
 
 Shotwin::Shotwin(QObject* parent) : QObject(parent)
 {
-    map = QSettings().value("map").toMap();
 }
 
 bool Shotwin::initModels()
@@ -203,7 +202,8 @@ QMap<QString, QVariant> Shotwin::getMap() const
 void Shotwin::setMap(const QMap<QString, QVariant>& value)
 {
     map = value;
-    photoModel->setMap(map);
+    if (photoModel)
+        photoModel->setMap(map);
 }
 
 QStringList Shotwin::getTagsForPhoto(int id) const
