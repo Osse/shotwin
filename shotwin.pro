@@ -30,7 +30,6 @@ HEADERS = mainwindow.h \
           models/eventitem.h \
           models/eventmodel.h \
           models/eventortagfilteredphotomodel.h \
-          models/filterflattenproxymodel.h \
           models/photoitem.h \
           models/photomodel.h \
           models/tagmodel.h \

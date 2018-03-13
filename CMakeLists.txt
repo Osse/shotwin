@@ -22,6 +22,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(Qt5 COMPONENTS Core Widgets Sql QuickWidgets Multimedia)
 
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
 set(SOURCES
     main.cpp
     mainwindow.cpp
@@ -37,6 +38,22 @@ set(SOURCES
     shotwin.cpp
     thumbnailprovider.cpp
 )
+
+get_target_property(libtype Qt5::Core TYPE)
+if(libtype STREQUAL "STATIC_LIBRARY")
+    list(APPEND SOURCES shotwin_plugin_import.cpp)
+    get_target_property(qmakelocation Qt5::qmake LOCATION)
+    get_filename_component(qtbindir "${qmakelocation}" DIRECTORY)
+    set(qmlimportscanner "${qtbindir}/qmlimportscanner")
+    set(qtprefix "${qtbindir}/..")
+    execute_process(COMMAND "${qmlimportscanner}" -rootPath "${CMAKE_CURRENT_SOURCE_DIR}" -importPath "${qtprefix}\\share\\qt5\\qml"
+                    COMMAND jq -r ".[] | select(.type == \"module\" and has(\"plugin\")) | \"\\(.path)/lib\\(.plugin).a\""
+                    OUTPUT_VARIABLE qmllibs
+    )
+    string(REPLACE "\n" ";" qmllibs "${qmllibs}")
+    list(REMOVE_DUPLICATES qmllibs)
+    list(APPEND qmllibs "${qtprefix}/lib/libQt5MultimediaQuick.a")
+endif()
 
 set(UIFORMS
     mainwindow.ui
@@ -67,28 +84,11 @@ if(QML_FROM_SOURCE)
     add_definitions("-DCMAKE_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\"")
 endif()
 
-get_target_property(libtype Qt5::Core TYPE)
-if(libtype STREQUAL "STATIC_LIBRARY")
-    get_target_property(qtcorelocation Qt5::Core LOCATION)
-    get_filename_component(qtcorepath "${qtcorelocation}" DIRECTORY)
-    set(qtprefix "${qtcorepath}/..")
-    set(qtqmlprefix "${qtprefix}/share/qt5/qml")
-    target_link_libraries(${PROJECT_NAME}
-        ${qtqmlprefix}/QtGraphicalEffects/libqtgraphicaleffectsplugin.a
-        ${qtqmlprefix}/QtGraphicalEffects/private/libqtgraphicaleffectsprivate.a
-        ${qtqmlprefix}/QtMultimedia/libdeclarative_multimedia.a
-        ${qtqmlprefix}/QtQuick.2/libqtquick2plugin.a
-        ${qtqmlprefix}/QtQuick/Controls/libqtquickcontrolsplugin.a
-        ${qtqmlprefix}/QtQuick/Layouts/libqquicklayoutsplugin.a
-        ${qtqmlprefix}/QtQuick/Window.2/libwindowplugin.a
-        ${qtprefix}/lib/libQt5MultimediaQuick_p.a
-    )
-endif()
-
 target_include_directories(${PROJECT_NAME} PUBLIC models)
 target_link_libraries(${PROJECT_NAME}
     Qt5::Widgets
     Qt5::Sql
     Qt5::QuickWidgets
     Qt5::Multimedia
+    ${qmllibs}
 )
