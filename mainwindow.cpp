@@ -58,13 +58,13 @@ MainWindow::~MainWindow()
 void MainWindow::handleArgs(const Args& args)
 {
     QSettings settings;
+    QMap<QString, QVariant> map;
 
-    if (!args.map.isEmpty()) {
-        QMap<QString, QVariant> map;
+    if (!args.mapList.isEmpty()) {
         if (args.readConfig)
             map = settings.value("map").toMap();
 
-        for (const auto& string : args.map) {
+        for (const auto& string : args.mapList) {
             auto parts = string.split(";");
             map[parts[0]] = parts[1];
         }
@@ -74,6 +74,10 @@ void MainWindow::handleArgs(const Args& args)
 
         shotwin->setMap(map);
     }
+    else
+        map = settings.value("map").toMap();
+
+    shotwin->setMap(map);
 
     if (!args.database.isEmpty()) {
         openDataBaseConnection(args.database);

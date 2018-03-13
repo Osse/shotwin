@@ -13,7 +13,7 @@ class QTreeView;
 
 struct Args {
     QString database;
-    QStringList map;
+    QStringList mapList;
     bool updateConfig = true;
     bool readConfig = false;
 };

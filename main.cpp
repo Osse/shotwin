@@ -36,8 +36,8 @@ int main(int argc, char* argv[])
     if (parser.isSet("database"))
         args.database = parser.value("database");
 
-    if (parser.isSet("mapping"))
-        args.map = parser.values("mapping");
+    if (parser.isSet("add-map"))
+        args.mapList = parser.values("add-map");
 
     args.readConfig = !parser.isSet("no-config");
     args.updateConfig = !parser.isSet("no-use-config");
