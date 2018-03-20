@@ -122,7 +122,7 @@ void EventModel::init()
         int photos = query.value("photos").toInt();
         int videos = query.value("videos").toInt();
 
-        eventList.push_back(EventItem(eventId, eventName, startTime, endTime, photos, videos, primarySourceId));
+        eventList.emplace_back(eventId, eventName, startTime, endTime, photos, videos, primarySourceId);
     }
 
     sort(0, Qt::DescendingOrder);

@@ -147,7 +147,7 @@ void PhotoModel::init()
         QString fileName = query.value("filename").toString();
         QString type = query.value("type").toString();
 
-        photoList.push_back(PhotoItem(photoId, eventId, exposureTime, fileName, type, rating));
+        photoList.emplace_back(photoId, eventId, exposureTime, fileName, type, rating);
         idPhotoMap[photoId] = photoList.size() - 1;
     }
 
