@@ -202,7 +202,7 @@ QMap<QString, QVariant> Shotwin::getMap() const
 void Shotwin::setMap(const QMap<QString, QVariant>& value)
 {
     map = value;
-    if (photoModel)
+    if (photoModel != nullptr)
         photoModel->setMap(map);
 }
 

@@ -148,11 +148,11 @@ void MainWindow::initModelsAndViews()
 #endif
 
     QObject* eventView = ui->photoView->rootObject()->findChild<QObject*>("eventView");
-    if (eventView)
+    if (eventView != nullptr)
         connect(eventView, SIGNAL(eventDoubleClicked(int)), shotwin, SLOT(openEvent(int)));
 
     QObject* photoView = ui->photoView->rootObject()->findChild<QObject*>("photoView");
-    if (photoView)
+    if (photoView != nullptr)
         connect(photoView, SIGNAL(tagClicked(QString)), shotwin, SLOT(selectTagByString(QString)));
 }
 
@@ -216,7 +216,7 @@ void MainWindow::showSettings()
 
     connect(&sd, &SettingsDialog::settingsChanged, [this]() {
         auto provider = static_cast<ThumbnailProvider*>(ui->photoView->engine()->imageProvider("thumbnails"));
-        if (provider)
+        if (provider != nullptr)
             provider->setFfmpegCmd(QSettings().value("ffmpegcmd").toString());
     });
     connect(&sd, &SettingsDialog::settingsChanged, [this]() { shotwin->setMap(QSettings().value("map").toMap()); });

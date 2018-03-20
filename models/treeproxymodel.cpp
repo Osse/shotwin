@@ -28,7 +28,7 @@ QModelIndex TreeProxyModel::parent(const QModelIndex& child) const
 
     Coordinate* coord = static_cast<Coordinate*>(child.internalPointer());
 
-    if (!coord)
+    if (coord == nullptr)
         return QModelIndex();
 
     Coordinate parentCoord(coord->begin(), std::prev(coord->end()));
@@ -72,7 +72,7 @@ QModelIndex TreeProxyModel::mapToSource(const QModelIndex& proxyIndex) const
 {
     Coordinate c = getCoordinate(proxyIndex);
 
-    if (sourceRows.count(c))
+    if (sourceRows.count(c) == 1)
         return sourceModel()->index(sourceRows.at(c), 0);
 
     return QModelIndex();
@@ -107,7 +107,7 @@ QVariant TreeProxyModel::data(const QModelIndex& proxyIndex, int role) const
         return groupIcon;
     else if (role == SourceDataRole) {
         auto c = getCoordinate(proxyIndex);
-        return sourceData.count(c) ? sourceData.at(c) : QVariant();
+        return sourceData.count(c) == 1 ? sourceData.at(c) : QVariant();
     }
     else if (role != Qt::DisplayRole)
         return QVariant();
@@ -148,7 +148,7 @@ void TreeProxyModel::refreshMappings()
         for (int i = 0; i < depth; i++) {
             newGroup.push_back(groupingData[i]);
 
-            if (!seenGroups.count(newGroup)) {
+            if (seenGroups.count(newGroup) == 0) {
                 cookie[i]++;
                 auto tempEnd = cookie.begin() + i + 1;
 

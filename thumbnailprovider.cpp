@@ -17,7 +17,7 @@ ThumbnailProvider::ThumbnailProvider(QAbstractItemModel* photoListModel)
     : QQuickImageProvider(QQmlImageProviderBase::Image), photoListModel(dynamic_cast<PhotoModel*>(photoListModel))
 {
     auto cachePaths = QStandardPaths::standardLocations(QStandardPaths::CacheLocation);
-    if (cachePaths.length()) {
+    if (!cachePaths.empty()) {
         cachePath = cachePaths.first();
         QDir cacheDir(cachePath);
         cacheDir.mkpath(cachePath + "/thumbs360");
@@ -50,7 +50,7 @@ QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSi
 
     auto matches = photoListModel->match(photoListModel->index(0, 0), PhotoModel::ThumnailRole, id);
     QModelIndex match;
-    if (matches.size())
+    if (!matches.empty())
         match = matches.first();
     else
         return generateFallback(requestedSize);
@@ -70,7 +70,7 @@ QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSi
     if (image.isNull())
         image = generateFallback(requestedSize);
 
-    if (size)
+    if (size != nullptr)
         *size = image.size();
 
     return image;
@@ -111,7 +111,7 @@ QImage ThumbnailProvider::grabVideoFrame(const QString& thumbPath, const QString
     ffmpeg->start(ffmpegCmd, arguments);
     ffmpeg->waitForFinished(20000);
 
-    if (!ffmpeg->exitCode()) {
+    if (ffmpeg->exitCode() == 0) {
         return QImage(thumbPath);
     }
     else
