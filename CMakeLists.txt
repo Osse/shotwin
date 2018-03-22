@@ -64,7 +64,10 @@ add_executable(${PROJECT_NAME}
 )
 
 if(QML_FROM_SOURCE)
-    add_definitions("-DCMAKE_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\"")
+    set_source_files_properties(mainwindow.cpp
+        PROPERTIES COMPILE_DEFINITIONS
+        "CMAKE_SOURCE_DIR=\"${CMAKE_SOURCE_DIR}\""
+    )
 endif()
 
 get_target_property(libtype Qt5::Core TYPE)
