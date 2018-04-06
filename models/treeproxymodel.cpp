@@ -177,7 +177,7 @@ void TreeProxyModel::refreshMappings()
                     sourceData[temp] = sourceDataForIndex[i];
                 seenGroups.insert(newGroup);
 
-                // New node inserted, on the next iteration the search start from zero
+                // New grouping node inserted; reset the last component of the coordinate
                 std::fill(tempEnd, cookie.end(), -1);
             }
         }
