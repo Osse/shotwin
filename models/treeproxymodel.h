@@ -54,7 +54,6 @@ private:
     AlternateDisplayDataCbType getAlternateDisplayData;
 
     // All coordinates
-    // std::map<Coordinate, CoordinatePtr> coordinatesMap;
     std::set<CoordinatePtr> coordinatesMap;
 
     // mapping to source
