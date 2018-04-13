@@ -39,7 +39,9 @@ private:
     using Coordinate = std::vector<int>;
     using CoordinatePtr = std::unique_ptr<Coordinate>;
 
+    void wrapper();
     void refreshMappings();
+    void refreshMappings2();
     void clearMappings(int rowCount);
     void respondToLayoutChanged();
     Coordinate getCoordinate(const QModelIndex& proxyIndex) const;

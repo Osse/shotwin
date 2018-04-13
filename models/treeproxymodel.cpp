@@ -118,7 +118,7 @@ QVariant TreeProxyModel::data(const QModelIndex& proxyIndex, int role) const
 void TreeProxyModel::respondToLayoutChanged()
 {
     emit layoutAboutToBeChanged();
-    refreshMappings();
+    wrapper();
     emit layoutChanged();
 }
 
@@ -170,6 +170,150 @@ void TreeProxyModel::refreshMappings()
         coordinatesMap.insert(std::make_unique<Coordinate>(temp));
         sourceRows[temp] = row;
         coordinates[row] = temp;
+    }
+}
+
+enum Kek {
+    Equal = -1,
+    FirstShorter = -2,
+    SecondShorter = -3,
+};
+
+int getDiff(const std::vector<QVariant>& v1, const std::vector<QVariant>& v2)
+{
+    auto elems = std::mismatch(v1.begin(), v1.end(), v2.begin(), v2.end());
+
+    if (elems.first == v1.end() && elems.second == v2.end())
+        return Kek::Equal;
+    else if (elems.first == v1.end())
+        return Kek::FirstShorter;
+    else if (elems.second == v2.end())
+        return Kek::SecondShorter;
+    else
+        return (int)std::distance(v1.begin(), elems.first);
+}
+
+void TreeProxyModel::refreshMappings2()
+{
+    auto m = sourceModel();
+
+    clearMappings(m->rowCount());
+
+    std::map<std::vector<QVariant>,
+             std::pair<std::vector<QVariant>, std::vector<int>>,
+             std::greater<std::vector<QVariant>>>
+        groupToRows;
+
+    for (int row = 0; row < m->rowCount(); ++row) {
+        auto groupingData = getGroupingData(m->index(row, 0));
+        auto sourceData = getSourceData(m->index(row, 0));
+        groupToRows[sourceData].first = groupingData;
+        groupToRows[sourceData].second.push_back(row);
+    }
+
+    std::vector<QVariant> prevGroupingData;
+    std::vector<int> prevRows;
+    Coordinate prevCoord;
+
+    for (const auto& kv : groupToRows) {
+        const auto& groupingData = kv.first;
+        const auto& rows = kv.second;
+
+        int n = getDiff(prevGroupingData, groupingData);
+
+        if (n == Kek::Equal) {
+            Coordinate coord = prevCoord;
+            coord.push_back(-1);
+            for (const auto& row : rows) {
+                coord.back()++;
+                coordinates[row] = coord;
+                if (sourceRows.count(coord))
+                    qDebug() << "OOOOMG";
+                sourceRows[coord] = row;
+                coordinatesMap.insert(std::make_unique<Coordinate>(coord));
+            }
+        }
+        else if (n == Kek::FirstShorter) {
+            // Reuse previous coordinate
+            Coordinate coord = prevCoord;
+            for (int i = coord.size(); i < groupingData.size(); ++i) {
+                coord.push_back(0);
+                coordinatesMap.insert(std::make_unique<Coordinate>(coord));
+                groupData[coord] = groupingData[i];
+            }
+
+            prevCoord = coord;
+            coord.push_back(-1);
+            for (const auto& row : rows) {
+                coord.back()++;
+                coordinates[row] = coord;
+                if (sourceRows.count(coord))
+                    qDebug() << "OOOOMG";
+                sourceRows[coord] = row;
+                coordinatesMap.insert(std::make_unique<Coordinate>(coord));
+            }
+        }
+        else if (n == Kek::SecondShorter) {
+            // Reuse parts of previous coordinate
+            Coordinate coord(prevCoord.begin(), prevCoord.begin() + groupingData.size());
+            prevCoord = coord;
+            coord.push_back(-1);
+            for (const auto& row : rows) {
+                coord.back()++;
+                coordinates[row] = coord;
+                if (sourceRows.count(coord))
+                    qDebug() << "OOOOMG";
+                sourceRows[coord] = row;
+                coordinatesMap.insert(std::make_unique<Coordinate>(coord));
+            }
+        }
+        else if (n == 0) {
+            Coordinate coord(1);
+            coord[0] = prevCoord[0] + 1;
+            groupData[coord] = groupingData[0];
+            coordinatesMap.insert(std::make_unique<Coordinate>(coord));
+            for (int i = coord.size(); i < groupingData.size(); ++i) {
+                coord.push_back(0);
+                coordinatesMap.insert(std::make_unique<Coordinate>(coord));
+                groupData[coord] = groupingData[i];
+            }
+            prevCoord = coord;
+            coord.push_back(-1);
+            for (const auto& row : rows) {
+                coord.back()++;
+                coordinates[row] = coord;
+                if (sourceRows.count(coord))
+                    qDebug() << "OOOOMG";
+                sourceRows[coord] = row;
+                coordinatesMap.insert(std::make_unique<Coordinate>(coord));
+            }
+        }
+        else {
+            // Reuse parts of previous coordinate
+            Coordinate coord(prevCoord.begin(), prevCoord.begin() + n + 1);
+            coord[n]++;
+            groupData[coord] = groupingData[n];
+            coordinatesMap.insert(std::make_unique<Coordinate>(coord));
+            for (int i = coord.size(); i < groupingData.size(); ++i) {
+                coord.push_back(0);
+                coordinatesMap.insert(std::make_unique<Coordinate>(coord));
+                groupData[coord] = groupingData[i];
+            }
+
+            prevCoord = coord;
+            coord.push_back(-1);
+            for (const auto& row : rows) {
+                coord.back()++;
+                coordinates[row] = coord;
+                if (sourceRows.count(coord))
+                    qDebug() << "OOOOMG";
+                sourceRows[coord] = row;
+                coordinatesMap.insert(std::make_unique<Coordinate>(coord));
+            }
+        }
+
+        prevGroupingData = groupingData;
+        prevRows = rows;
     }
 }
 
@@ -229,7 +373,36 @@ void TreeProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
 {
     beginResetModel();
     QAbstractProxyModel::setSourceModel(sourceModel);
-    refreshMappings();
+    wrapper();
     endResetModel();
     connect(sourceModel, &QAbstractItemModel::layoutChanged, this, &TreeProxyModel::respondToLayoutChanged);
+}
+
+void TreeProxyModel::wrapper()
+{
+    //    refreshMappings();
+    //    qDebug() << "coordinates: " << coordinatesMap.size();
+    //    qDebug() << "sourceRows: " << sourceRows.size();
+
+    //    std::vector<int> rows1;
+    //    for (const auto& kv : sourceRows)
+    //        rows1.push_back(kv.second);
+    //    std::sort(rows1.begin(), rows1.end());
+
+    refreshMappings2();
+    //    qDebug() << "coordinates: " << coordinatesMap.size();
+    //    qDebug() << "sourceRows: " << sourceRows.size();
+
+    //    std::vector<int> rows2;
+    //    for (const auto& kv : sourceRows)
+    //        rows2.push_back(kv.second);
+    //    std::sort(rows2.begin(), rows2.end());
+
+    //    decltype(rows1) diff;
+
+    //    std::set_difference(rows1.begin(), rows1.end(), rows2.begin(), rows2.end(), std::inserter(diff,
+    //    diff.begin()));
+
+    //    qDebug() << "diff: " << diff.size();
+    //    qDebug() << "diff: " << diff.size();
 }
