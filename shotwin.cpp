@@ -38,12 +38,15 @@ bool Shotwin::initModels()
         auto date = eventItem->getStartTime();
         return std::vector<QVariant>{date.toString("yyyy"), date.toString("MMMM")};
     });
+
+    eventTreeModel->setComp([](auto v1, auto v2) { return v1 > v2; });
     eventTreeModel->setSourceDataCb([](const QModelIndex& index) {
         auto eventItem = static_cast<const EventItem*>(index.internalPointer());
         auto date = eventItem->getStartTime().date();
         return std::vector<QVariant>{date.year(), date.month()};
     });
     eventTreeModel->setSourceModel(eventModel);
+    eventTreeModel->dump("original.txt");
 
     fileSystemModel = new TreeProxyModel(this);
     fileSystemModel->setGroupingDataCb([](const QModelIndex& index) {

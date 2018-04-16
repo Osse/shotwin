@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QDate>
 #include <QDebug>
+#include <QFile>
 #include <QFlags>
 #include <QStyle>
 
@@ -315,6 +316,43 @@ void TreeProxyModel::refreshMappings2()
         prevGroupingData = groupingData;
         prevRows = rows;
     }
+
+    void TreeProxyModel::dump(const QString& filename)
+    {
+        QFile file(filename);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+            return;
+
+        QTextStream out(&file);
+        auto m = sourceModel();
+
+        for (const auto& kv : sourceRows) {
+            const auto& coord = kv.first;
+            const auto& row = kv.second;
+
+            out << "{ ";
+            for (int i = 1; i < coord.size(); ++i) {
+                out << groupData[{coord.begin(), coord.begin() + i}].toString() << " ";
+            }
+            out << "} -> ";
+            for (int i : coord)
+                out << i << " ";
+            out << "\n";
+        }
+
+        //    for (int row = 0; row < m->rowCount(); ++row) {
+        //        out << row << ": { ";
+        //        auto c = coordinates[row];
+        //        for (int i : c)
+        //            out << i << " ";
+        //        out << "}\n";
+
+        //        out << "{ ";
+        //        for (const auto& v : getGroupingData(m->index(row, 0)))
+        //            out << v.toString() << " ";
+        //        out << "}\n";
+        //    }
+    }
 }
 
 void TreeProxyModel::clearMappings(int rowCount)
@@ -352,6 +390,11 @@ QModelIndex TreeProxyModel::createIndex(const Coordinate& coordinate) const
         return QModelIndex();
     else
         return createIndex(coordinate.back(), 0, static_cast<void*>(it->get()));
+}
+
+void TreeProxyModel::setComp(const GroupingDataCompCbType& value)
+{
+    comp = value;
 }
 
 void TreeProxyModel::setAlternateDisplayDataCb(const AlternateDisplayDataCbType& value)

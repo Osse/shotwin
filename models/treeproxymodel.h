@@ -25,15 +25,20 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
-    using GroupingDataCbType = std::function<std::vector<QVariant>(const QModelIndex&)>;
+    using GroupingData = std::vector<QVariant>;
+    using GroupingDataCbType = std::function<GroupingData(const QModelIndex&)>;
     void setGroupingDataCb(const GroupingDataCbType& value);
     void setSourceDataCb(const GroupingDataCbType& value);
     using AlternateDisplayDataCbType = std::function<QVariant(const QVariant& value)>;
     void setAlternateDisplayDataCb(const AlternateDisplayDataCbType& value);
+    using GroupingDataCompCbType = std::function<bool(const GroupingData& lhs, const GroupingData& rhs)>;
+    void setComp(const GroupingDataCompCbType& value);
 
     void setSourceModel(QAbstractItemModel* sourceModel) override;
 
+    void dump(const QString& filename);
     enum UserRoles { SourceDataRole = Qt::UserRole + 0x200 };
+    enum GroupSorting { Less, Greater };
 
 private:
     using Coordinate = std::vector<int>;
@@ -53,6 +58,7 @@ private:
 private:
     GroupingDataCbType getGroupingData;
     GroupingDataCbType getSourceData;
+    GroupingDataCompCbType comp;
     AlternateDisplayDataCbType getAlternateDisplayData;
 
     // All coordinates
