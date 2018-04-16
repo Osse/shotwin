@@ -9,10 +9,14 @@
 #include <QFlags>
 #include <QStyle>
 
+#include <functional>
+#include <iostream>
+
 TreeProxyModel::TreeProxyModel(QObject* parent) : QAbstractProxyModel(parent)
 {
     auto style = QApplication::style();
     groupIcon = style->standardPixmap(QStyle::SP_DirClosedIcon);
+    comp = [](auto v1, auto v2) { return v1 < v2; };
 }
 
 QModelIndex TreeProxyModel::index(int row, int column, const QModelIndex& parent) const
@@ -196,20 +200,16 @@ int getDiff(const std::vector<QVariant>& v1, const std::vector<QVariant>& v2)
 
 void TreeProxyModel::refreshMappings2()
 {
+    qDebug() << "kek";
     auto m = sourceModel();
 
     clearMappings(m->rowCount());
 
-    std::map<std::vector<QVariant>,
-             std::pair<std::vector<QVariant>, std::vector<int>>,
-             std::greater<std::vector<QVariant>>>
-        groupToRows;
+    std::map<std::vector<QVariant>, std::vector<int>, GroupingDataCompCbType> groupToRows(comp);
 
     for (int row = 0; row < m->rowCount(); ++row) {
         auto groupingData = getGroupingData(m->index(row, 0));
-        auto sourceData = getSourceData(m->index(row, 0));
-        groupToRows[sourceData].first = groupingData;
-        groupToRows[sourceData].second.push_back(row);
+        groupToRows[groupingData].push_back(row);
     }
 
     std::vector<QVariant> prevGroupingData;
@@ -316,43 +316,43 @@ void TreeProxyModel::refreshMappings2()
         prevGroupingData = groupingData;
         prevRows = rows;
     }
+}
 
-    void TreeProxyModel::dump(const QString& filename)
-    {
-        QFile file(filename);
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-            return;
+void TreeProxyModel::dump(const QString& filename)
+{
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
 
-        QTextStream out(&file);
-        auto m = sourceModel();
+    QTextStream out(&file);
+    auto m = sourceModel();
 
-        for (const auto& kv : sourceRows) {
-            const auto& coord = kv.first;
-            const auto& row = kv.second;
+    for (const auto& kv : sourceRows) {
+        const auto& coord = kv.first;
+        const auto& row = kv.second;
 
-            out << "{ ";
-            for (int i = 1; i < coord.size(); ++i) {
-                out << groupData[{coord.begin(), coord.begin() + i}].toString() << " ";
-            }
-            out << "} -> ";
-            for (int i : coord)
-                out << i << " ";
-            out << "\n";
+        out << "{ ";
+        for (int i = 1; i < coord.size(); ++i) {
+            out << groupData[{coord.begin(), coord.begin() + i}].toString() << " ";
         }
-
-        //    for (int row = 0; row < m->rowCount(); ++row) {
-        //        out << row << ": { ";
-        //        auto c = coordinates[row];
-        //        for (int i : c)
-        //            out << i << " ";
-        //        out << "}\n";
-
-        //        out << "{ ";
-        //        for (const auto& v : getGroupingData(m->index(row, 0)))
-        //            out << v.toString() << " ";
-        //        out << "}\n";
-        //    }
+        out << "} -> ";
+        for (int i : coord)
+            out << i << " ";
+        out << "\n";
     }
+
+    //    for (int row = 0; row < m->rowCount(); ++row) {
+    //        out << row << ": { ";
+    //        auto c = coordinates[row];
+    //        for (int i : c)
+    //            out << i << " ";
+    //        out << "}\n";
+
+    //        out << "{ ";
+    //        for (const auto& v : getGroupingData(m->index(row, 0)))
+    //            out << v.toString() << " ";
+    //        out << "}\n";
+    //    }
 }
 
 void TreeProxyModel::clearMappings(int rowCount)
@@ -394,6 +394,7 @@ QModelIndex TreeProxyModel::createIndex(const Coordinate& coordinate) const
 
 void TreeProxyModel::setComp(const GroupingDataCompCbType& value)
 {
+    qDebug() << "new comp";
     comp = value;
 }
 
@@ -423,6 +424,7 @@ void TreeProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
 
 void TreeProxyModel::wrapper()
 {
+    qDebug() << "kek";
     //    refreshMappings();
     //    qDebug() << "coordinates: " << coordinatesMap.size();
     //    qDebug() << "sourceRows: " << sourceRows.size();

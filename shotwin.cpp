@@ -10,10 +10,13 @@
 #include "treeproxymodel.h"
 
 #include <QAbstractItemView>
+#include <QDebug>
 #include <QSettings>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QStringList>
+
+#include <iostream>
 
 Shotwin::Shotwin(QObject* parent) : QObject(parent)
 {
@@ -45,7 +48,12 @@ bool Shotwin::initModels()
         auto date = eventItem->getStartTime().date();
         return std::vector<QVariant>{date.year(), date.month()};
     });
+    eventTreeModel->setComp([](auto v1, auto v2) {
+        qDebug() << "kek2k";
+        return v1 < v2;
+    });
     eventTreeModel->setSourceModel(eventModel);
+
     eventTreeModel->dump("original.txt");
 
     fileSystemModel = new TreeProxyModel(this);
