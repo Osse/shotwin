@@ -21,11 +21,7 @@ QModelIndex TreeProxyModel::index(int row, int column, const QModelIndex& parent
         c = getCoordinate(parent);
 
     c.push_back(row);
-    auto it = std::find_if(coordinatesMap.begin(), coordinatesMap.end(), [&c](const auto& cptr) { return c == *cptr; });
-    if (it == coordinatesMap.end())
-        return QModelIndex();
-    else
-        return createIndex(row, *it);
+    return createIndex(c);
 }
 
 QModelIndex TreeProxyModel::parent(const QModelIndex& child) const
@@ -43,11 +39,7 @@ QModelIndex TreeProxyModel::parent(const QModelIndex& child) const
     if (parentCoord.empty())
         return QModelIndex();
 
-    auto it = std::find_if(coordinatesMap.begin(), coordinatesMap.end(), [&parentCoord](const auto& cptr) {
-        return parentCoord == *cptr;
-    });
-
-    return createIndex(parentCoord.back(), *it);
+    return createIndex(parentCoord);
 }
 
 int TreeProxyModel::rowCount(const QModelIndex& parent) const
@@ -211,9 +203,14 @@ QModelIndex TreeProxyModel::getModelIndex(const TreeProxyModel::Coordinate& coor
     return i;
 }
 
-QModelIndex TreeProxyModel::createIndex(int row, const CoordinatePtr& coordinate) const
+QModelIndex TreeProxyModel::createIndex(const Coordinate& coordinate) const
 {
-    return createIndex(row, 0, static_cast<void*>(coordinate.get()));
+    auto it = std::find_if(
+        coordinatesMap.begin(), coordinatesMap.end(), [&coordinate](const auto& cptr) { return coordinate == *cptr; });
+    if (it == coordinatesMap.end())
+        return QModelIndex();
+    else
+        return createIndex(coordinate.back(), 0, static_cast<void*>(it->get()));
 }
 
 void TreeProxyModel::setAlternateDisplayDataCb(const AlternateDisplayDataCbType& value)

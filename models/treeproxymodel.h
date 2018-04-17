@@ -46,7 +46,7 @@ private:
     QModelIndex getModelIndex(const Coordinate& coordinate) const;
 
     using QAbstractProxyModel::createIndex;
-    QModelIndex createIndex(int row, const CoordinatePtr& coordinate) const;
+    QModelIndex createIndex(const Coordinate& coordinate) const;
 
 private:
     GroupingDataCbType getGroupingData;
