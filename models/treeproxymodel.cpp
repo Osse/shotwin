@@ -66,14 +66,7 @@ int TreeProxyModel::rowCount(const QModelIndex& parent) const
 
 int TreeProxyModel::columnCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid())
-        return 1;
-
-    Coordinate c = getCoordinate(parent);
-
-    int sourceDepth = coordinates[0].size();
-
-    return c.size() == sourceDepth ? 0 : 1;
+    return rowCount(parent) > 0 ? 1 : 0;
 }
 
 QModelIndex TreeProxyModel::mapFromSource(const QModelIndex& sourceIndex) const
