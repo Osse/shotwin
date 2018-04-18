@@ -31,7 +31,7 @@ QModelIndex TreeProxyModel::parent(const QModelIndex& child) const
     if (!coord)
         return QModelIndex();
 
-    Coordinate parentCoord(coord->begin(), coord->begin() + coord->size() - 1);
+    Coordinate parentCoord(coord->begin(), std::prev(coord->end()));
 
     if (parentCoord.empty())
         return QModelIndex();
