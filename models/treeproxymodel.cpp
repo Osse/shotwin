@@ -16,10 +16,7 @@ TreeProxyModel::TreeProxyModel(QObject* parent) : QAbstractProxyModel(parent)
 
 QModelIndex TreeProxyModel::index(int row, int column, const QModelIndex& parent) const
 {
-    Coordinate c;
-    if (parent.isValid())
-        c = getCoordinate(parent);
-
+    auto c = getCoordinate(parent);
     c.push_back(row);
     return createIndex(c);
 }
@@ -44,10 +41,10 @@ QModelIndex TreeProxyModel::parent(const QModelIndex& child) const
 
 int TreeProxyModel::rowCount(const QModelIndex& parent) const
 {
-    Coordinate p;
-    if (parent.isValid())
-        p = getCoordinate(parent);
+    if (mapToSource(parent).isValid())
+        return 0;
 
+    auto p = getCoordinate(parent);
     int rows = 0;
     std::for_each(coordinatesMap.begin(), coordinatesMap.end(), [&rows, p](const auto& c) {
         if (c->size() == p.size() + 1 && std::equal(p.begin(), p.end(), c->begin()))
