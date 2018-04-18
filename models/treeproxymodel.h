@@ -37,7 +37,7 @@ public:
 
 private:
     using Coordinate = std::vector<int>;
-    using CoordinatePtr = std::unique_ptr<std::vector<int>>;
+    using CoordinatePtr = std::unique_ptr<Coordinate>;
 
     void refreshMappings();
     void clearMappings(int rowCount);
