@@ -291,6 +291,10 @@ public:
     leaf_iterator begin_leaf(const iterator_base& top) const;
     /// Return leaf end iterator for the subtree at the given node.
     leaf_iterator end_leaf(const iterator_base& top) const;
+    /// Return sibling iterator to the first top level node
+    sibling_iterator begin_sibling() const;
+    /// Return sibling end iterator for the top level
+    sibling_iterator end_sibling() const;
 
     /// Return iterator to the parent of a node.
     template <typename iter>
@@ -917,6 +921,18 @@ typename tree<T, tree_node_allocator>::leaf_iterator tree<T, tree_node_allocator
     const iterator_base& top) const
 {
     return leaf_iterator(top.node, top.node);
+}
+
+template <class T, class tree_node_allocator>
+typename tree<T, tree_node_allocator>::sibling_iterator tree<T, tree_node_allocator>::begin_sibling() const
+{
+    return sibling_iterator(head->next_sibling);
+}
+
+template <class T, class tree_node_allocator>
+typename tree<T, tree_node_allocator>::sibling_iterator tree<T, tree_node_allocator>::end_sibling() const
+{
+    return sibling_iterator(feet);
 }
 
 template <class T, class tree_node_allocator>

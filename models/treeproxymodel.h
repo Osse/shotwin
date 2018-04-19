@@ -1,6 +1,8 @@
 #ifndef TREEPROXYMODEL_H
 #define TREEPROXYMODEL_H
 
+#include "tree.hh"
+
 #include <QAbstractProxyModel>
 #include <QPixmap>
 #include <QString>
@@ -36,35 +38,16 @@ public:
     enum UserRoles { SourceDataRole = Qt::UserRole + 0x200 };
 
 private:
-    using Coordinate = std::vector<int>;
-    using CoordinatePtr = std::unique_ptr<Coordinate>;
-
     void refreshMappings();
-    void clearMappings(int rowCount);
     void respondToLayoutChanged();
-    Coordinate getCoordinate(const QModelIndex& proxyIndex) const;
-    QModelIndex getModelIndex(const Coordinate& coordinate) const;
-
-    using QAbstractProxyModel::createIndex;
-    QModelIndex createIndex(const Coordinate& coordinate) const;
 
 private:
     GroupingDataCbType getGroupingData;
     GroupingDataCbType getSourceData;
     AlternateDisplayDataCbType getAlternateDisplayData;
 
-    // All coordinates
-    std::set<CoordinatePtr> coordinatesMap;
-
-    // mapping to source
-    std::map<Coordinate, int> sourceRows;
-
-    // mapping from source (index is source row)
-    std::vector<Coordinate> coordinates;
-
-    // Data for extra nodes
-    std::map<Coordinate, QVariant> groupData;
-    std::map<Coordinate, QVariant> sourceData;
+    tree<int> sourceRows;
+    tree<QVariant> nodeShit;
 
     QPixmap groupIcon;
 };
