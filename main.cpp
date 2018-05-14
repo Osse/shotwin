@@ -18,59 +18,59 @@ using std::endl;
 using std::find;
 using std::string;
 
-template <class T, class tna = std::allocator<tree_node_<T> > >
-class leaves
-{
-public:
-    leaves()
-    {
-    }
-    leaves(const tree<T, tna>& tree) : t(tree)
-    {
-    }
+// template <class T, class tna = std::allocator<tree_node_<T> > >
+// class leaves
+//{
+// public:
+//    leaves()
+//    {
+//    }
+//    leaves(const tree<T, tna>& tree) : t(tree)
+//    {
+//    }
 
-    typename tree<T, tna>::leaf_iterator begin() const;
-    typename tree<T, tna>::leaf_iterator end() const;
+//    typename tree<T, tna>::leaf_iterator begin() const;
+//    typename tree<T, tna>::leaf_iterator end() const;
 
-private:
-    const tree<T, tna>& t;
-};
+// private:
+//    const tree<T, tna>& t;
+//};
 
-template <class T, class tla>
-typename tree<T, tla>::leaf_iterator leaves<T, tla>::begin() const
-{
-    return t.begin_leaf();
-}
+// template <class T, class tla>
+// typename tree<T, tla>::leaf_iterator leaves<T, tla>::begin() const
+//{
+//    return t.begin_leaf();
+//}
 
-template <class T, class tla>
-typename tree<T, tla>::leaf_iterator leaves<T, tla>::end() const
-{
-    return t.end_leaf();
-}
+// template <class T, class tla>
+// typename tree<T, tla>::leaf_iterator leaves<T, tla>::end() const
+//{
+//    return t.end_leaf();
+//}
 
 void treetest()
 {
-    tree<string> tree;
+    tree<string> t;
 
-    auto top = tree.begin();
+    auto top = t.set_head("This is the top");
 
-    auto newestElement = tree.insert(top, "Apple");
-    tree.append_child(newestElement, "1");
-    tree.append_child(newestElement, "2");
-    tree.append_child(newestElement, "3");
+    auto newestElement = t.append_child(top, "Apple");
+    t.append_child(newestElement, "1");
+    t.append_child(newestElement, "2");
+    t.append_child(newestElement, "3");
 
-    newestElement = tree.insert_after(newestElement, "Banana");
-    tree.append_child(newestElement, "1");
-    tree.append_child(newestElement, "2");
-    tree.append_child(newestElement, "3");
-    newestElement = tree.insert_after(newestElement, "Clementine");
-    tree.append_child(newestElement, "1");
-    tree.append_child(newestElement, "Banana");
-    tree.append_child(newestElement, "3");
-    newestElement = tree.insert_after(newestElement, "Druer");
-    tree.append_child(newestElement, "1");
-    tree.append_child(newestElement, "2");
-    tree.append_child(newestElement, "3");
+    newestElement = t.insert_after(newestElement, "Banana");
+    t.append_child(newestElement, "1");
+    t.append_child(newestElement, "2");
+    t.append_child(newestElement, "3");
+    newestElement = t.insert_after(newestElement, "Clementine");
+    t.append_child(newestElement, "1");
+    t.append_child(newestElement, "Banana");
+    t.append_child(newestElement, "3");
+    newestElement = t.insert_after(newestElement, "Druer");
+    t.append_child(newestElement, "1");
+    t.append_child(newestElement, "2");
+    t.append_child(newestElement, "3");
 
     // auto search = std::find(tree.begin_fixed(tree.begin(), 0), tree.end_fixed(tree.end(), 0), "Clementine");
     // ccout << *search << " " << tree.index(search) << endl;
@@ -78,20 +78,34 @@ void treetest()
     //    cout << "Apple: " << *tree.begin() << "\n";
     //    cout << "Apple: " << *tree.begin_fixed(tree.begin(), 0) << "\n";
 
-    // for (auto it = tree.begin_fixed(tree.begin(), 0); it != tree.end_fixed(tree.begin(), 0); ++it)
-    for (auto it = tree.begin_sibling(); it != tree.end_sibling(); ++it)
-        cout << "kek: " << *it << endl;
+    for (int i = 0; i < 2; i++) {
+        tree<string>::sibling_iterator it(t.begin());
 
-    leaves<string> x;
-    for (const auto& lol : leaves(tree))
-        cout << lol << endl;
+        for (auto i : {"Clementine", "Baxana"}) {
+            auto res = std::find(t.begin(it), t.end(it), i);
+            if (res != t.end(it)) {
+                it = res;
+                cout << "Found " << *it << endl;
+            }
+            else {
+                it = t.append_child(it, i);
+                cout << "Adding " << i << endl;
+            }
+        }
+    }
+
+    cout << "DUMP:\n\n";
+    for (auto it = std::prev(std::next(t.begin())); it != t.end(); ++it) {
+        int spaces = 4 * (t.depth(it) - 1);
+        cout << string(spaces, ' ') << *it << endl;
+    }
 
     exit(0);
 }
 
 int main(int argc, char* argv[])
 {
-    treetest();
+    // treetest();
 
     QApplication a(argc, argv);
     QCoreApplication::setOrganizationDomain("http://github.com/Osse/shotwin");

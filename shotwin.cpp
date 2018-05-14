@@ -10,6 +10,7 @@
 #include "treeproxymodel.h"
 
 #include <QAbstractItemView>
+#include <QDebug>
 #include <QSettings>
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -43,6 +44,11 @@ bool Shotwin::initModels()
         auto date = eventItem->getStartTime().date();
         return std::vector<QVariant>{date.year(), date.month()};
     });
+    eventTreeModel->setGetSourceData2([](const QModelIndex& index) {
+        auto eventItem = static_cast<const EventItem*>(index.internalPointer());
+        auto date = eventItem->getStartTime().date();
+        return QVariant::fromValue(QList<int>() << date.year() << date.month());
+    });
     eventTreeModel->setSourceModel(eventModel);
 
     fileSystemModel = new TreeProxyModel(this);
@@ -52,8 +58,7 @@ bool Shotwin::initModels()
         auto split = path.split("/", QString::SkipEmptyParts);
         return std::vector<QVariant>(split.begin(), split.begin() + split.length() - 1);
     });
-    fileSystemModel->setAlternateDisplayDataCb(
-        [](const QVariant& value) { return value.toString().split("/", QString::SkipEmptyParts).last(); });
+    fileSystemModel->setAlternateDisplayDataCb([](const QVariant& value) { return value.toString().section('/', -1); });
     fileSystemModel->setSourceModel(photoModel);
 
     tagModel = new TagModel(this);
@@ -99,15 +104,12 @@ void Shotwin::selectEvent(const QModelIndex& index)
         emit photoListRequested();
     }
     else {
-        if (index.parent().isValid()) {
-            int year = eventTreeModel->data(index.parent(), TreeProxyModel::SourceDataRole).toInt();
-            int month = eventTreeModel->data(index, TreeProxyModel::SourceDataRole).toInt();
-            eventListModel->setFilterMonth(year, month);
-        }
-        else {
-            int year = eventTreeModel->data(index, TreeProxyModel::SourceDataRole).toInt();
-            eventListModel->setFilterYear(year);
-        }
+        auto filter = eventTreeModel->data(index, TreeProxyModel::SourceDataRole).value<QList<int>>();
+        qDebug() << filter;
+        if (filter.size() == 1)
+            eventListModel->setFilterYear(filter.first());
+        else if (filter.size() == 2)
+            eventListModel->setFilterMonth(filter.front(), filter.back());
         emit eventListRequested();
     }
     emit tagSelected(QModelIndex());

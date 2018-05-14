@@ -28,6 +28,8 @@ public:
 
     void handleArgs(const Args& args);
 
+    void showSettings2();
+
 private:
     void openDatabase();
     void openDataBaseConnection(const QString& dbName);

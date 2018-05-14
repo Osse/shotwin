@@ -58,6 +58,7 @@ MainWindow::~MainWindow()
 void MainWindow::handleArgs(const Args& args)
 {
     QSettings settings;
+    settings.value("kek");
     QMap<QString, QVariant> map;
 
     if (!args.mapList.isEmpty()) {
