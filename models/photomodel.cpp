@@ -23,7 +23,7 @@ int PhotoModel::rowCount(const QModelIndex& parent) const
     if (parent.isValid())
         return 0;
 
-    return photoList.size();
+    return static_cast<int>(photoList.size());
 }
 
 QVariant PhotoModel::data(const QModelIndex& index, int role) const
@@ -71,7 +71,7 @@ QList<QModelIndex> PhotoModel::match(
 {
     if (role == PhotoIdRole) {
         int id = value.toInt();
-        return {index(idPhotoMap.at(id), 0)};
+        return {index(static_cast<int>(idPhotoMap.at(id)), 0)};
     }
     else
         return QAbstractListModel::match(start, role, value, hits, flags);

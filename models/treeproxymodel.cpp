@@ -151,7 +151,7 @@ void TreeProxyModel::refreshMappings()
         if (getSourceData)
             sourceDataForIndex = getSourceData(m->index(row, 0));
 
-        int depth = groupingData.size();
+        size_t depth = groupingData.size();
 
         std::vector<QVariant> newGroup;
         newGroup.reserve(depth);

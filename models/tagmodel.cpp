@@ -20,7 +20,7 @@ int TagModel::rowCount(const QModelIndex& parent) const
     if (parent.isValid())
         return 0;
 
-    return tags.size();
+    return static_cast<int>(tags.size());
 }
 
 QVariant TagModel::data(const QModelIndex& index, int role) const

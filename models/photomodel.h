@@ -54,7 +54,7 @@ private:
 
 private:
     std::vector<PhotoItem> photoList;
-    std::map<int, int> idPhotoMap;
+    std::map<int, size_t> idPhotoMap;
     QMap<QString, QVariant> map;
 };
 
