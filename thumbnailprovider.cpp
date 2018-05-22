@@ -48,7 +48,7 @@ QImage ThumbnailProvider::requestImage(const QString& id, QSize* size, const QSi
     QString filename;
     QString type;
 
-    auto matches = photoListModel->match(photoListModel->index(0, 0), PhotoModel::ThumnailRole, id);
+    auto matches = photoListModel->match(photoListModel->index(0, 0), PhotoModel::ThumbnailRole, id);
     QModelIndex match;
     if (matches.size())
         match = matches.first();

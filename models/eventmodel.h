@@ -24,7 +24,7 @@ public:
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
 
     enum UserRoles {
-        ThumnailRole = Qt::UserRole + 1,
+        ThumbnailRole = Qt::UserRole + 1,
         StartTimeRole,
         EndTimeRole,
         FilenameRole,

@@ -38,7 +38,7 @@ QVariant PhotoModel::data(const QModelIndex& index, int role) const
 
     if (role == Qt::DisplayRole)
         return photoList[row].displayString();
-    else if (role == ThumnailRole)
+    else if (role == ThumbnailRole)
         return photoList[row].getThumbnailId();
     else if (role == FilenameRole)
         return photoList[row].getFilename();
@@ -80,7 +80,7 @@ QList<QModelIndex> PhotoModel::match(
 QHash<int, QByteArray> PhotoModel::roleNames() const
 {
     auto roleNames = QAbstractItemModel::roleNames();
-    roleNames[ThumnailRole] = "thumbnail";
+    roleNames[ThumbnailRole] = "thumbnail";
     roleNames[FilenameRole] = "filename";
     roleNames[MappedFilenameRole] = "mappedfilename";
     roleNames[EventIdRole] = "eventid";

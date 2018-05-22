@@ -42,7 +42,7 @@ QVariant EventModel::data(const QModelIndex& index, int role) const
         return eventList[row].getStartTime();
     else if (role == EndTimeRole)
         return eventList[row].getEndTime();
-    else if (role == ThumnailRole)
+    else if (role == ThumbnailRole)
         return eventList[row].getThumbnailId();
     else if (role == TimespanRole)
         return eventList[row].getEventTimeSpan();
@@ -82,7 +82,7 @@ QVariant EventModel::headerData(int section, Qt::Orientation orientation, int ro
 QHash<int, QByteArray> EventModel::roleNames() const
 {
     auto roleNames = QAbstractItemModel::roleNames();
-    roleNames[ThumnailRole] = "thumbnail";
+    roleNames[ThumbnailRole] = "thumbnail";
     roleNames[StartTimeRole] = "starttime";
     roleNames[EndTimeRole] = "endtime";
     roleNames[TimespanRole] = "timespan";
