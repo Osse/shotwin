@@ -20,6 +20,8 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 14)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 find_package(Qt5 COMPONENTS Core Widgets Sql QuickWidgets Multimedia)
 
 set(SOURCES
